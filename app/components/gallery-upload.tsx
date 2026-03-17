@@ -12,6 +12,10 @@ import {
   generateVideoThumbnail,
   generateFileName,
   getExtension,
+  isHeic,
+  isMov,
+  convertHeicToJpeg,
+  transcodeMovToMp4,
 } from "@/lib/media-utils";
 
 const DRAFT_NAME_KEY = "wedding-party-wish-draft";
@@ -78,24 +82,54 @@ export function GalleryUpload({
     let width = 0;
     let height = 0;
 
-    // Compress photos
+    // Convert HEIC if needed, then compress
     if (mediaType === "photo") {
       updateUpload(index, { status: "compressing" });
-      fileToUpload = await compressImage(file);
+
+      if (isHeic(file)) {
+        try {
+          fileToUpload = await convertHeicToJpeg(file);
+        } catch {
+          updateUpload(index, {
+            status: "error",
+            error:
+              "Couldn't process this HEIC image. Try converting to JPEG first.",
+          });
+          return;
+        }
+      }
+
+      fileToUpload = await compressImage(fileToUpload as File);
 
       const dims = await getImageDimensions(fileToUpload as File);
       width = dims.width;
       height = dims.height;
     }
 
-    // Video: get dimensions and generate thumbnail
+    // Video: transcode MOV if needed, get dimensions and generate thumbnail
     if (mediaType === "video") {
-      const dims = await getVideoDimensions(file);
+      if (isMov(file)) {
+        updateUpload(index, { status: "compressing", progress: 0 });
+        try {
+          fileToUpload = await transcodeMovToMp4(file, (progress) => {
+            updateUpload(index, { status: "compressing", progress });
+          });
+        } catch {
+          updateUpload(index, {
+            status: "error",
+            error:
+              "Couldn't convert this video. Try recording in MP4 format.",
+          });
+          return;
+        }
+      }
+
+      const dims = await getVideoDimensions(fileToUpload as File);
       width = dims.width;
       height = dims.height;
 
       updateUpload(index, { status: "compressing", progress: 0 });
-      const thumbnail = await generateVideoThumbnail(file);
+      const thumbnail = await generateVideoThumbnail(fileToUpload as File);
       if (thumbnail) {
         const thumbName = generateFileName("jpg");
         const thumbFilePath = `thumbs/${thumbName}`;
@@ -114,13 +148,10 @@ export function GalleryUpload({
     // Upload main file
     updateUpload(index, { status: "uploading", progress: 0 });
 
-    const wasCompressed = fileToUpload !== file;
-    const ext =
-      mediaType === "photo"
-        ? wasCompressed
-          ? "jpg"
-          : getExtension(file)
-        : getExtension(file);
+    const wasConverted = fileToUpload !== file;
+    const uploadFile = fileToUpload as File;
+    const ext = wasConverted ? getExtension(uploadFile) : getExtension(file);
+    const contentType = wasConverted ? uploadFile.type : file.type;
     const fileName = generateFileName(ext);
     const folder = mediaType === "photo" ? "photos" : "videos";
     const filePath = `${folder}/${fileName}`;
@@ -128,12 +159,7 @@ export function GalleryUpload({
     const { error: uploadError } = await supabase.storage
       .from("gallery")
       .upload(filePath, fileToUpload, {
-        contentType:
-          mediaType === "photo"
-            ? wasCompressed
-              ? "image/jpeg"
-              : file.type
-            : file.type,
+        contentType,
         cacheControl: "31536000",
       });
 
@@ -250,7 +276,9 @@ export function GalleryUpload({
               </span>
               {upload.status === "compressing" && (
                 <span className="shrink-0 text-xs text-ink-soft">
-                  Processing...
+                  {upload.progress > 0
+                    ? `Converting... ${upload.progress}%`
+                    : "Processing..."}
                 </span>
               )}
               {upload.status === "uploading" && (

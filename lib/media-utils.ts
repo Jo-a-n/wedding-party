@@ -5,6 +5,73 @@ const VIDEO_MAX_SIZE_MB = 100;
 const COMPRESSION_MAX_WIDTH = 1920;
 const COMPRESSION_TARGET_MB = 1;
 
+export function isHeic(file: File): boolean {
+  const type = file.type.toLowerCase();
+  if (type.includes("heic") || type.includes("heif")) return true;
+  const ext = file.name.split(".").pop()?.toLowerCase();
+  return ext === "heic" || ext === "heif";
+}
+
+export function isMov(file: File): boolean {
+  if (file.type === "video/quicktime") return true;
+  const ext = file.name.split(".").pop()?.toLowerCase();
+  return ext === "mov";
+}
+
+export async function convertHeicToJpeg(file: File): Promise<File> {
+  const heic2any = (await import("heic2any")).default;
+  const blob = await heic2any({
+    blob: file,
+    toType: "image/jpeg",
+    quality: 0.85,
+  });
+  const resultBlob = Array.isArray(blob) ? blob[0] : blob;
+  return new File([resultBlob], file.name.replace(/\.heic$/i, ".jpg"), {
+    type: "image/jpeg",
+  });
+}
+
+export async function transcodeMovToMp4(
+  file: File,
+  onProgress?: (progress: number) => void,
+): Promise<File> {
+  const { FFmpeg } = await import("@ffmpeg/ffmpeg");
+  const { fetchFile } = await import("@ffmpeg/util");
+
+  const ffmpeg = new FFmpeg();
+  if (onProgress) {
+    ffmpeg.on("progress", ({ progress }) =>
+      onProgress(Math.round(progress * 100)),
+    );
+  }
+
+  await ffmpeg.load();
+  await ffmpeg.writeFile("input.mov", await fetchFile(file));
+  await ffmpeg.exec([
+    "-i",
+    "input.mov",
+    "-c:v",
+    "libx264",
+    "-preset",
+    "fast",
+    "-crf",
+    "23",
+    "-c:a",
+    "aac",
+    "-movflags",
+    "+faststart",
+    "output.mp4",
+  ]);
+
+  const data = await ffmpeg.readFile("output.mp4");
+  const mp4Blob = new Blob([new Uint8Array(data as Uint8Array)], {
+    type: "video/mp4",
+  });
+  return new File([mp4Blob], file.name.replace(/\.mov$/i, ".mp4"), {
+    type: "video/mp4",
+  });
+}
+
 export type MediaFile = {
   file: File;
   type: "photo" | "video";
