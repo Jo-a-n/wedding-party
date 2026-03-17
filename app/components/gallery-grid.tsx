@@ -38,7 +38,6 @@ function GalleryTile({
       type="button"
       onClick={onClick}
       className={`group relative block w-full overflow-hidden rounded-2xl border border-border-soft bg-surface-card focus:outline-none focus:ring-2 focus:ring-periwinkle/40 ${isNew ? "wish-card-enter" : ""}`}
-      style={{ background: "var(--surface-card)" }}
     >
       {src ? (
         <img
