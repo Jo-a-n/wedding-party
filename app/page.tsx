@@ -2,8 +2,9 @@ import { FallingHeartsBackground } from "./components/falling-hearts-background"
 import { RiceCelebrationSection } from "./components/rice-celebration-section";
 import { ThemeToggle } from "./components/theme-toggle";
 import { WishWall } from "./components/wish-wall";
+import { GallerySection } from "./components/gallery-section";
 import { createClient } from "@/lib/supabase/server";
-import type { Wish } from "@/lib/supabase/types";
+import type { Wish, GalleryItem } from "@/lib/supabase/types";
 
 export const dynamic = "force-dynamic";
 
@@ -13,15 +14,46 @@ async function getWishes(): Promise<Wish[]> {
     const { data } = await supabase
       .from("wishes")
       .select("*")
-      .order("created_at", { ascending: false });
-    return (data as Wish[]) ?? [];
-  } catch {
+      .order("created_at", { ascending: false })
+      .limit(500);
+    return (data ?? []) as Wish[];
+  } catch (e) {
+    console.error("Failed to fetch wishes:", e);
     return [];
   }
 }
 
+async function getGalleryItems(): Promise<{
+  items: GalleryItem[];
+  count: number;
+}> {
+  try {
+    const supabase = await createClient();
+    const { count } = await supabase
+      .from("gallery_items")
+      .select("*", { count: "exact", head: true });
+
+    const { data } = await supabase
+      .from("gallery_items")
+      .select("*")
+      .order("created_at", { ascending: false })
+      .limit(50);
+
+    return {
+      items: (data ?? []) as GalleryItem[],
+      count: count ?? 0,
+    };
+  } catch (e) {
+    console.error("Failed to fetch gallery items:", e);
+    return { items: [], count: 0 };
+  }
+}
+
 export default async function Home() {
-  const wishes = await getWishes();
+  const [wishes, gallery] = await Promise.all([
+    getWishes(),
+    getGalleryItems(),
+  ]);
 
   const palette = [
     { name: "Mint", hex: "#99FFDA", className: "bg-mint" },
@@ -63,7 +95,7 @@ export default async function Home() {
               <p className="max-w-2xl text-lg leading-8 text-ink-soft sm:text-xl">
                 The app is organized around reusable pastel design tokens so
                 future sections, buttons, cards, and accents can stay consistent
-                without repeating raw hex values. (ΘΕΛΕΙ ΑΛΛΑΓΕΣ, ΜΗΝ ΤΟ ΑΚΟΥΣ)
+                without repeating raw hex values.
               </p>
             </div>
 
@@ -76,33 +108,9 @@ export default async function Home() {
               </a>
               <a
                 className="hero-accent-button rounded-full px-6 py-3 text-sm font-semibold transition-transform duration-200 hover:-translate-y-0.5"
-                href="#palette"
+                href="#gallery"
               >
-                View palette
-              </a>
-              <a
-                className="soft-chip-strong rounded-full px-6 py-3 text-sm font-semibold text-foreground transition-colors duration-200 hover:bg-blush/60"
-                href="https://codepen.io/adnaan22/pen/gObwerY"
-                target="_blank"
-                rel="noreferrer"
-              >
-                REF: Confetti Canon
-              </a>
-              <a
-                className="soft-chip-strong rounded-full px-6 py-3 text-sm font-semibold text-foreground transition-colors duration-200 hover:bg-blush/60"
-                href="https://codepen.io/Ghost_96/pen/YzGRBBz"
-                target="_blank"
-                rel="noreferrer"
-              >
-                REF:Valentine&apos;s Hearts Bg
-              </a>
-              <a
-                className="soft-chip-strong rounded-full px-6 py-3 text-sm font-semibold text-foreground transition-colors duration-200 hover:bg-blush/60"
-                href="https://codepen.io/editor/abortourcourt/pen/019cc9e1-0e38-7dd6-b132-58f4b3d0411a"
-                target="_blank"
-                rel="noreferrer"
-              >
-                REF: Pixel Art Drawing Board
+                Photo album
               </a>
             </div>
           </div>
@@ -187,6 +195,11 @@ export default async function Home() {
         </section>
 
         <WishWall initialWishes={wishes} />
+
+        <GallerySection
+          initialItems={gallery.items}
+          initialCount={gallery.count}
+        />
       </div>
     </main>
   );

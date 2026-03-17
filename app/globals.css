@@ -353,6 +353,20 @@ a {
   }
 }
 
+/* Gallery masonry layout */
+.gallery-masonry {
+  display: flex;
+  gap: 12px;
+  width: auto;
+}
+
+.gallery-masonry-column {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background-clip: padding-box;
+}
+
 body {
   margin: 0;
 }
