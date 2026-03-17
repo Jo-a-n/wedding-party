@@ -1,8 +1,28 @@
 import { FallingHeartsBackground } from "./components/falling-hearts-background";
 import { RiceCelebrationSection } from "./components/rice-celebration-section";
 import { ThemeToggle } from "./components/theme-toggle";
+import { WishWall } from "./components/wish-wall";
+import { createClient } from "@/lib/supabase/server";
+import type { Wish } from "@/lib/supabase/types";
 
-export default function Home() {
+export const dynamic = "force-dynamic";
+
+async function getWishes(): Promise<Wish[]> {
+  try {
+    const supabase = await createClient();
+    const { data } = await supabase
+      .from("wishes")
+      .select("*")
+      .order("created_at", { ascending: false });
+    return (data as Wish[]) ?? [];
+  } catch {
+    return [];
+  }
+}
+
+export default async function Home() {
+  const wishes = await getWishes();
+
   const palette = [
     { name: "Mint", hex: "#99FFDA", className: "bg-mint" },
     { name: "Periwinkle", hex: "#A1A2DF", className: "bg-periwinkle" },
@@ -50,6 +70,12 @@ export default function Home() {
             <div className="flex flex-wrap gap-4">
               <a
                 className="hero-accent-button rounded-full px-6 py-3 text-sm font-semibold transition-transform duration-200 hover:-translate-y-0.5"
+                href="#wishes"
+              >
+                Leave a wish
+              </a>
+              <a
+                className="hero-accent-button rounded-full px-6 py-3 text-sm font-semibold transition-transform duration-200 hover:-translate-y-0.5"
                 href="#palette"
               >
                 View palette
@@ -68,7 +94,7 @@ export default function Home() {
                 target="_blank"
                 rel="noreferrer"
               >
-                REF:Valentine's Hearts Bg
+                REF:Valentine&apos;s Hearts Bg
               </a>
               <a
                 className="soft-chip-strong rounded-full px-6 py-3 text-sm font-semibold text-foreground transition-colors duration-200 hover:bg-blush/60"
@@ -83,8 +109,8 @@ export default function Home() {
 
         </section>
 
-        <RiceCelebrationSection /> 
-         
+        <RiceCelebrationSection />
+
         <section
           id="palette"
           className="pastel-panel rounded-[2rem] px-5 py-6 sm:px-8 sm:py-8"
@@ -127,7 +153,6 @@ export default function Home() {
           </div>
         </section>
 
-
         <section
           id="system"
           className="grid gap-4 py-8 text-sm leading-7 text-ink-soft lg:grid-cols-3"
@@ -160,6 +185,8 @@ export default function Home() {
             </p>
           </article>
         </section>
+
+        <WishWall initialWishes={wishes} />
       </div>
     </main>
   );
