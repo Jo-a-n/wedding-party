@@ -168,6 +168,7 @@ export function GallerySection({
         close={() => setLightboxIndex(-1)}
         slides={slides}
         carousel={{ finite: false }}
+        controller={{ closeOnBackdropClick: true }}
         styles={{
           container: { backgroundColor: "rgba(0, 0, 0, 0.9)" },
         }}

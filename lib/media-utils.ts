@@ -40,11 +40,9 @@ export async function compressImage(file: File): Promise<File> {
     });
     return compressed;
   } catch {
-    // If compression fails (e.g. HEIC on Chrome), return original
-    // The caller should handle this gracefully
-    throw new Error(
-      "Could not process this image. Try sharing it as JPEG instead.",
-    );
+    // If compression fails (e.g. HEIC on Chrome), fall back to original file
+    console.warn("Image compression failed, uploading original file");
+    return file;
   }
 }
 

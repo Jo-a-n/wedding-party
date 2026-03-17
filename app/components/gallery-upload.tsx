@@ -81,18 +81,7 @@ export function GalleryUpload({
     // Compress photos
     if (mediaType === "photo") {
       updateUpload(index, { status: "compressing" });
-      try {
-        fileToUpload = await compressImage(file);
-      } catch (err) {
-        updateUpload(index, {
-          status: "error",
-          error:
-            err instanceof Error
-              ? err.message
-              : "Failed to compress image.",
-        });
-        return;
-      }
+      fileToUpload = await compressImage(file);
 
       const dims = await getImageDimensions(fileToUpload as File);
       width = dims.width;
@@ -125,8 +114,13 @@ export function GalleryUpload({
     // Upload main file
     updateUpload(index, { status: "uploading", progress: 0 });
 
+    const wasCompressed = fileToUpload !== file;
     const ext =
-      mediaType === "photo" ? "jpg" : getExtension(file);
+      mediaType === "photo"
+        ? wasCompressed
+          ? "jpg"
+          : getExtension(file)
+        : getExtension(file);
     const fileName = generateFileName(ext);
     const folder = mediaType === "photo" ? "photos" : "videos";
     const filePath = `${folder}/${fileName}`;
@@ -135,7 +129,11 @@ export function GalleryUpload({
       .from("gallery")
       .upload(filePath, fileToUpload, {
         contentType:
-          mediaType === "photo" ? "image/jpeg" : file.type,
+          mediaType === "photo"
+            ? wasCompressed
+              ? "image/jpeg"
+              : file.type
+            : file.type,
         cacheControl: "31536000",
       });
 
