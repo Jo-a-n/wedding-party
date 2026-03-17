@@ -140,9 +140,10 @@ export function GalleryUpload({
       });
 
     if (uploadError) {
+      console.error("Gallery upload error:", uploadError);
       updateUpload(index, {
         status: "error",
-        error: "Upload failed. Please try again.",
+        error: `Upload failed: ${uploadError.message}`,
       });
       return;
     }
@@ -162,9 +163,10 @@ export function GalleryUpload({
       .single();
 
     if (insertError) {
+      console.error("Gallery insert error:", insertError);
       updateUpload(index, {
         status: "error",
-        error: "Failed to save. Please try again.",
+        error: `Failed to save: ${insertError.message}`,
       });
       return;
     }
