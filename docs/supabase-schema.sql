@@ -29,3 +29,13 @@ create policy "Anyone can insert wishes"
 
 -- Enable Realtime for this table
 alter publication supabase_realtime add table public.wishes;
+
+-- =============================================================
+-- BEFORE GOING LIVE: Wipe test data and reset IDs
+-- Run this before the wedding to clear development wishes:
+--
+--   TRUNCATE public.wishes RESTART IDENTITY;
+--
+-- Or via CLI:
+--   npx supabase db query --linked "TRUNCATE public.wishes RESTART IDENTITY;"
+-- =============================================================
