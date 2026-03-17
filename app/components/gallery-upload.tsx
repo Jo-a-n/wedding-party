@@ -223,6 +223,7 @@ export function GalleryUpload({
     }
 
     setIsUploading(false);
+    if (fileInputRef.current) fileInputRef.current.value = "";
 
     // Clear completed uploads after a delay
     setTimeout(() => {

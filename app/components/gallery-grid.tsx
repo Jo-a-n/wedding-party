@@ -96,12 +96,14 @@ export function GalleryGrid({
   items,
   newIds,
   totalCount,
+  loading,
   onLoadMore,
   onItemClick,
 }: {
   items: GalleryItem[];
   newIds: Set<number>;
   totalCount: number;
+  loading?: boolean;
   onLoadMore: () => void;
   onItemClick: (index: number) => void;
 }) {
@@ -140,9 +142,10 @@ export function GalleryGrid({
           <button
             type="button"
             onClick={onLoadMore}
-            className="soft-chip-strong rounded-full px-6 py-2.5 text-sm font-semibold text-foreground transition-colors duration-200 hover:bg-periwinkle/20"
+            disabled={loading}
+            className="soft-chip-strong rounded-full px-6 py-2.5 text-sm font-semibold text-foreground transition-colors duration-200 hover:bg-periwinkle/20 disabled:opacity-50"
           >
-            Load more
+            {loading ? "Loading..." : "Load more"}
           </button>
         </div>
       )}

@@ -33,6 +33,7 @@ export function GallerySection({
   const [newIds, setNewIds] = useState<Set<number>>(new Set());
   const [open, setOpen] = useState(isGalleryOpen);
   const [lightboxIndex, setLightboxIndex] = useState(-1);
+  const [loadingMore, setLoadingMore] = useState(false);
 
   // Re-check deadline every minute
   useEffect(() => {
@@ -63,9 +64,9 @@ export function GallerySection({
           const newItem = raw as unknown as GalleryItem;
           setItems((prev) => {
             if (prev.some((item) => item.id === newItem.id)) return prev;
+            setTotalCount((c) => c + 1);
             return [newItem, ...prev];
           });
-          setTotalCount((prev) => prev + 1);
           setNewIds((prev) => new Set(prev).add(newItem.id));
         },
       )
@@ -86,20 +87,25 @@ export function GallerySection({
   }, []);
 
   const handleLoadMore = useCallback(async () => {
-    const supabase = createClient();
-    const { data, error } = await supabase
-      .from("gallery_items")
-      .select("*")
-      .order("created_at", { ascending: false })
-      .range(items.length, items.length + PAGE_SIZE - 1);
+    setLoadingMore(true);
+    try {
+      const supabase = createClient();
+      const { data, error } = await supabase
+        .from("gallery_items")
+        .select("*")
+        .order("created_at", { ascending: false })
+        .range(items.length, items.length + PAGE_SIZE - 1);
 
-    if (!error && data) {
-      setItems((prev) => [
-        ...prev,
-        ...(data as unknown as GalleryItem[]).filter(
-          (d) => !prev.some((p) => p.id === d.id),
-        ),
-      ]);
+      if (!error && data) {
+        setItems((prev) => [
+          ...prev,
+          ...(data as unknown as GalleryItem[]).filter(
+            (d) => !prev.some((p) => p.id === d.id),
+          ),
+        ]);
+      }
+    } finally {
+      setLoadingMore(false);
     }
   }, [items.length]);
 
@@ -155,6 +161,7 @@ export function GallerySection({
         items={items}
         newIds={newIds}
         totalCount={totalCount}
+        loading={loadingMore}
         onLoadMore={handleLoadMore}
         onItemClick={(index) => setLightboxIndex(index)}
       />

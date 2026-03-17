@@ -5,6 +5,42 @@ const VIDEO_MAX_SIZE_MB = 100;
 const COMPRESSION_MAX_WIDTH = 1920;
 const COMPRESSION_TARGET_MB = 1;
 
+function withTimeout<T>(
+  promise: Promise<T>,
+  ms: number,
+  fallback: T,
+): Promise<T> {
+  return Promise.race([
+    promise,
+    new Promise<T>((resolve) => setTimeout(() => resolve(fallback), ms)),
+  ]);
+}
+
+const IMAGE_EXTENSIONS = new Set([
+  "jpg",
+  "jpeg",
+  "png",
+  "gif",
+  "webp",
+  "bmp",
+  "svg",
+  "heic",
+  "heif",
+  "avif",
+  "tiff",
+  "tif",
+]);
+
+const VIDEO_EXTENSIONS = new Set([
+  "mp4",
+  "mov",
+  "webm",
+  "avi",
+  "mkv",
+  "m4v",
+  "3gp",
+]);
+
 export function isHeic(file: File): boolean {
   const type = file.type.toLowerCase();
   if (type.includes("heic") || type.includes("heif")) return true;
@@ -61,24 +97,28 @@ export async function convertHeicToJpeg(file: File): Promise<File> {
 }
 
 export function canBrowserPlayVideo(file: File): Promise<boolean> {
-  return new Promise((resolve) => {
-    const video = document.createElement("video");
-    video.preload = "metadata";
-    video.muted = true;
-    video.playsInline = true;
+  return withTimeout(
+    new Promise<boolean>((resolve) => {
+      const video = document.createElement("video");
+      video.preload = "metadata";
+      video.muted = true;
+      video.playsInline = true;
 
-    video.onloadedmetadata = () => {
-      URL.revokeObjectURL(video.src);
-      resolve(true);
-    };
+      video.onloadedmetadata = () => {
+        URL.revokeObjectURL(video.src);
+        resolve(true);
+      };
 
-    video.onerror = () => {
-      URL.revokeObjectURL(video.src);
-      resolve(false);
-    };
+      video.onerror = () => {
+        URL.revokeObjectURL(video.src);
+        resolve(false);
+      };
 
-    video.src = URL.createObjectURL(file);
-  });
+      video.src = URL.createObjectURL(file);
+    }),
+    8000,
+    false,
+  );
 }
 
 export async function transcodeMovToMp4(
@@ -89,37 +129,41 @@ export async function transcodeMovToMp4(
   const { fetchFile } = await import("@ffmpeg/util");
 
   const ffmpeg = new FFmpeg();
-  if (onProgress) {
-    ffmpeg.on("progress", ({ progress }) =>
-      onProgress(Math.round(progress * 100)),
-    );
+  try {
+    if (onProgress) {
+      ffmpeg.on("progress", ({ progress }) =>
+        onProgress(Math.round(progress * 100)),
+      );
+    }
+
+    await ffmpeg.load();
+    await ffmpeg.writeFile("input.mov", await fetchFile(file));
+    await ffmpeg.exec([
+      "-i",
+      "input.mov",
+      "-c:v",
+      "libx264",
+      "-preset",
+      "fast",
+      "-crf",
+      "23",
+      "-c:a",
+      "aac",
+      "-movflags",
+      "+faststart",
+      "output.mp4",
+    ]);
+
+    const data = await ffmpeg.readFile("output.mp4");
+    const mp4Blob = new Blob([new Uint8Array(data as Uint8Array)], {
+      type: "video/mp4",
+    });
+    return new File([mp4Blob], file.name.replace(/\.mov$/i, ".mp4"), {
+      type: "video/mp4",
+    });
+  } finally {
+    ffmpeg.terminate();
   }
-
-  await ffmpeg.load();
-  await ffmpeg.writeFile("input.mov", await fetchFile(file));
-  await ffmpeg.exec([
-    "-i",
-    "input.mov",
-    "-c:v",
-    "libx264",
-    "-preset",
-    "fast",
-    "-crf",
-    "23",
-    "-c:a",
-    "aac",
-    "-movflags",
-    "+faststart",
-    "output.mp4",
-  ]);
-
-  const data = await ffmpeg.readFile("output.mp4");
-  const mp4Blob = new Blob([new Uint8Array(data as Uint8Array)], {
-    type: "video/mp4",
-  });
-  return new File([mp4Blob], file.name.replace(/\.mov$/i, ".mp4"), {
-    type: "video/mp4",
-  });
 }
 
 export type MediaFile = {
@@ -130,6 +174,12 @@ export type MediaFile = {
 export function classifyFile(file: File): "photo" | "video" | null {
   if (file.type.startsWith("image/")) return "photo";
   if (file.type.startsWith("video/")) return "video";
+
+  // Extension-based fallback for empty/missing MIME types
+  const ext = file.name.split(".").pop()?.toLowerCase();
+  if (ext && IMAGE_EXTENSIONS.has(ext)) return "photo";
+  if (ext && VIDEO_EXTENSIONS.has(ext)) return "video";
+
   return null;
 }
 
@@ -179,71 +229,79 @@ export async function getImageDimensions(
 export async function getVideoDimensions(
   file: File,
 ): Promise<{ width: number; height: number }> {
-  return new Promise((resolve) => {
-    const video = document.createElement("video");
-    video.preload = "metadata";
-    video.muted = true;
-    video.playsInline = true;
+  return withTimeout(
+    new Promise<{ width: number; height: number }>((resolve) => {
+      const video = document.createElement("video");
+      video.preload = "metadata";
+      video.muted = true;
+      video.playsInline = true;
 
-    video.onloadedmetadata = () => {
-      resolve({ width: video.videoWidth, height: video.videoHeight });
-      URL.revokeObjectURL(video.src);
-    };
+      video.onloadedmetadata = () => {
+        resolve({ width: video.videoWidth, height: video.videoHeight });
+        URL.revokeObjectURL(video.src);
+      };
 
-    video.onerror = () => {
-      resolve({ width: 0, height: 0 });
-      URL.revokeObjectURL(video.src);
-    };
+      video.onerror = () => {
+        resolve({ width: 0, height: 0 });
+        URL.revokeObjectURL(video.src);
+      };
 
-    video.src = URL.createObjectURL(file);
-  });
+      video.src = URL.createObjectURL(file);
+    }),
+    8000,
+    { width: 0, height: 0 },
+  );
 }
 
 export async function generateVideoThumbnail(
   file: File,
 ): Promise<Blob | null> {
-  return new Promise((resolve) => {
-    const video = document.createElement("video");
-    video.preload = "metadata";
-    video.muted = true;
-    video.playsInline = true;
+  return withTimeout(
+    new Promise<Blob | null>((resolve) => {
+      const video = document.createElement("video");
+      video.preload = "metadata";
+      video.muted = true;
+      video.playsInline = true;
 
-    video.onloadeddata = () => {
-      video.currentTime = Math.min(1, video.duration / 2);
-    };
+      video.onloadeddata = () => {
+        video.currentTime = Math.min(1, video.duration / 2);
+      };
 
-    video.onseeked = () => {
-      try {
-        const canvas = document.createElement("canvas");
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
-        const ctx = canvas.getContext("2d");
-        if (!ctx) {
+      video.onseeked = () => {
+        try {
+          const canvas = document.createElement("canvas");
+          canvas.width = video.videoWidth;
+          canvas.height = video.videoHeight;
+          const ctx = canvas.getContext("2d");
+          if (!ctx) {
+            resolve(null);
+            return;
+          }
+          ctx.drawImage(video, 0, 0);
+          canvas.toBlob(
+            (blob) => {
+              URL.revokeObjectURL(video.src);
+              resolve(blob);
+            },
+            "image/jpeg",
+            0.7,
+          );
+        } catch {
+          URL.revokeObjectURL(video.src);
           resolve(null);
-          return;
         }
-        ctx.drawImage(video, 0, 0);
-        canvas.toBlob(
-          (blob) => {
-            URL.revokeObjectURL(video.src);
-            resolve(blob);
-          },
-          "image/jpeg",
-          0.7,
-        );
-      } catch {
+      };
+
+      video.onerror = () => {
         URL.revokeObjectURL(video.src);
         resolve(null);
-      }
-    };
+      };
 
-    video.onerror = () => {
-      URL.revokeObjectURL(video.src);
-      resolve(null);
-    };
-
-    video.src = URL.createObjectURL(file);
-  });
+      video.src = URL.createObjectURL(file);
+    }),
+    10000,
+    null,
+  );
 }
 
 export function generateFileName(extension: string): string {
