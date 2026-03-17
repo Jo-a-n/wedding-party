@@ -1986,10 +1986,12 @@ hasown@^2.0.2:
   dependencies:
     function-bind "^1.1.2"
 
-heic2any@^0.0.4:
-  version "0.0.4"
-  resolved "https://registry.npmjs.org/heic2any/-/heic2any-0.0.4.tgz"
-  integrity sha512-3lLnZiDELfabVH87htnRolZ2iehX9zwpRyGNz22GKXIu0fznlblf0/ftppXKNqS26dqFSeqfIBhAmAj/uSp0cA==
+heic-decode@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.npmjs.org/heic-decode/-/heic-decode-2.1.0.tgz"
+  integrity sha512-0fB3O3WMk38+PScbHLVp66jcNhsZ/ErtQ6u2lMYu/YxXgbBtl+oKOhGQHa4RpvE68k8IzbWkABzHnyAIjR758A==
+  dependencies:
+    libheif-js "^1.19.8"
 
 hermes-estree@0.25.1:
   version "0.25.1"
@@ -2337,6 +2339,11 @@ levn@^0.4.1:
   dependencies:
     prelude-ls "^1.2.1"
     type-check "~0.4.0"
+
+libheif-js@^1.19.8:
+  version "1.19.8"
+  resolved "https://registry.npmjs.org/libheif-js/-/libheif-js-1.19.8.tgz"
+  integrity sha512-vQJWusIxO7wavpON1dusciL8Go9jsIQ+EUrckauFYAiSTjcmLAsuJh3SszLpvkwPci3JcL41ek2n+LUZGFpPIQ==
 
 lightningcss-android-arm64@1.31.1:
   version "1.31.1"

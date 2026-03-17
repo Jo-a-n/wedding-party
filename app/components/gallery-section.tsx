@@ -113,9 +113,7 @@ export function GallerySection({
             src: fullStorageUrl(item.file_path),
             type: item.file_path.endsWith(".webm")
               ? "video/webm"
-              : item.file_path.endsWith(".mov")
-                ? "video/quicktime"
-                : "video/mp4",
+              : "video/mp4",
           },
         ],
         poster: item.thumb_path

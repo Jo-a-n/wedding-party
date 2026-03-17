@@ -14,7 +14,7 @@
     "@supabase/ssr": "^0.9.0",
     "@supabase/supabase-js": "^2.99.2",
     "browser-image-compression": "^2.0.2",
-    "heic2any": "^0.0.4",
+    "heic-decode": "^2.1.0",
     "next": "16.1.7",
     "react": "19.2.3",
     "react-dom": "19.2.3",

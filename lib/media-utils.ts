@@ -19,15 +19,65 @@ export function isMov(file: File): boolean {
 }
 
 export async function convertHeicToJpeg(file: File): Promise<File> {
-  const heic2any = (await import("heic2any")).default;
-  const blob = await heic2any({
-    blob: file,
-    toType: "image/jpeg",
+  const newName = file.name.replace(/\.hei[cf]$/i, ".jpg");
+
+  // Try native browser decoding first (Chrome 126+, Safari)
+  try {
+    const bitmap = await createImageBitmap(file);
+    const canvas = new OffscreenCanvas(bitmap.width, bitmap.height);
+    const ctx = canvas.getContext("2d");
+    if (ctx) {
+      ctx.drawImage(bitmap, 0, 0);
+      bitmap.close();
+      const jpegBlob = await canvas.convertToBlob({
+        type: "image/jpeg",
+        quality: 0.85,
+      });
+      return new File([jpegBlob], newName, { type: "image/jpeg" });
+    }
+    bitmap.close();
+  } catch {
+    // Native decoding not supported, fall through to heic-decode
+  }
+
+  // Fallback to heic-decode for older browsers
+  const decode = (await import("heic-decode")).default;
+  const uint8 = new Uint8Array(await file.arrayBuffer());
+  const { width, height, data } = await decode({ buffer: uint8 });
+
+  const canvas = new OffscreenCanvas(width, height);
+  const ctx = canvas.getContext("2d")!;
+  const pixels =
+    data instanceof Uint8ClampedArray
+      ? data
+      : new Uint8ClampedArray(data.buffer ?? data);
+  const imageData = new ImageData(pixels, width, height);
+  ctx.putImageData(imageData, 0, 0);
+  const jpegBlob = await canvas.convertToBlob({
+    type: "image/jpeg",
     quality: 0.85,
   });
-  const resultBlob = Array.isArray(blob) ? blob[0] : blob;
-  return new File([resultBlob], file.name.replace(/\.heic$/i, ".jpg"), {
-    type: "image/jpeg",
+  return new File([jpegBlob], newName, { type: "image/jpeg" });
+}
+
+export function canBrowserPlayVideo(file: File): Promise<boolean> {
+  return new Promise((resolve) => {
+    const video = document.createElement("video");
+    video.preload = "metadata";
+    video.muted = true;
+    video.playsInline = true;
+
+    video.onloadedmetadata = () => {
+      URL.revokeObjectURL(video.src);
+      resolve(true);
+    };
+
+    video.onerror = () => {
+      URL.revokeObjectURL(video.src);
+      resolve(false);
+    };
+
+    video.src = URL.createObjectURL(file);
   });
 }
 

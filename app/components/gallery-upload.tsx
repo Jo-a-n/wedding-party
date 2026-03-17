@@ -14,6 +14,7 @@ import {
   getExtension,
   isHeic,
   isMov,
+  canBrowserPlayVideo,
   convertHeicToJpeg,
   transcodeMovToMp4,
 } from "@/lib/media-utils";
@@ -106,9 +107,9 @@ export function GalleryUpload({
       height = dims.height;
     }
 
-    // Video: transcode MOV if needed, get dimensions and generate thumbnail
+    // Video: transcode MOV only if the browser can't play it natively
     if (mediaType === "video") {
-      if (isMov(file)) {
+      if (isMov(file) && !(await canBrowserPlayVideo(file))) {
         updateUpload(index, { status: "compressing", progress: 0 });
         try {
           fileToUpload = await transcodeMovToMp4(file, (progress) => {

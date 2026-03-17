@@ -1,12 +1,15 @@
-declare module "heic2any" {
-  interface Heic2AnyOptions {
-    blob: Blob;
-    toType?: string;
-    quality?: number;
-    gifInterval?: number;
+declare module "heic-decode" {
+  interface HeicDecodeOptions {
+    buffer: ArrayBuffer;
   }
 
-  function heic2any(options: Heic2AnyOptions): Promise<Blob | Blob[]>;
+  interface HeicDecodeResult {
+    width: number;
+    height: number;
+    data: Uint8Array;
+  }
 
-  export default heic2any;
+  function decode(options: HeicDecodeOptions): Promise<HeicDecodeResult>;
+
+  export default decode;
 }
