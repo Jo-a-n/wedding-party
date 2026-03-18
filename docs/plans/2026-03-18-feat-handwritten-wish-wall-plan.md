@@ -1,7 +1,7 @@
 ---
 title: "feat: Handwritten guestbook-style wish wall"
 type: feat
-status: active
+status: completed
 date: 2026-03-18
 ---
 
@@ -160,18 +160,18 @@ Add all font CSS variable classes to `<html>`:
 
 ## Acceptance Criteria
 
-- [ ] 7 handwritten Google Fonts loaded via `next/font/google` with `display: swap`
-- [ ] Each wish gets a deterministic font based on `wish.id % 7`
-- [ ] Each wish gets a deterministic slight rotation (-2.5° to +2.5° range)
-- [ ] Card frames (background, border, accent header) removed
-- [ ] Author name displayed as signature below message
-- [ ] Timestamp hidden from display
-- [ ] No horizontal scrollbar on any viewport width
-- [ ] Entrance animation still works for realtime wishes
-- [ ] Dark mode renders cleanly
-- [ ] `prefers-reduced-motion` still respected for entrance animation (static rotation is fine)
-- [ ] Empty state updated to match guestbook theme
-- [ ] Input form unchanged
+- [x] 7 handwritten Google Fonts loaded via `next/font/google` with `display: swap`
+- [x] Each wish gets a deterministic font based on `wish.id % 7`
+- [x] Each wish gets a deterministic slight rotation (-2.5° to +2.5° range)
+- [x] Card frames (background, border, accent header) removed
+- [x] Author name displayed as signature below message
+- [x] Timestamp hidden from display
+- [x] No horizontal scrollbar on any viewport width
+- [x] Entrance animation still works for realtime wishes
+- [x] Dark mode renders cleanly
+- [x] `prefers-reduced-motion` still respected for entrance animation (static rotation is fine)
+- [x] Empty state updated to match guestbook theme
+- [x] Input form unchanged
 
 ## Performance Notes
 

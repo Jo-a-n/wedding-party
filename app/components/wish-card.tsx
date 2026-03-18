@@ -2,32 +2,9 @@
 
 import type { Wish } from "@/lib/supabase/types";
 import { adminFetch } from "@/lib/admin";
+import { WISH_FONT_COUNT } from "@/app/fonts";
 
-const ACCENT_COLORS = [
-  "bg-mint/30",
-  "bg-periwinkle/30",
-  "bg-blush/30",
-  "bg-apricot/30",
-  "bg-pistachio/30",
-];
-
-function relativeTime(dateString: string): string {
-  const now = Date.now();
-  const then = new Date(dateString).getTime();
-  const diffSeconds = Math.floor((now - then) / 1000);
-
-  if (diffSeconds < 60) return "just now";
-  if (diffSeconds < 3600) {
-    const mins = Math.floor(diffSeconds / 60);
-    return `${mins}m ago`;
-  }
-  if (diffSeconds < 86400) {
-    const hours = Math.floor(diffSeconds / 3600);
-    return `${hours}h ago`;
-  }
-  const days = Math.floor(diffSeconds / 86400);
-  return `${days}d ago`;
-}
+const ROTATIONS = [-2, 1.5, -1, 2.5, -0.5, 1.8, -1.5];
 
 export function WishCard({
   wish,
@@ -42,7 +19,8 @@ export function WishCard({
   isAdmin?: boolean;
   onToggleHidden?: (id: number, hidden: boolean) => void;
 }) {
-  const accent = ACCENT_COLORS[index % ACCENT_COLORS.length];
+  const fontClass = `wish-font-${index % WISH_FONT_COUNT}`;
+  const rotation = ROTATIONS[index % ROTATIONS.length];
   const isHidden = wish.hidden;
 
   const handleToggle = async () => {
@@ -57,18 +35,18 @@ export function WishCard({
 
   return (
     <article
-      className={`soft-card relative rounded-[1.5rem] p-5 ${isNew ? "wish-card-enter" : ""} ${isHidden ? "opacity-40" : ""}`}
+      className={`relative px-4 py-3 ${fontClass} ${isNew ? "wish-card-enter" : ""} ${isHidden ? "opacity-40" : ""}`}
+      style={{ rotate: `${rotation}deg` }}
     >
-      <div className={`${accent} -mx-5 -mt-5 mb-4 rounded-t-[1.5rem] px-5 py-3`}>
-        <p className="text-sm font-semibold text-foreground">{wish.name}</p>
-      </div>
-      <p className="text-sm leading-relaxed text-foreground/90">{wish.message}</p>
-      <p className="mt-3 text-xs text-ink-soft">{relativeTime(wish.created_at)}</p>
+      <p className="text-base leading-relaxed text-foreground/90">
+        {wish.message}
+      </p>
+      <p className="mt-2 text-right text-sm text-ink-soft">— {wish.name}</p>
       {isAdmin && (
         <button
           type="button"
           onClick={handleToggle}
-          className={`absolute top-2 right-2 rounded-full px-2 py-0.5 text-xs font-medium transition-opacity hover:opacity-100 ${
+          className={`absolute top-1 right-1 rounded-full px-2 py-0.5 text-xs font-medium transition-opacity hover:opacity-100 ${
             isHidden
               ? "bg-pistachio/20 text-foreground opacity-80"
               : "bg-red-500/10 text-red-500 opacity-60"

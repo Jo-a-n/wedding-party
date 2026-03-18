@@ -416,18 +416,27 @@ a {
 @keyframes wish-enter {
   from {
     opacity: 0;
-    transform: translateY(12px);
+    translate: 0 12px;
   }
 
   to {
     opacity: 1;
-    transform: translateY(0);
+    translate: 0 0;
   }
 }
 
 .wish-card-enter {
   animation: wish-enter 0.4s ease-out;
 }
+
+/* Wish handwriting fonts */
+.wish-font-0 { font-family: var(--font-wish-0), var(--font-sans-stack); }
+.wish-font-1 { font-family: var(--font-wish-1), var(--font-sans-stack); }
+.wish-font-2 { font-family: var(--font-wish-2), var(--font-sans-stack); }
+.wish-font-3 { font-family: var(--font-wish-3), var(--font-sans-stack); }
+.wish-font-4 { font-family: var(--font-wish-4), var(--font-sans-stack); }
+.wish-font-5 { font-family: var(--font-wish-5), var(--font-sans-stack); }
+.wish-font-6 { font-family: var(--font-wish-6), var(--font-sans-stack); }
 
 @media (prefers-reduced-motion: reduce) {
   .ceremony-pulse,

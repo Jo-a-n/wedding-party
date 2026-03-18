@@ -124,14 +124,14 @@ export function WishWall({
 
       {wishes.length === 0 ? (
         <div className="py-16 text-center">
-          <p className="text-4xl">💌</p>
+          <p className="text-4xl">📖</p>
           <p className="mt-4 text-lg text-ink-soft">
-            Γίνε ο πρώτος που θα αφήσει μια ευχή για το ζευγάρι!
+            Το βιβλίο ευχών είναι ανοιχτό — γράψε πρώτος!
           </p>
         </div>
       ) : (
         <div
-          className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
+          className="grid gap-6 overflow-x-hidden px-2 sm:grid-cols-2 lg:grid-cols-3"
           aria-live="polite"
           aria-label="Guest wishes"
         >
