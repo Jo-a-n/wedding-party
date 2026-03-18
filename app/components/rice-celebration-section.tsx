@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import type { RiceToss } from "@/lib/supabase/types";
+import { adminFetch } from "@/lib/admin";
 
 type Point = {
   x: number;
@@ -55,8 +56,10 @@ const distance = (a: Point, b: Point) => {
 
 export function RiceCelebrationSection({
   initialCount,
+  isAdmin,
 }: {
   initialCount: number;
+  isAdmin?: boolean;
 }) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const touchButtonRef = useRef<HTMLButtonElement | null>(null);
@@ -471,15 +474,36 @@ export function RiceCelebrationSection({
                 εδώ είμαστε online.
               </p>
 
-              <div className="soft-card mt-8 inline-flex flex-row items-center gap-3 rounded-[1.5rem] px-4 py-3 shadow-sm">
-                <div className="hero-accent-button flex h-11 w-11 items-center justify-center rounded-full text-lg font-semibold">
-                  {riceCount.toLocaleString("el-GR")}
+              <div className="mt-8 flex items-center gap-3">
+                <div className="soft-card inline-flex flex-row items-center gap-3 rounded-[1.5rem] px-4 py-3 shadow-sm">
+                  <div className="hero-accent-button flex h-11 w-11 items-center justify-center rounded-full text-lg font-semibold">
+                    {riceCount.toLocaleString("el-GR")}
+                  </div>
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-[0.25em] text-ink-soft">
+                      Ρυζιές κάουντερ
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.25em] text-ink-soft">
-                    Ρυζιές κάουντερ
-                  </p>
-                </div>
+                {isAdmin && (
+                  <button
+                    type="button"
+                    onClick={async () => {
+                      if (!confirm("Reset rice counter to 0?")) return;
+                      const res = await adminFetch("/api/admin/rice", {
+                        method: "DELETE",
+                      });
+                      if (res.ok) {
+                        riceCountRef.current = 0;
+                        setRiceCount(0);
+                        seenTossIdsRef.current.clear();
+                      }
+                    }}
+                    className="rounded-full bg-red-500/10 px-3 py-1.5 text-xs font-medium text-red-500 opacity-60 transition-opacity hover:opacity-100"
+                  >
+                    reset
+                  </button>
+                )}
               </div>
             </div>
 

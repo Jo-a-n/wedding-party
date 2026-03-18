@@ -4,20 +4,58 @@ import { ThemeToggle } from "./components/theme-toggle";
 import { WishWall } from "./components/wish-wall";
 import { GallerySection } from "./components/gallery-section";
 import { CountdownTimer } from "./components/countdown-timer";
+import { AdminPanel } from "./components/admin-panel";
 import { WeddingDogs } from "./components/wedding-dogs";
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/admin";
 import type { Wish, GalleryItem } from "@/lib/supabase/types";
 
 export const dynamic = "force-dynamic";
 
-async function getWishes(): Promise<Wish[]> {
+export type SiteSettings = {
+  ceremony_start: string;
+  ceremony_end: string;
+  wish_deadline: string;
+  gallery_deadline: string;
+};
+
+const DEFAULT_SETTINGS: SiteSettings = {
+  ceremony_start: "2026-03-21T19:30:00+02:00",
+  ceremony_end: "2026-03-21T20:00:00+02:00",
+  wish_deadline: "2026-03-22T11:00:00+03:00",
+  gallery_deadline: "2026-03-22T11:00:00+03:00",
+};
+
+async function getSiteSettings(): Promise<SiteSettings> {
+  try {
+    const supabase = createAdminClient();
+    const { data } = await supabase.from("site_settings").select("*");
+    const settings = { ...DEFAULT_SETTINGS };
+    for (const row of data ?? []) {
+      if (row.key in settings) {
+        settings[row.key as keyof SiteSettings] = row.value;
+      }
+    }
+    return settings;
+  } catch {
+    return DEFAULT_SETTINGS;
+  }
+}
+
+async function getWishes(isAdmin: boolean): Promise<Wish[]> {
   try {
     const supabase = await createClient();
-    const { data } = await supabase
+    let query = supabase
       .from("wishes")
       .select("*")
       .order("created_at", { ascending: false })
       .limit(500);
+
+    if (!isAdmin) {
+      query = query.eq("hidden", false);
+    }
+
+    const { data } = await query;
     return (data ?? []) as Wish[];
   } catch (e) {
     console.error("Failed to fetch wishes:", e);
@@ -25,21 +63,30 @@ async function getWishes(): Promise<Wish[]> {
   }
 }
 
-async function getGalleryItems(): Promise<{
+async function getGalleryItems(isAdmin: boolean): Promise<{
   items: GalleryItem[];
   count: number;
 }> {
   try {
     const supabase = await createClient();
-    const { count } = await supabase
+
+    let countQuery = supabase
       .from("gallery_items")
       .select("*", { count: "exact", head: true });
+    if (!isAdmin) {
+      countQuery = countQuery.eq("hidden", false);
+    }
+    const { count } = await countQuery;
 
-    const { data } = await supabase
+    let query = supabase
       .from("gallery_items")
       .select("*")
       .order("created_at", { ascending: false })
       .limit(50);
+    if (!isAdmin) {
+      query = query.eq("hidden", false);
+    }
+    const { data } = await query;
 
     return {
       items: (data ?? []) as GalleryItem[],
@@ -65,11 +112,19 @@ async function getRiceTossCount(): Promise<number> {
   }
 }
 
-export default async function Home() {
-  const [wishes, gallery, riceTossCount] = await Promise.all([
-    getWishes(),
-    getGalleryItems(),
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
+  const params = await searchParams;
+  const isAdmin = params?.admin === "banana";
+
+  const [wishes, gallery, riceTossCount, settings] = await Promise.all([
+    getWishes(isAdmin),
+    getGalleryItems(isAdmin),
     getRiceTossCount(),
+    getSiteSettings(),
   ]);
 
   const palette = [
@@ -81,7 +136,7 @@ export default async function Home() {
   ];
 
   return (
-    <main className="relative overflow-hidden">
+    <main className={`relative overflow-hidden ${isAdmin ? "ring-4 ring-inset ring-red-500/60" : ""}`}>
       <div className="pastel-sheen absolute inset-0 opacity-80" />
       <FallingHeartsBackground />
       <div className="relative mx-auto flex min-h-screen w-full max-w-6xl flex-col px-4 py-8 sm:px-10 lg:px-12">
@@ -95,6 +150,11 @@ export default async function Home() {
             </p>
           </div>
           <div className="flex items-center gap-3">
+            {isAdmin && (
+              <span className="rounded-full bg-red-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-red-500">
+                Admin
+              </span>
+            )}
             <ThemeToggle />
           </div>
         </header>
@@ -136,9 +196,11 @@ export default async function Home() {
 
         </section>
 
-        <CountdownTimer />
+        {isAdmin && <AdminPanel settings={settings} />}
 
-        <RiceCelebrationSection initialCount={riceTossCount} />
+        <CountdownTimer settings={settings} />
+
+        <RiceCelebrationSection initialCount={riceTossCount} isAdmin={isAdmin} />
 
         <section
           id="palette"
@@ -215,11 +277,13 @@ export default async function Home() {
           </article>
         </section>
 
-        <WishWall initialWishes={wishes} />
+        <WishWall initialWishes={wishes} isAdmin={isAdmin} deadline={settings.wish_deadline} />
 
         <GallerySection
           initialItems={gallery.items}
           initialCount={gallery.count}
+          isAdmin={isAdmin}
+          deadline={settings.gallery_deadline}
         />
 
         <footer className="py-10 text-center">

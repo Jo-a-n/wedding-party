@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Masonry from "react-masonry-css";
 import type { GalleryItem } from "@/lib/supabase/types";
+import { adminFetch } from "@/lib/admin";
 
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 
@@ -21,10 +22,14 @@ function GalleryTile({
   item,
   isNew,
   onClick,
+  isAdmin,
+  onToggleHidden,
 }: {
   item: GalleryItem;
   isNew: boolean;
   onClick: () => void;
+  isAdmin?: boolean;
+  onToggleHidden?: (id: number, hidden: boolean) => void;
 }) {
   const isVideo = item.media_type === "video";
   const src = isVideo
@@ -37,7 +42,7 @@ function GalleryTile({
     <button
       type="button"
       onClick={onClick}
-      className={`group relative block w-full overflow-hidden rounded-2xl border border-border-soft bg-surface-card focus:outline-none focus:ring-2 focus:ring-periwinkle/40 ${isNew ? "wish-card-enter" : ""}`}
+      className={`group relative block w-full overflow-hidden rounded-2xl border border-border-soft bg-surface-card focus:outline-none focus:ring-2 focus:ring-periwinkle/40 ${isNew ? "wish-card-enter" : ""} ${item.hidden ? "opacity-40" : ""}`}
     >
       {src ? (
         <img
@@ -102,6 +107,46 @@ function GalleryTile({
           </p>
         </div>
       )}
+
+      {isAdmin && (
+        <div
+          role="button"
+          tabIndex={0}
+          onClick={(e) => {
+            e.stopPropagation();
+            const newHidden = !item.hidden;
+            adminFetch(`/api/admin/gallery/${item.id}`, {
+              method: "PATCH",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ hidden: newHidden }),
+            }).then((res) => {
+              if (res.ok && onToggleHidden) onToggleHidden(item.id, newHidden);
+            });
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.stopPropagation();
+              e.preventDefault();
+              const newHidden = !item.hidden;
+              adminFetch(`/api/admin/gallery/${item.id}`, {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ hidden: newHidden }),
+              }).then((res) => {
+                if (res.ok && onToggleHidden) onToggleHidden(item.id, newHidden);
+              });
+            }
+          }}
+          className={`absolute bottom-2 right-2 z-10 rounded-full px-2 py-0.5 text-xs font-medium transition-opacity hover:opacity-100 ${
+            item.hidden
+              ? "bg-green-500/80 text-white opacity-80"
+              : "bg-red-500/80 text-white opacity-60"
+          }`}
+          title={item.hidden ? "Show item" : "Hide item"}
+        >
+          {item.hidden ? "show" : "hide"}
+        </div>
+      )}
     </button>
   );
 }
@@ -115,6 +160,8 @@ export function GalleryGrid({
   loading,
   onLoadMore,
   onItemClick,
+  isAdmin,
+  onToggleHidden,
 }: {
   items: GalleryItem[];
   newIds: Set<number>;
@@ -122,6 +169,8 @@ export function GalleryGrid({
   loading?: boolean;
   onLoadMore: () => void;
   onItemClick: (index: number) => void;
+  isAdmin?: boolean;
+  onToggleHidden?: (id: number, hidden: boolean) => void;
 }) {
   const hasMore = items.length < totalCount;
 
@@ -149,6 +198,8 @@ export function GalleryGrid({
             item={item}
             isNew={newIds.has(item.id)}
             onClick={() => onItemClick(index)}
+            isAdmin={isAdmin}
+            onToggleHidden={onToggleHidden}
           />
         ))}
       </Masonry>

@@ -1,17 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
-
-const CEREMONY_START = new Date("2026-03-21T19:30:00+02:00");
-const CEREMONY_END = new Date("2026-03-21T20:00:00+02:00");
+import { useEffect, useState, useMemo } from "react";
+import type { SiteSettings } from "../page";
 
 type TimerState = "countdown" | "in-progress" | "married";
-
-function getState(now: number): TimerState {
-  if (now < CEREMONY_START.getTime()) return "countdown";
-  if (now < CEREMONY_END.getTime()) return "in-progress";
-  return "married";
-}
 
 function pluralize(n: number, one: string, other: string) {
   return n === 1 ? one : other;
@@ -32,18 +24,24 @@ const IN_PROGRESS_MESSAGES = [
   "Σσσς... λένε το «Ναι»! 🤫",
 ];
 
-export function CountdownTimer() {
+export function CountdownTimer({ settings }: { settings: SiteSettings }) {
   const [now, setNow] = useState(() => Date.now());
+
+  const ceremonyStart = useMemo(() => new Date(settings.ceremony_start), [settings.ceremony_start]);
+  const ceremonyEnd = useMemo(() => new Date(settings.ceremony_end), [settings.ceremony_end]);
 
   useEffect(() => {
     const id = setInterval(() => setNow(Date.now()), 1000);
     return () => clearInterval(id);
   }, []);
 
-  const state = getState(now);
+  const state: TimerState =
+    now < ceremonyStart.getTime() ? "countdown" :
+    now < ceremonyEnd.getTime() ? "in-progress" :
+    "married";
 
   if (state === "countdown") {
-    const diff = formatDiff(CEREMONY_START.getTime() - now);
+    const diff = formatDiff(ceremonyStart.getTime() - now);
     return (
       <section className="py-6">
         <div className="soft-card rounded-[2rem] px-5 py-6 text-center sm:px-8 sm:py-8">
@@ -90,7 +88,7 @@ export function CountdownTimer() {
   }
 
   // married state
-  const diff = formatDiff(now - CEREMONY_END.getTime());
+  const diff = formatDiff(now - ceremonyEnd.getTime());
   return (
     <section className="py-6">
       <div className="soft-card rounded-[2rem] px-5 py-6 text-center sm:px-8 sm:py-8">

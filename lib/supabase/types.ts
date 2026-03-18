@@ -2,6 +2,7 @@ export type Wish = {
   id: number;
   name: string;
   message: string;
+  hidden: boolean;
   created_at: string;
 };
 
@@ -14,6 +15,7 @@ export type GalleryItem = {
   height: number | null;
   guest_name: string;
   view_count: number;
+  hidden: boolean;
   created_at: string;
 };
 

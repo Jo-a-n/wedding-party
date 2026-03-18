@@ -6,22 +6,25 @@ import type { Wish } from "@/lib/supabase/types";
 import { WishCard } from "./wish-card";
 import { WishInput } from "./wish-input";
 
-const WISH_DEADLINE = new Date("2026-03-22T11:00:00+03:00");
-
-function isWishingOpen(): boolean {
-  return Date.now() < WISH_DEADLINE.getTime();
-}
-
-export function WishWall({ initialWishes }: { initialWishes: Wish[] }) {
+export function WishWall({
+  initialWishes,
+  isAdmin,
+  deadline,
+}: {
+  initialWishes: Wish[];
+  isAdmin?: boolean;
+  deadline: string;
+}) {
   const [wishes, setWishes] = useState<Wish[]>(initialWishes);
   const [newIds, setNewIds] = useState<Set<number>>(new Set());
-  const [open, setOpen] = useState(isWishingOpen);
+  const [open, setOpen] = useState(() => Date.now() < new Date(deadline).getTime());
 
   // Re-check deadline every minute
   useEffect(() => {
     if (!open) return;
+    const deadlineMs = new Date(deadline).getTime();
     const interval = setInterval(() => {
-      if (!isWishingOpen()) setOpen(false);
+      if (Date.now() >= deadlineMs) setOpen(false);
     }, 60_000);
     return () => clearInterval(interval);
   }, [open]);
@@ -47,6 +50,39 @@ export function WishWall({ initialWishes }: { initialWishes: Wish[] }) {
           setNewIds((prev) => new Set(prev).add(newWish.id));
         },
       )
+      .on(
+        "postgres_changes",
+        { event: "UPDATE", schema: "public", table: "wishes" },
+        (payload) => {
+          const updated = payload.new as unknown as Wish;
+          if (typeof updated.id !== "number") return;
+          if (isAdmin) {
+            // Admin sees everything — just update the hidden flag in place
+            setWishes((prev) =>
+              prev.map((w) => (w.id === updated.id ? { ...w, hidden: updated.hidden } : w)),
+            );
+          } else if (updated.hidden) {
+            // Guest: remove hidden wishes
+            setWishes((prev) => prev.filter((w) => w.id !== updated.id));
+          } else {
+            // Guest: unhidden wish appears — add it if not already present
+            setWishes((prev) => {
+              if (prev.some((w) => w.id === updated.id)) return prev;
+              return [updated, ...prev];
+            });
+          }
+        },
+      )
+      .on(
+        "postgres_changes",
+        { event: "DELETE", schema: "public", table: "wishes" },
+        (payload) => {
+          const old = payload.old;
+          if (old && typeof old.id === "number") {
+            setWishes((prev) => prev.filter((w) => w.id !== old.id));
+          }
+        },
+      )
       .subscribe();
 
     return () => {
@@ -57,6 +93,12 @@ export function WishWall({ initialWishes }: { initialWishes: Wish[] }) {
   const handleOptimisticAdd = useCallback((wish: Wish) => {
     setWishes((prev) => [wish, ...prev]);
     setNewIds((prev) => new Set(prev).add(wish.id));
+  }, []);
+
+  const handleToggleHidden = useCallback((id: number, hidden: boolean) => {
+    setWishes((prev) =>
+      prev.map((w) => (w.id === id ? { ...w, hidden } : w)),
+    );
   }, []);
 
   return (
@@ -70,7 +112,7 @@ export function WishWall({ initialWishes }: { initialWishes: Wish[] }) {
         </h2>
       </div>
 
-      {open ? (
+      {open || isAdmin ? (
         <div className="mb-8">
           <WishInput onOptimisticAdd={handleOptimisticAdd} />
         </div>
@@ -99,6 +141,8 @@ export function WishWall({ initialWishes }: { initialWishes: Wish[] }) {
               wish={wish}
               index={wish.id}
               isNew={newIds.has(wish.id)}
+              isAdmin={isAdmin}
+              onToggleHidden={handleToggleHidden}
             />
           ))}
         </div>

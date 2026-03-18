@@ -9,12 +9,6 @@ import type { GalleryItem } from "@/lib/supabase/types";
 import { GalleryUpload } from "./gallery-upload";
 import { GalleryGrid, storageUrl, PAGE_SIZE } from "./gallery-grid";
 
-const GALLERY_DEADLINE = new Date("2026-03-22T11:00:00+03:00");
-
-function isGalleryOpen(): boolean {
-  return Date.now() < GALLERY_DEADLINE.getTime();
-}
-
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 
 function fullStorageUrl(path: string): string {
@@ -46,14 +40,18 @@ function getVideoMimeType(path: string): string {
 export function GallerySection({
   initialItems,
   initialCount,
+  isAdmin,
+  deadline,
 }: {
   initialItems: GalleryItem[];
   initialCount: number;
+  isAdmin?: boolean;
+  deadline: string;
 }) {
   const [items, setItems] = useState<GalleryItem[]>(initialItems);
   const [totalCount, setTotalCount] = useState(initialCount);
   const [newIds, setNewIds] = useState<Set<number>>(new Set());
-  const [open, setOpen] = useState(isGalleryOpen);
+  const [open, setOpen] = useState(() => Date.now() < new Date(deadline).getTime());
   const [lightboxIndex, setLightboxIndex] = useState(-1);
   const [loadingMore, setLoadingMore] = useState(false);
 
@@ -84,8 +82,9 @@ export function GallerySection({
   // Re-check deadline every minute
   useEffect(() => {
     if (!open) return;
+    const deadlineMs = new Date(deadline).getTime();
     const interval = setInterval(() => {
-      if (!isGalleryOpen()) setOpen(false);
+      if (Date.now() >= deadlineMs) setOpen(false);
     }, 60_000);
     return () => clearInterval(interval);
   }, [open]);
@@ -118,17 +117,50 @@ export function GallerySection({
       )
       .on(
         "postgres_changes",
+        { event: "DELETE", schema: "public", table: "gallery_items" },
+        (payload) => {
+          const old = payload.old;
+          if (old && typeof old.id === "number") {
+            setItems((prev) => prev.filter((item) => item.id !== old.id));
+            setTotalCount((c) => Math.max(0, c - 1));
+          }
+        },
+      )
+      .on(
+        "postgres_changes",
         { event: "UPDATE", schema: "public", table: "gallery_items" },
         (payload) => {
           const updated = payload.new as unknown as GalleryItem;
           if (typeof updated.id !== "number") return;
-          setItems((prev) =>
-            prev.map((item) =>
-              item.id === updated.id
-                ? { ...item, view_count: updated.view_count }
-                : item,
-            ),
-          );
+          if (isAdmin) {
+            // Admin sees everything — update in place
+            setItems((prev) =>
+              prev.map((item) =>
+                item.id === updated.id
+                  ? { ...item, view_count: updated.view_count, hidden: updated.hidden }
+                  : item,
+              ),
+            );
+          } else if (updated.hidden) {
+            // Guest: remove hidden items
+            setItems((prev) => prev.filter((item) => item.id !== updated.id));
+            setTotalCount((c) => Math.max(0, c - 1));
+          } else {
+            // Guest: view_count update or unhidden item
+            setItems((prev) => {
+              const exists = prev.some((item) => item.id === updated.id);
+              if (exists) {
+                return prev.map((item) =>
+                  item.id === updated.id
+                    ? { ...item, view_count: updated.view_count }
+                    : item,
+                );
+              }
+              // Unhidden item — add it back
+              setTotalCount((c) => c + 1);
+              return [updated, ...prev];
+            });
+          }
         },
       )
       .subscribe();
@@ -136,6 +168,12 @@ export function GallerySection({
     return () => {
       supabase.removeChannel(channel);
     };
+  }, []);
+
+  const handleToggleHidden = useCallback((id: number, hidden: boolean) => {
+    setItems((prev) =>
+      prev.map((item) => (item.id === id ? { ...item, hidden } : item)),
+    );
   }, []);
 
   const handleUploadComplete = useCallback((item: GalleryItem) => {
@@ -206,7 +244,7 @@ export function GallerySection({
         </h2>
       </div>
 
-      {open ? (
+      {open || isAdmin ? (
         <div className="mb-8">
           <GalleryUpload onUploadComplete={handleUploadComplete} />
         </div>
@@ -223,6 +261,8 @@ export function GallerySection({
         loading={loadingMore}
         onLoadMore={handleLoadMore}
         onItemClick={handleItemClick}
+        isAdmin={isAdmin}
+        onToggleHidden={handleToggleHidden}
       />
 
       <Lightbox
