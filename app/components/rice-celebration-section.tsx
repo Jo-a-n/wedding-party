@@ -256,32 +256,35 @@ export function RiceCelebrationSection({
     const power = dragLength / 8;
     const particleCount = Math.round(clamp(dragLength / 2.6, 18, 54));
 
-    const newParticles: Particle[] = Array.from({ length: particleCount }, () => {
-      const spread = (Math.random() - 0.5) * 0.85;
-      const velocity = power * 0.95 + Math.random() * 4.5;
-      const x = start.x;
-      const y = clamp(start.y, 32, height - 28);
+    const newParticles: Particle[] = Array.from(
+      { length: particleCount },
+      () => {
+        const spread = (Math.random() - 0.5) * 0.85;
+        const velocity = power * 0.95 + Math.random() * 4.5;
+        const x = start.x;
+        const y = clamp(start.y, 32, height - 28);
 
-      return {
-        kind: "rice" as const,
-        id: nextParticleIdRef.current++,
-        x,
-        y,
-        initialX: x,
-        vx: Math.cos(angle + spread) * velocity,
-        vy: Math.sin(angle + spread) * velocity,
-        rotation: Math.random() * Math.PI,
-        spin: (Math.random() - 0.5) * 0.35,
-        length: 9 + Math.random() * 10,
-        width: 2 + Math.random() * 2.4,
-        life: 0,
-        maxLife: 56 + Math.random() * 240,
-        color: COLORS[Math.floor(Math.random() * COLORS.length)],
-        swayOffset: Math.random() * Math.PI * 2,
-        swaySpeed: 0.08 + Math.random() * 0.05,
-        swayAmount: 0.9 + Math.random() * 10,
-      };
-    });
+        return {
+          kind: "rice" as const,
+          id: nextParticleIdRef.current++,
+          x,
+          y,
+          initialX: x,
+          vx: Math.cos(angle + spread) * velocity,
+          vy: Math.sin(angle + spread) * velocity,
+          rotation: Math.random() * Math.PI,
+          spin: (Math.random() - 0.5) * 0.35,
+          length: 9 + Math.random() * 10,
+          width: 2 + Math.random() * 2.4,
+          life: 0,
+          maxLife: 56 + Math.random() * 240,
+          color: COLORS[Math.floor(Math.random() * COLORS.length)],
+          swayOffset: Math.random() * Math.PI * 2,
+          swaySpeed: 0.08 + Math.random() * 0.05,
+          swayAmount: 0.9 + Math.random() * 10,
+        };
+      },
+    );
 
     const nextCount = (riceCountRef.current += 1);
     const originY = clamp(start.y, 32, height - 28);
@@ -312,7 +315,7 @@ export function RiceCelebrationSection({
       const celebrationParticle: TextParticle = {
         kind: "celebration",
         id: nextParticleIdRef.current++,
-        text: "θα γλιστρίσουμε!",
+        text: "θα γλιστρήσουμε!",
         fontSize: 18,
         x: start.x,
         y: originY,
@@ -470,8 +473,8 @@ export function RiceCelebrationSection({
               </h2>
 
               <p className="mt-4 max-w-xl text-base leading-7 text-ink-soft sm:text-lg">
-                Σύρε και πέτα ρύζι! Κανονικά θα σκούπιζε ο γαμπρός, αλλά
-                εδώ είμαστε online.
+                Σύρε και πέτα ρύζι! Κανονικά θα σκούπιζε ο γαμπρός, αλλά εδώ
+                είμαστε online.
               </p>
 
               <div className="mt-8 flex items-center gap-3">
