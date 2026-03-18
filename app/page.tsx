@@ -104,7 +104,7 @@ export default async function Home() {
             </div>
 
             <div className="space-y-5">
-              <h1 className="wiggle wiggle-delay-1 text-5xl font-semibold tracking-[-0.05em] text-foreground sm:text-6xl lg:text-7xl">
+              <h1 className="wiggle wiggle-delay-1 wiggle-hover text-5xl font-semibold tracking-[-0.05em] text-foreground sm:text-6xl lg:text-7xl">
                 A softer, more romantic visual direction for the whole project.
               </h1>
               <p className="max-w-2xl text-lg leading-8 text-ink-soft sm:text-xl">
