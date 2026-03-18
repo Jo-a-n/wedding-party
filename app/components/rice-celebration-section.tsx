@@ -13,6 +13,7 @@ type Particle = {
   id: number;
   x: number;
   y: number;
+  initialX: number;
   vx: number;
   vy: number;
   rotation: number;
@@ -22,7 +23,12 @@ type Particle = {
   life: number;
   maxLife: number;
   color: string;
+  swayOffset: number;
+  swaySpeed: number;
+  swayAmount: number;
 };
+
+type TossMode = "drag" | "touch-button";
 
 const COLORS = ["#fffdfb", "#ffffff", "#f5d0e3", "#facdaa", "#d2fac3"];
 
@@ -41,6 +47,7 @@ export function RiceCelebrationSection({
   initialCount: number;
 }) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const touchButtonRef = useRef<HTMLButtonElement | null>(null);
   const frameRef = useRef<number | null>(null);
   const particlesRef = useRef<Particle[]>([]);
   const nextParticleIdRef = useRef(0);
@@ -48,6 +55,7 @@ export function RiceCelebrationSection({
   const dragCurrentRef = useRef<Point | null>(null);
   const boundsRef = useRef({ width: 0, height: 0, dpr: 1 });
   const [isDragging, setIsDragging] = useState(false);
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
   const [riceCount, setRiceCount] = useState(initialCount);
   const seenTossIdsRef = useRef<Set<number>>(new Set());
 
@@ -82,35 +90,46 @@ export function RiceCelebrationSection({
   }, []);
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-
-    if (!canvas) {
-      return;
-    }
-
-    const context = canvas.getContext("2d");
-
-    if (!context) {
-      return;
-    }
-
     const resizeCanvas = () => {
-      const rect = canvas.getBoundingClientRect();
+      const canvas = canvasRef.current;
+
+      if (!canvas) {
+        return;
+      }
+
+      const context = canvas.getContext("2d");
+
+      if (!context) {
+        return;
+      }
+
       const dpr = window.devicePixelRatio || 1;
 
       boundsRef.current = {
-        width: rect.width,
-        height: rect.height,
+        width: window.innerWidth,
+        height: window.innerHeight,
         dpr,
       };
 
-      canvas.width = rect.width * dpr;
-      canvas.height = rect.height * dpr;
+      canvas.width = window.innerWidth * dpr;
+      canvas.height = window.innerHeight * dpr;
       context.setTransform(1, 0, 0, 1, 0, 0);
       context.scale(dpr, dpr);
     };
 
     const draw = () => {
+      const canvas = canvasRef.current;
+
+      if (!canvas) {
+        return;
+      }
+
+      const context = canvas.getContext("2d");
+
+      if (!context) {
+        return;
+      }
+
       const { width, height } = boundsRef.current;
       context.clearRect(0, 0, width, height);
 
@@ -123,9 +142,15 @@ export function RiceCelebrationSection({
 
         particle.x += particle.vx;
         particle.y += particle.vy;
-        particle.vy += 0.18;
-        particle.vx *= 0.995;
+        particle.vy += 0.24;
+        particle.vx *= 0.985;
+        particle.vy *= 0.992;
         particle.rotation += particle.spin;
+        particle.x =
+          particle.initialX +
+          Math.sin(particle.life * particle.swaySpeed + particle.swayOffset) *
+            particle.swayAmount;
+        particle.initialX += particle.vx;
 
         const alpha = 1 - particle.life / particle.maxLife;
 
@@ -187,30 +212,43 @@ export function RiceCelebrationSection({
     };
   }, []);
 
-  const createBurst = async (start: Point, end: Point) => {
+  const createBurst = async (
+    start: Point,
+    end: Point,
+    mode: TossMode = "drag",
+  ) => {
     const { height } = boundsRef.current;
     const dragLength = clamp(distance(start, end), 24, 140);
-    const angle = Math.atan2(start.y - end.y, start.x - end.x);
+    const angle =
+      mode === "touch-button"
+        ? Math.atan2(end.y - start.y, end.x - start.x)
+        : Math.atan2(start.y - end.y, start.x - end.x);
     const power = dragLength / 8;
     const particleCount = Math.round(clamp(dragLength / 2.6, 18, 54));
 
     const newParticles = Array.from({ length: particleCount }, () => {
-      const spread = (Math.random() - 0.5) * 1.15;
-      const velocity = power + Math.random() * 5;
+      const spread = (Math.random() - 0.5) * 0.85;
+      const velocity = power * 0.95 + Math.random() * 4.5;
+      const x = start.x;
+      const y = clamp(start.y, 32, height - 28);
 
       return {
         id: nextParticleIdRef.current++,
-        x: start.x,
-        y: clamp(start.y, 32, height - 28),
+        x,
+        y,
+        initialX: x,
         vx: Math.cos(angle + spread) * velocity,
         vy: Math.sin(angle + spread) * velocity,
         rotation: Math.random() * Math.PI,
         spin: (Math.random() - 0.5) * 0.35,
-        length: 8 + Math.random() * 10,
+        length: 9 + Math.random() * 10,
         width: 2 + Math.random() * 2.4,
         life: 0,
-        maxLife: 48 + Math.random() * 34,
+        maxLife: 56 + Math.random() * 240,
         color: COLORS[Math.floor(Math.random() * COLORS.length)],
+        swayOffset: Math.random() * Math.PI * 2,
+        swaySpeed: 0.08 + Math.random() * 0.05,
+        swayAmount: 0.9 + Math.random() * 10,
       };
     });
 
@@ -238,101 +276,160 @@ export function RiceCelebrationSection({
     setRiceCount((prev) => prev + 1);
   };
 
-  const getPoint = (
-    event: React.PointerEvent<HTMLDivElement>,
-    element: HTMLDivElement,
-  ) => {
-    const rect = element.getBoundingClientRect();
-
+  const getPoint = (clientX: number, clientY: number) => {
     return {
-      x: event.clientX - rect.left,
-      y: event.clientY - rect.top,
+      x: clientX,
+      y: clientY,
     };
   };
 
-  const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
-    const point = getPoint(event, event.currentTarget);
-    dragStartRef.current = point;
-    dragCurrentRef.current = point;
-    setIsDragging(true);
-    event.currentTarget.setPointerCapture(event.pointerId);
-  };
+  useEffect(() => {
+    const coarsePointerQuery = window.matchMedia("(pointer: coarse)");
 
-  const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
-    if (!dragStartRef.current) {
+    const updateTouchMode = () => {
+      setIsTouchDevice(coarsePointerQuery.matches);
+    };
+
+    updateTouchMode();
+    coarsePointerQuery.addEventListener("change", updateTouchMode);
+
+    return () => {
+      coarsePointerQuery.removeEventListener("change", updateTouchMode);
+    };
+  }, []);
+
+  useEffect(() => {
+    const handlePointerDown = (event: PointerEvent) => {
+      if (!event.isPrimary || isTouchDevice) {
+        return;
+      }
+
+      const point = getPoint(event.clientX, event.clientY);
+      dragStartRef.current = point;
+      dragCurrentRef.current = point;
+      setIsDragging(true);
+    };
+
+    const handlePointerMove = (event: PointerEvent) => {
+      if (!dragStartRef.current || !event.isPrimary || isTouchDevice) {
+        return;
+      }
+
+      dragCurrentRef.current = getPoint(event.clientX, event.clientY);
+    };
+
+    const finishLaunch = (event: PointerEvent) => {
+      if (!event.isPrimary || isTouchDevice) {
+        return;
+      }
+
+      const start = dragStartRef.current;
+      const end =
+        dragCurrentRef.current ?? getPoint(event.clientX, event.clientY);
+
+      if (start) {
+        void createBurst(start, end, "drag");
+      }
+
+      dragStartRef.current = null;
+      dragCurrentRef.current = null;
+      setIsDragging(false);
+    };
+
+    window.addEventListener("pointerdown", handlePointerDown);
+    window.addEventListener("pointermove", handlePointerMove);
+    window.addEventListener("pointerup", finishLaunch);
+    window.addEventListener("pointercancel", finishLaunch);
+
+    return () => {
+      window.removeEventListener("pointerdown", handlePointerDown);
+      window.removeEventListener("pointermove", handlePointerMove);
+      window.removeEventListener("pointerup", finishLaunch);
+      window.removeEventListener("pointercancel", finishLaunch);
+    };
+  }, [isTouchDevice]);
+
+  const handleTouchToss = () => {
+    const button = touchButtonRef.current;
+
+    if (!button) {
       return;
     }
 
-    dragCurrentRef.current = getPoint(event, event.currentTarget);
-  };
+    const rect = button.getBoundingClientRect();
+    const start = {
+      x: rect.left + rect.width / 2,
+      y: rect.top + rect.height / 2,
+    };
+    const end = {
+      x: window.innerWidth / 2 + (Math.random() - 0.5) * 80,
+      y: window.innerHeight / 4.8 + (Math.random() - 0.5) * 120,
+    };
 
-  const finishLaunch = (event: React.PointerEvent<HTMLDivElement>) => {
-    const start = dragStartRef.current;
-    const end = dragCurrentRef.current ?? getPoint(event, event.currentTarget);
-
-    if (start) {
-      createBurst(start, end);
-    }
-
-    dragStartRef.current = null;
-    dragCurrentRef.current = null;
-    setIsDragging(false);
-    event.currentTarget.releasePointerCapture(event.pointerId);
+    void createBurst(start, end, "touch-button");
   };
 
   return (
-    <section id="rice" className="py-8">
-      <div className="overflow-hidden ">
-        <div className="grid gap-0 lg:grid-cols-[0.9fr_1.1fr]">
-          <div className=" py-8 sm:px-8 sm:py-10">
-            <p className="text-xs font-semibold uppercase tracking-[0.35em] text-ink-soft">
-              Interactive moment
-            </p>
-            <h2 className="mt-3 text-4xl font-semibold tracking-[-0.05em] text-foreground sm:text-5xl">
-              Ρύζι στα παιδιά!
-            </h2>
+    <>
+      <canvas
+        ref={canvasRef}
+        className="pointer-events-none fixed inset-0 z-20 h-full w-full"
+        aria-hidden="true"
+      />
 
-            <div className="soft-card mt-8 inline-flex flex-row items-center gap-3 rounded-[1.5rem] px-4 py-3 shadow-sm">
-              <div className="hero-accent-button flex h-11 w-11 items-center justify-center rounded-full text-lg font-semibold">
-                {riceCount.toLocaleString("el-GR")}
-              </div>
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.25em] text-ink-soft">
-                  Total tosses from everyone
-                </p>
+      <section id="rice" className="relative z-10 py-8">
+        <div className="overflow-hidden">
+          <div className="grid gap-0 lg:grid-cols-[0.9fr_1.1fr]">
+            <div className="py-8 sm:px-8 sm:py-10">
+              <p className="text-xs font-semibold uppercase tracking-[0.35em] text-ink-soft">
+                Interactive moment
+              </p>
+              <h2 className="mt-3 text-4xl font-semibold tracking-[-0.05em] text-foreground sm:text-5xl">
+                Ρύζι στα παιδιά!
+              </h2>
+
+              <p className="mt-4 max-w-xl text-base leading-7 text-ink-soft sm:text-lg">
+                Πάτησε και σύρε οπουδήποτε στη σελίδα για να πετάξεις ρύζι. Ο
+                μετρητής μένει εδώ, αλλά η ρίψη πλέον καλύπτει όλη τη σελίδα.
+              </p>
+
+              <div className="soft-card mt-8 inline-flex flex-row items-center gap-3 rounded-[1.5rem] px-4 py-3 shadow-sm">
+                <div className="hero-accent-button flex h-11 w-11 items-center justify-center rounded-full text-lg font-semibold">
+                  {riceCount.toLocaleString("el-GR")}
+                </div>
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.25em] text-ink-soft">
+                    Total tosses from everyone
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
 
-          <div className="spotlight-stage">
-            <div
-              className="launcher-surface rice-launcher relative h-[360px] touch-none overflow-hidden rounded-[2rem] border border-white/20 sm:h-[420px]"
-              onPointerDown={handlePointerDown}
-              onPointerMove={handlePointerMove}
-              onPointerUp={finishLaunch}
-              onPointerCancel={finishLaunch}
-            >
-              <canvas
-                ref={canvasRef}
-                className="absolute inset-0 h-full w-full"
-                aria-hidden="true"
-              />
-
-              <div className="soft-card pointer-events-none absolute inset-x-5 top-5 rounded-[1.5rem] px-4 py-3 text-sm text-foreground/75 shadow-sm sm:inset-x-6 sm:top-6">
-                {isDragging
-                  ? "Άφησε το δάχτυλο για να ξεκινήσει η ρίψη."
-                  : "Πάτησε και σύρε για να πετάξεις ρύζι!"}
-              </div>
-
-              <div className="pointer-events-none absolute inset-x-0 bottom-5 flex justify-center sm:bottom-6">
-                <div className="soft-chip-strong rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-[0.25em] text-ink-soft">
-                  Rice toss zone
+            <div className="spotlight-stage flex items-center justify-center">
+              <div className="launcher-surface rice-launcher relative flex min-h-[240px] w-full items-center justify-center overflow-hidden rounded-[2rem] border border-white/20 px-6 py-10 sm:min-h-[280px]">
+                <div className="soft-card pointer-events-none rounded-[1.5rem] px-5 py-4 text-sm text-foreground/75 shadow-sm sm:px-6">
+                  {isDragging
+                    ? "Άφησε το δάχτυλο για να ξεκινήσει η ρίψη."
+                    : isTouchDevice
+                      ? "Tap the floating button to toss rice toward the celebration."
+                      : "Drag anywhere on the page to toss rice."}
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+
+      {isTouchDevice ? (
+        <button
+          ref={touchButtonRef}
+          type="button"
+          onClick={handleTouchToss}
+          className="hero-accent-button fixed bottom-5 right-5 z-30 inline-flex items-center rounded-full px-5 py-3 text-sm font-semibold shadow-[0_18px_35px_rgba(0,0,0,0.16)] transition-transform duration-200 active:scale-95 sm:bottom-8 sm:right-8"
+        >
+          Throw rice
+        </button>
+      ) : null}
+    </>
   );
 }
