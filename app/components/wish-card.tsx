@@ -46,7 +46,7 @@ export function WishCard({
       <div className={`${accent} -mx-5 -mt-5 mb-4 rounded-t-[1.5rem] px-5 py-3`}>
         <p className="text-sm font-semibold text-foreground">{wish.name}</p>
       </div>
-      <p className="text-base leading-relaxed text-foreground/90">
+      <p className="text-lg leading-relaxed text-foreground/90">
         {wish.message}
       </p>
       {isAdmin && (
