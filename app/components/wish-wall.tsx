@@ -124,9 +124,9 @@ export function WishWall({
 
       {wishes.length === 0 ? (
         <div className="py-16 text-center">
-          <p className="text-4xl">📖</p>
+          <p className="text-4xl">💌</p>
           <p className="mt-4 text-lg text-ink-soft">
-            Το βιβλίο ευχών είναι ανοιχτό — γράψε πρώτος!
+            Γίνε ο πρώτος που θα αφήσει μια ευχή για το ζευγάρι!
           </p>
         </div>
       ) : (
