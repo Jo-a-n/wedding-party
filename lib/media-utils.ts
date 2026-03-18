@@ -78,15 +78,12 @@ export async function convertHeicToJpeg(file: File): Promise<File> {
 
   // Fallback to heic-decode for older browsers
   const decode = (await import("heic-decode")).default;
-  const uint8 = new Uint8Array(await file.arrayBuffer());
-  const { width, height, data } = await decode({ buffer: uint8 });
+  const buffer = await file.arrayBuffer();
+  const { width, height, data } = await decode({ buffer });
 
   const canvas = new OffscreenCanvas(width, height);
   const ctx = canvas.getContext("2d")!;
-  const pixels =
-    data instanceof Uint8ClampedArray
-      ? data
-      : new Uint8ClampedArray(data.buffer ?? data);
+  const pixels = Uint8ClampedArray.from(data);
   const imageData = new ImageData(pixels, width, height);
   ctx.putImageData(imageData, 0, 0);
   const jpegBlob = await canvas.convertToBlob({
