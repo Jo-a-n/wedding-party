@@ -21,6 +21,28 @@ function fullStorageUrl(path: string): string {
   return `${SUPABASE_URL}/storage/v1/object/public/gallery/${path}`;
 }
 
+function getVideoMimeType(path: string): string {
+  const normalized = path.split("?")[0]?.toLowerCase() ?? "";
+
+  if (normalized.endsWith(".mp4") || normalized.endsWith(".m4v")) {
+    return "video/mp4";
+  }
+
+  if (normalized.endsWith(".webm")) {
+    return "video/webm";
+  }
+
+  if (normalized.endsWith(".mov")) {
+    return "video/quicktime";
+  }
+
+  if (normalized.endsWith(".ogv")) {
+    return "video/ogg";
+  }
+
+  return "video/mp4";
+}
+
 export function GallerySection({
   initialItems,
   initialCount,
@@ -117,9 +139,7 @@ export function GallerySection({
         sources: [
           {
             src: fullStorageUrl(item.file_path),
-            type: item.file_path.endsWith(".webm")
-              ? "video/webm"
-              : "video/mp4",
+            type: getVideoMimeType(item.file_path),
           },
         ],
         poster: item.thumb_path
