@@ -303,7 +303,8 @@ export default async function Home({
 
         <footer className="py-10 text-center">
           <p className="text-sm italic text-ink-soft/60">
-            Φτιαγμένο με 🫰 από την Ιωάννα 🦄 και τον Παύλο 🐘
+            Φτιαγμένο με <span className="not-italic text-lg">❤️🌈🦄🐘</span>
+            <br /> Ιωάννα, Παύλος
           </p>
         </footer>
       </div>
