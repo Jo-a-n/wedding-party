@@ -36,7 +36,9 @@ export function WishWall({ initialWishes }: { initialWishes: Wish[] }) {
         "postgres_changes",
         { event: "INSERT", schema: "public", table: "wishes" },
         (payload) => {
-          const newWish = payload.new as Wish;
+          const raw = payload.new;
+          if (!raw || typeof raw.id !== "number" || typeof raw.name !== "string") return;
+          const newWish = raw as unknown as Wish;
           setWishes((prev) => {
             // Deduplicate against optimistic adds
             if (prev.some((w) => w.id === newWish.id)) return prev;

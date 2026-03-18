@@ -83,7 +83,7 @@ export function WishInput({
       if (insertError) throw insertError;
 
       if (data) {
-        onOptimisticAdd(data as Wish);
+        onOptimisticAdd(data as unknown as Wish);
       }
 
       clearDraft();

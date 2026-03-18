@@ -9,11 +9,17 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@ffmpeg/ffmpeg": "^0.12.15",
+    "@ffmpeg/util": "^0.12.2",
     "@supabase/ssr": "^0.9.0",
     "@supabase/supabase-js": "^2.99.2",
+    "browser-image-compression": "^2.0.2",
+    "heic-decode": "^2.1.0",
     "next": "16.1.7",
     "react": "19.2.3",
-    "react-dom": "19.2.3"
+    "react-dom": "19.2.3",
+    "react-masonry-css": "^1.0.16",
+    "yet-another-react-lightbox": "^3.29.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
