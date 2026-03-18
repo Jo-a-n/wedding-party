@@ -275,13 +275,13 @@ export function GalleryUpload({
   return (
     <div className="soft-card-strong rounded-[1.5rem] p-5">
       <p className="mb-4 text-xs font-semibold uppercase tracking-[0.3em] text-ink-soft">
-        Share a photo or video
+        Μοιράσου μια φωτογραφία ή βίντεο
       </p>
 
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end">
         <input
           type="text"
-          placeholder="Your name (optional)"
+          placeholder="Το όνομά σου (προαιρετικά)"
           value={guestName}
           onChange={(e) => setGuestName(e.target.value)}
           maxLength={100}
@@ -294,7 +294,7 @@ export function GalleryUpload({
           onClick={() => fileInputRef.current?.click()}
           className="hero-accent-button rounded-full px-6 py-2.5 text-sm font-semibold transition-transform duration-200 hover:-translate-y-0.5 disabled:opacity-50 disabled:hover:translate-y-0"
         >
-          {isUploading ? "Uploading..." : "Choose files"}
+          {isUploading ? "Ανεβαίνει..." : "Επιλογή αρχείων"}
         </button>
         <input
           ref={fileInputRef}
@@ -303,7 +303,7 @@ export function GalleryUpload({
           multiple
           onChange={(e) => handleFileSelection(e.target.files)}
           className="hidden"
-          aria-label="Select photos or videos to upload"
+          aria-label="Επιλογή φωτογραφιών ή βίντεο"
         />
       </div>
 
@@ -339,18 +339,18 @@ export function GalleryUpload({
               {upload.status === "compressing" && (
                 <span className="shrink-0 text-xs text-ink-soft">
                   {upload.progress > 0
-                    ? `Converting... ${upload.progress}%`
-                    : "Processing..."}
+                    ? `Μετατροπή... ${upload.progress}%`
+                    : "Επεξεργασία..."}
                 </span>
               )}
               {upload.status === "uploading" && (
                 <span className="shrink-0 text-xs text-periwinkle">
-                  Uploading...
+                  Ανεβαίνει...
                 </span>
               )}
               {upload.status === "done" && (
                 <span className="shrink-0 text-xs text-pistachio">
-                  Done
+                  Έτοιμο
                 </span>
               )}
               {upload.status === "error" && (
