@@ -2,6 +2,7 @@
 
 import type { Wish } from "@/lib/supabase/types";
 import { adminFetch } from "@/lib/admin";
+import { WISH_FONT_COUNT } from "@/app/fonts";
 
 const ACCENT_COLORS = [
   "bg-mint/30",
@@ -43,6 +44,7 @@ export function WishCard({
   onToggleHidden?: (id: number, hidden: boolean) => void;
 }) {
   const accent = ACCENT_COLORS[index % ACCENT_COLORS.length];
+  const fontClass = `wish-font-${index % WISH_FONT_COUNT}`;
   const isHidden = wish.hidden;
 
   const handleToggle = async () => {
@@ -57,13 +59,15 @@ export function WishCard({
 
   return (
     <article
-      className={`soft-card relative rounded-[1.5rem] p-5 ${isNew ? "wish-card-enter" : ""} ${isHidden ? "opacity-40" : ""}`}
+      className={`soft-card relative rounded-[1.5rem] p-5 ${fontClass} ${isNew ? "wish-card-enter" : ""} ${isHidden ? "opacity-40" : ""}`}
     >
       <div className={`${accent} -mx-5 -mt-5 mb-4 rounded-t-[1.5rem] px-5 py-3`}>
         <p className="text-sm font-semibold text-foreground">{wish.name}</p>
       </div>
-      <p className="text-sm leading-relaxed text-foreground/90">{wish.message}</p>
-      <p className="mt-3 text-xs text-ink-soft">{relativeTime(wish.created_at)}</p>
+      <p className="text-lg leading-relaxed text-foreground/90">
+        {wish.message}
+      </p>
+      <p className="mt-3 font-sans text-xs text-ink-soft">{relativeTime(wish.created_at)}</p>
       {isAdmin && (
         <button
           type="button"
