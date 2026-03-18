@@ -62,11 +62,11 @@ export function WishInput({
     const message = draft.message.trim();
 
     if (!name || name.length > 100) {
-      setError("Please enter your name (up to 100 characters).");
+      setError("Συμπλήρωσε το όνομά σου (μέχρι 100 χαρακτήρες).");
       return;
     }
     if (!message || message.length > 500) {
-      setError("Please write a wish (up to 500 characters).");
+      setError("Γράψε μια ευχή (μέχρι 500 χαρακτήρες).");
       return;
     }
 
@@ -89,7 +89,7 @@ export function WishInput({
       clearDraft();
       formRef.current?.querySelector("textarea")?.focus();
     } catch {
-      setError("Something went wrong. Please try again.");
+      setError("Κάτι πήγε στραβά. Δοκίμασε ξανά.");
     } finally {
       setSubmitting(false);
     }
@@ -102,24 +102,24 @@ export function WishInput({
       className="soft-card-strong rounded-[1.5rem] p-5"
     >
       <p className="mb-4 text-xs font-semibold uppercase tracking-[0.3em] text-ink-soft">
-        Leave a wish
+        Άφησε μια ευχή
       </p>
 
       <textarea
-        placeholder="Write your wish for the couple..."
+        placeholder="Γράψε την ευχή σου για το ζευγάρι..."
         value={draft.message}
         onChange={(e) => setDraft((d) => ({ ...d, message: e.target.value }))}
         maxLength={500}
         rows={3}
         required
         className="w-full resize-none rounded-xl border border-border-soft bg-transparent px-4 py-3 text-sm text-foreground placeholder:text-ink-soft/60 focus:outline-none focus:ring-2 focus:ring-periwinkle/40"
-        aria-label="Your wish for the couple"
+        aria-label="Η ευχή σου για το ζευγάρι"
       />
 
       <div className="mt-3 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <input
           type="text"
-          placeholder="Your name"
+          placeholder="Το όνομά σου"
           value={draft.name}
           onChange={(e) => setDraft((d) => ({ ...d, name: e.target.value }))}
           maxLength={100}
@@ -132,7 +132,7 @@ export function WishInput({
           disabled={submitting}
           className="hero-accent-button rounded-full px-6 py-2.5 text-sm font-semibold transition-transform duration-200 hover:-translate-y-0.5 disabled:opacity-50 disabled:hover:translate-y-0"
         >
-          {submitting ? "Sending..." : "Send wish"}
+          {submitting ? "Στέλνεται..." : "Στείλε ευχή"}
         </button>
       </div>
 

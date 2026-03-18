@@ -42,7 +42,7 @@ function GalleryTile({
       {src ? (
         <img
           src={src}
-          alt={item.guest_name ? `Photo by ${item.guest_name}` : "Gallery photo"}
+          alt={item.guest_name ? `Φωτογραφία από ${item.guest_name}` : "Φωτογραφία γκαλερί"}
           loading="lazy"
           decoding="async"
           className="block w-full object-cover"
@@ -113,14 +113,14 @@ export function GalleryGrid({
       <div className="py-16 text-center">
         <p className="text-4xl">📸</p>
         <p className="mt-4 text-lg text-ink-soft">
-          Be the first to share a photo!
+          Γίνε ο πρώτος που θα μοιραστεί μια φωτογραφία!
         </p>
       </div>
     );
   }
 
   return (
-    <div aria-label="Photo gallery" aria-live="polite">
+    <div aria-label="Γκαλερί φωτογραφιών" aria-live="polite">
       <Masonry
         breakpointCols={MASONRY_BREAKPOINTS}
         className="gallery-masonry"
@@ -144,7 +144,7 @@ export function GalleryGrid({
             disabled={loading}
             className="soft-chip-strong rounded-full px-6 py-2.5 text-sm font-semibold text-foreground transition-colors duration-200 hover:bg-periwinkle/20 disabled:opacity-50"
           >
-            {loading ? "Loading..." : "Load more"}
+            {loading ? "Φόρτωση..." : "Περισσότερα"}
           </button>
         </div>
       )}

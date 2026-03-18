@@ -160,10 +160,10 @@ export function GallerySection({
     <section id="gallery" className="py-8">
       <div className="mb-6">
         <p className="text-xs font-semibold uppercase tracking-[0.35em] text-ink-soft">
-          Photo album
+          Άλμπουμ φωτογραφιών
         </p>
         <h2 className="mt-2 text-3xl font-semibold tracking-[-0.04em] text-foreground sm:text-4xl">
-          Shared moments
+          Κοινές στιγμές
         </h2>
       </div>
 
@@ -173,7 +173,7 @@ export function GallerySection({
         </div>
       ) : (
         <div className="soft-chip mb-8 inline-flex rounded-full px-4 py-2 text-sm text-ink-soft">
-          Uploads are now closed. Thank you for sharing your moments!
+          Τα ανεβάσματα έκλεισαν. Ευχαριστούμε που μοιραστήκατε τις στιγμές σας!
         </div>
       )}
 
