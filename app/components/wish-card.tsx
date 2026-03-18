@@ -67,7 +67,7 @@ export function WishCard({
       <p className="text-lg leading-relaxed text-foreground/90">
         {wish.message}
       </p>
-      <p className="mt-3 text-xs text-ink-soft">{relativeTime(wish.created_at)}</p>
+      <p className="mt-3 font-sans text-xs text-ink-soft">{relativeTime(wish.created_at)}</p>
       {isAdmin && (
         <button
           type="button"
