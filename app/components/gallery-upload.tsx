@@ -17,6 +17,7 @@ import {
   convertHeicToJpeg,
   transcodeMovToMp4,
 } from "@/lib/media-utils";
+import { UploadConfirmationModal } from "./upload-confirmation-modal";
 
 const DRAFT_NAME_KEY = "wedding-party-wish-draft";
 const MAX_FILES_PER_BATCH = 10;
@@ -36,6 +37,9 @@ export function GalleryUpload({
   const [guestName, setGuestName] = useState("");
   const [uploads, setUploads] = useState<UploadProgress[]>([]);
   const [isUploading, setIsUploading] = useState(false);
+  const [pendingFiles, setPendingFiles] = useState<File[] | null>(null);
+  const [overLimitCount, setOverLimitCount] = useState(0);
+  const [validationErrors, setValidationErrors] = useState<string[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Pre-populate guest name from wish draft
@@ -202,11 +206,46 @@ export function GalleryUpload({
     }
   };
 
-  const handleFiles = async (files: FileList | null) => {
+  const handleFileSelection = (files: FileList | null) => {
     if (!files || files.length === 0) return;
 
-    const fileArray = Array.from(files).slice(0, MAX_FILES_PER_BATCH);
-    const newUploads: UploadProgress[] = fileArray.map((f) => ({
+    const allFiles = Array.from(files);
+    const errors: string[] = [];
+    const validFiles: File[] = [];
+
+    // Validate before showing confirmation
+    for (const file of allFiles.slice(0, MAX_FILES_PER_BATCH)) {
+      const mediaType = classifyFile(file);
+      if (!mediaType) {
+        errors.push(`${file.name}: Unsupported file type`);
+        continue;
+      }
+      const validationError = validateFile(file, mediaType);
+      if (validationError) {
+        errors.push(`${file.name}: ${validationError}`);
+        continue;
+      }
+      validFiles.push(file);
+    }
+
+    setValidationErrors(errors);
+    setOverLimitCount(Math.max(0, allFiles.length - MAX_FILES_PER_BATCH));
+
+    if (validFiles.length > 0) {
+      setPendingFiles(validFiles);
+    }
+
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  };
+
+  const handleConfirmUpload = async (confirmedFiles: File[]) => {
+    setPendingFiles(null);
+    setValidationErrors([]);
+    setOverLimitCount(0);
+
+    if (confirmedFiles.length === 0) return;
+
+    const newUploads: UploadProgress[] = confirmedFiles.map((f) => ({
       fileName: f.name,
       status: "compressing" as const,
       progress: 0,
@@ -215,19 +254,22 @@ export function GalleryUpload({
     setUploads(newUploads);
     setIsUploading(true);
 
-    // Sequential uploads
-    const startIndex = 0;
-    for (let i = 0; i < fileArray.length; i++) {
-      await processFile(fileArray[i], startIndex + i);
+    for (let i = 0; i < confirmedFiles.length; i++) {
+      await processFile(confirmedFiles[i], i);
     }
 
     setIsUploading(false);
-    if (fileInputRef.current) fileInputRef.current.value = "";
 
     // Clear completed uploads after a delay
     setTimeout(() => {
       setUploads((prev) => prev.filter((u) => u.status === "error"));
     }, 3000);
+  };
+
+  const handleCancelUpload = () => {
+    setPendingFiles(null);
+    setValidationErrors([]);
+    setOverLimitCount(0);
   };
 
   return (
@@ -259,11 +301,30 @@ export function GalleryUpload({
           type="file"
           accept="image/*,video/*"
           multiple
-          onChange={(e) => handleFiles(e.target.files)}
+          onChange={(e) => handleFileSelection(e.target.files)}
           className="hidden"
           aria-label="Select photos or videos to upload"
         />
       </div>
+
+      {validationErrors.length > 0 && (
+        <div className="mt-3 space-y-1">
+          {validationErrors.map((error, i) => (
+            <p key={i} className="text-xs text-red-500" role="alert">
+              {error}
+            </p>
+          ))}
+        </div>
+      )}
+
+      {pendingFiles && (
+        <UploadConfirmationModal
+          files={pendingFiles}
+          overLimitCount={overLimitCount}
+          onConfirm={handleConfirmUpload}
+          onCancel={handleCancelUpload}
+        />
+      )}
 
       {uploads.length > 0 && (
         <div className="mt-4 space-y-2">
