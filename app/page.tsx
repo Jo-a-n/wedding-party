@@ -99,12 +99,12 @@ export default async function Home() {
 
         <section className="grid flex-1 items-center gap-8 py-10 lg:py-16">
           <div className="space-y-8">
-            <div className="soft-chip inline-flex rounded-full px-4 py-2 text-sm text-ink-soft shadow-sm">
+            <div className="wiggle soft-chip inline-flex rounded-full px-4 py-2 text-sm text-ink-soft shadow-sm">
               Pastel foundation: mint, periwinkle, blush, apricot, pistachio
             </div>
 
             <div className="space-y-5">
-              <h1 className=" text-5xl font-semibold tracking-[-0.05em] text-foreground sm:text-6xl lg:text-7xl">
+              <h1 className="wiggle wiggle-delay-1 text-5xl font-semibold tracking-[-0.05em] text-foreground sm:text-6xl lg:text-7xl">
                 A softer, more romantic visual direction for the whole project.
               </h1>
               <p className="max-w-2xl text-lg leading-8 text-ink-soft sm:text-xl">
@@ -116,13 +116,13 @@ export default async function Home() {
 
             <div className="flex flex-wrap gap-4">
               <a
-                className="hero-accent-button rounded-full px-6 py-3 text-sm font-semibold transition-transform duration-200 hover:-translate-y-0.5"
+                className="wiggle wiggle-delay-2 wiggle-hover hero-accent-button rounded-full px-6 py-3 text-sm font-semibold transition-transform duration-200 hover:-translate-y-0.5"
                 href="#wishes"
               >
                 Leave a wish
               </a>
               <a
-                className="hero-accent-button rounded-full px-6 py-3 text-sm font-semibold transition-transform duration-200 hover:-translate-y-0.5"
+                className="wiggle wiggle-delay-3 wiggle-hover hero-accent-button rounded-full px-6 py-3 text-sm font-semibold transition-transform duration-200 hover:-translate-y-0.5"
                 href="#gallery"
               >
                 Photo album
