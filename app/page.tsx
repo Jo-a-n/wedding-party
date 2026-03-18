@@ -217,7 +217,7 @@ export default async function Home() {
         />
 
         <footer className="py-10 text-center">
-          <p className="text-sm text-ink-soft/60">
+          <p className="text-sm italic text-ink-soft/60">
             Φτιαγμένο με αγάπη από την Ιωάννα και τον Παύλο
           </p>
         </footer>
