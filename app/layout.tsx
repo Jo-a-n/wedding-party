@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Wedding Party",
-  description: "A pastel wedding party site with a soft celebratory palette.",
+  title: "Ντανιέλα & Κωνσταντίνος — 21 Μαρτίου 2026",
+  description: "Ο γάμος της Ντανιέλας και του Κωνσταντίνου. Σάββατο 21 Μαρτίου 2026. Ευχές, φωτογραφίες και ρύζι!",
 };
 
 export default function RootLayout({
@@ -12,7 +12,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="el" suppressHydrationWarning>
       <head>
         <script
           dangerouslySetInnerHTML={{

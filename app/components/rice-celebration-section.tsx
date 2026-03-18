@@ -9,7 +9,7 @@ type Point = {
   y: number;
 };
 
-type Particle = {
+type ParticleBase = {
   id: number;
   x: number;
   y: number;
@@ -18,8 +18,6 @@ type Particle = {
   vy: number;
   rotation: number;
   spin: number;
-  length: number;
-  width: number;
   life: number;
   maxLife: number;
   color: string;
@@ -27,6 +25,20 @@ type Particle = {
   swaySpeed: number;
   swayAmount: number;
 };
+
+type RiceParticle = ParticleBase & {
+  kind: "rice";
+  length: number;
+  width: number;
+};
+
+type TextParticle = ParticleBase & {
+  kind: "counter" | "celebration";
+  text: string;
+  fontSize: number;
+};
+
+type Particle = RiceParticle | TextParticle;
 
 type TossMode = "drag" | "touch-button";
 
@@ -57,6 +69,7 @@ export function RiceCelebrationSection({
   const [isDragging, setIsDragging] = useState(false);
   const [isTouchDevice, setIsTouchDevice] = useState(false);
   const [riceCount, setRiceCount] = useState(initialCount);
+  const riceCountRef = useRef(initialCount);
   const seenTossIdsRef = useRef<Set<number>>(new Set());
 
   useEffect(() => {
@@ -79,6 +92,7 @@ export function RiceCelebrationSection({
           }
 
           seenTossIdsRef.current.add(raw.id);
+          riceCountRef.current += 1;
           setRiceCount((prev) => prev + 1);
         },
       )
@@ -159,12 +173,25 @@ export function RiceCelebrationSection({
         context.rotate(particle.rotation);
         context.globalAlpha = alpha;
         context.fillStyle = particle.color;
-        context.fillRect(
-          -particle.length / 2,
-          -particle.width / 2,
-          particle.length,
-          particle.width,
-        );
+
+        if (particle.kind === "rice") {
+          context.fillRect(
+            -particle.length / 2,
+            -particle.width / 2,
+            particle.length,
+            particle.width,
+          );
+        } else {
+          const weight = particle.kind === "celebration" ? "700" : "600";
+          context.font = `${weight} ${particle.fontSize}px system-ui, sans-serif`;
+          context.textAlign = "center";
+          context.textBaseline = "middle";
+          context.strokeStyle = "rgba(0,0,0,0.2)";
+          context.lineWidth = 2.5;
+          context.strokeText(particle.text, 0, 0);
+          context.fillText(particle.text, 0, 0);
+        }
+
         context.restore();
 
         return particle.y < height + 40;
@@ -226,13 +253,14 @@ export function RiceCelebrationSection({
     const power = dragLength / 8;
     const particleCount = Math.round(clamp(dragLength / 2.6, 18, 54));
 
-    const newParticles = Array.from({ length: particleCount }, () => {
+    const newParticles: Particle[] = Array.from({ length: particleCount }, () => {
       const spread = (Math.random() - 0.5) * 0.85;
       const velocity = power * 0.95 + Math.random() * 4.5;
       const x = start.x;
       const y = clamp(start.y, 32, height - 28);
 
       return {
+        kind: "rice" as const,
         id: nextParticleIdRef.current++,
         x,
         y,
@@ -252,6 +280,55 @@ export function RiceCelebrationSection({
       };
     });
 
+    const nextCount = (riceCountRef.current += 1);
+    const originY = clamp(start.y, 32, height - 28);
+
+    const counterParticle: TextParticle = {
+      kind: "counter",
+      id: nextParticleIdRef.current++,
+      text: nextCount.toLocaleString("el-GR"),
+      fontSize: 15,
+      x: start.x,
+      y: originY,
+      initialX: start.x,
+      vx: Math.cos(angle) * power * 0.7,
+      vy: Math.sin(angle) * power * 0.7,
+      rotation: 0,
+      spin: 0,
+      life: 0,
+      maxLife: 90,
+      color: ["#d2fac3", "#f5d0e3", "#facdaa"][nextCount % 3],
+      swayOffset: 0,
+      swaySpeed: 0,
+      swayAmount: 0,
+    };
+
+    newParticles.push(counterParticle);
+
+    if (Math.random() < 1 / 25) {
+      const celebrationParticle: TextParticle = {
+        kind: "celebration",
+        id: nextParticleIdRef.current++,
+        text: "θα γλιστρίσουμε!",
+        fontSize: 18,
+        x: start.x,
+        y: originY,
+        initialX: start.x,
+        vx: Math.cos(angle) * power * 0.5,
+        vy: Math.sin(angle) * power * 0.5,
+        rotation: 0,
+        spin: 0,
+        life: 0,
+        maxLife: 160,
+        color: "#f5d0e3",
+        swayOffset: 0,
+        swaySpeed: 0,
+        swayAmount: 0,
+      };
+
+      newParticles.push(celebrationParticle);
+    }
+
     particlesRef.current = [...particlesRef.current, ...newParticles];
 
     const supabase = createClient();
@@ -263,6 +340,7 @@ export function RiceCelebrationSection({
 
     if (error) {
       console.error("Rice toss insert error:", error);
+      riceCountRef.current -= 1;
       return;
     }
 
@@ -382,15 +460,15 @@ export function RiceCelebrationSection({
           <div className="grid gap-0 lg:grid-cols-[0.9fr_1.1fr]">
             <div className="py-8 sm:px-8 sm:py-10">
               <p className="text-xs font-semibold uppercase tracking-[0.35em] text-ink-soft">
-                Interactive moment
+                Ώρα για ρύζι!
               </p>
               <h2 className="mt-3 text-4xl font-semibold tracking-[-0.05em] text-foreground sm:text-5xl">
-                Ρύζι στα παιδιά!
+                Ρίξε ρύζι, ο γάμος να μη τρίζει!
               </h2>
 
               <p className="mt-4 max-w-xl text-base leading-7 text-ink-soft sm:text-lg">
-                Πάτησε και σύρε οπουδήποτε στη σελίδα για να πετάξεις ρύζι. Ο
-                μετρητής μένει εδώ, αλλά η ρίψη πλέον καλύπτει όλη τη σελίδα.
+                Σύρε και πέτα ρύζι! Κανονικά θα σκούπιζε ο γαμπρός, αλλά
+                εδώ είμαστε online.
               </p>
 
               <div className="soft-card mt-8 inline-flex flex-row items-center gap-3 rounded-[1.5rem] px-4 py-3 shadow-sm">
@@ -399,7 +477,7 @@ export function RiceCelebrationSection({
                 </div>
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-[0.25em] text-ink-soft">
-                    Total tosses from everyone
+                    Ρυζιές κάουντερ
                   </p>
                 </div>
               </div>
@@ -409,10 +487,10 @@ export function RiceCelebrationSection({
               <div className="launcher-surface rice-launcher relative flex min-h-[240px] w-full items-center justify-center overflow-hidden rounded-[2rem] border border-white/20 px-6 py-10 sm:min-h-[280px]">
                 <div className="soft-card pointer-events-none rounded-[1.5rem] px-5 py-4 text-sm text-foreground/75 shadow-sm sm:px-6">
                   {isDragging
-                    ? "Άφησε το δάχτυλο για να ξεκινήσει η ρίψη."
+                    ? "Πέτα το! 🎉"
                     : isTouchDevice
-                      ? "Tap the floating button to toss rice toward the celebration."
-                      : "Drag anywhere on the page to toss rice."}
+                      ? "Πάτα το κουμπί για να ρίξεις ρύζι στους νεόνυμφους!"
+                      : "Σύρε οπουδήποτε στη σελίδα για να ρίξεις ρύζι!"}
                 </div>
               </div>
             </div>
@@ -427,7 +505,7 @@ export function RiceCelebrationSection({
           onClick={handleTouchToss}
           className="hero-accent-button fixed bottom-5 right-5 z-30 inline-flex items-center rounded-full px-5 py-3 text-sm font-semibold shadow-[0_18px_35px_rgba(0,0,0,0.16)] transition-transform duration-200 active:scale-95 sm:bottom-8 sm:right-8"
         >
-          Throw rice
+          Ρίξε ρύζι!
         </button>
       ) : null}
     </>

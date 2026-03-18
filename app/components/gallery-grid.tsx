@@ -42,7 +42,7 @@ function GalleryTile({
       {src ? (
         <img
           src={src}
-          alt={item.guest_name ? `Photo by ${item.guest_name}` : "Gallery photo"}
+          alt={item.guest_name ? `Φωτογραφία από ${item.guest_name}` : "Φωτογραφία γκαλερί"}
           loading="lazy"
           decoding="async"
           className="block w-full object-cover"
@@ -75,6 +75,23 @@ function GalleryTile({
               <polygon points="8 5 19 12 8 19 8 5" />
             </svg>
           </div>
+        </div>
+      )}
+
+      {item.view_count > 0 && (
+        <div className="absolute top-2 right-2 flex items-center gap-1 rounded-full bg-black/40 px-2 py-0.5 text-xs text-white/90">
+          <svg
+            width="12"
+            height="12"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+            <circle cx="12" cy="12" r="3" />
+          </svg>
+          {item.view_count}
         </div>
       )}
 
@@ -113,14 +130,14 @@ export function GalleryGrid({
       <div className="py-16 text-center">
         <p className="text-4xl">📸</p>
         <p className="mt-4 text-lg text-ink-soft">
-          Be the first to share a photo!
+          Γίνε ο πρώτος που θα μοιραστεί μια φωτογραφία!
         </p>
       </div>
     );
   }
 
   return (
-    <div aria-label="Photo gallery" aria-live="polite">
+    <div aria-label="Γκαλερί φωτογραφιών" aria-live="polite">
       <Masonry
         breakpointCols={MASONRY_BREAKPOINTS}
         className="gallery-masonry"
@@ -144,7 +161,7 @@ export function GalleryGrid({
             disabled={loading}
             className="soft-chip-strong rounded-full px-6 py-2.5 text-sm font-semibold text-foreground transition-colors duration-200 hover:bg-periwinkle/20 disabled:opacity-50"
           >
-            {loading ? "Loading..." : "Load more"}
+            {loading ? "Φόρτωση..." : "Περισσότερα"}
           </button>
         </div>
       )}

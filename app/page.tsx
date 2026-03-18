@@ -3,6 +3,8 @@ import { RiceCelebrationSection } from "./components/rice-celebration-section";
 import { ThemeToggle } from "./components/theme-toggle";
 import { WishWall } from "./components/wish-wall";
 import { GallerySection } from "./components/gallery-section";
+import { CountdownTimer } from "./components/countdown-timer";
+import { WeddingDogs } from "./components/wedding-dogs";
 import { createClient } from "@/lib/supabase/server";
 import type { Wish, GalleryItem } from "@/lib/supabase/types";
 
@@ -86,10 +88,10 @@ export default async function Home() {
         <header className="flex items-center justify-between py-4">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.35em] text-ink-soft">
-              Wedding Party
+              Ντανιέλα & Κωνσταντίνος
             </p>
             <p className="mt-2 text-sm text-ink-soft">
-              Soft color system for a joyful celebration site
+              Σάββατο 21 Μαρτίου 2026
             </p>
           </div>
           <div className="flex items-center gap-3">
@@ -99,38 +101,42 @@ export default async function Home() {
 
         <section className="grid flex-1 items-center gap-8 py-10 lg:py-16">
           <div className="space-y-8">
-            <div className="soft-chip inline-flex rounded-full px-4 py-2 text-sm text-ink-soft shadow-sm">
-              Pastel foundation: mint, periwinkle, blush, apricot, pistachio
+            <div className="wiggle soft-chip inline-flex rounded-full px-4 py-2 text-sm text-ink-soft shadow-sm">
+              Σάββατο 21 Μαρτίου 2026
             </div>
 
             <div className="space-y-5">
-              <h1 className=" text-5xl font-semibold tracking-[-0.05em] text-foreground sm:text-6xl lg:text-7xl">
-                A softer, more romantic visual direction for the whole project.
+              <h1 className="wiggle wiggle-delay-1 wiggle-hover text-5xl font-semibold tracking-[-0.05em] text-foreground sm:text-6xl lg:text-7xl">
+                Η Ντανιέλα κι ο Κωνσταντίνος παντρεύονται!
               </h1>
               <p className="max-w-2xl text-lg leading-8 text-ink-soft sm:text-xl">
-                The app is organized around reusable pastel design tokens so
-                future sections, buttons, cards, and accents can stay consistent
-                without repeating raw hex values.
+                Η Ντανιέλα κι ο Κωνσταντίνος παντρεύονται — οι σκύλοι ακόμα
+                αποφασίζουν αν εγκρίνουν. Ρίξτε ρύζι, αφήστε ευχές, βγάλτε
+                φωτογραφίες!
               </p>
             </div>
 
+            <WeddingDogs />
+
             <div className="flex flex-wrap gap-4">
               <a
-                className="hero-accent-button rounded-full px-6 py-3 text-sm font-semibold transition-transform duration-200 hover:-translate-y-0.5"
+                className="wiggle wiggle-delay-2 wiggle-hover hero-accent-button rounded-full px-6 py-3 text-sm font-semibold transition-transform duration-200 hover:-translate-y-0.5"
                 href="#wishes"
               >
-                Leave a wish
+                Άσε μια ευχή
               </a>
               <a
-                className="hero-accent-button rounded-full px-6 py-3 text-sm font-semibold transition-transform duration-200 hover:-translate-y-0.5"
+                className="wiggle wiggle-delay-3 wiggle-hover hero-accent-button rounded-full px-6 py-3 text-sm font-semibold transition-transform duration-200 hover:-translate-y-0.5"
                 href="#gallery"
               >
-                Photo album
+                Φωτογραφίες
               </a>
             </div>
           </div>
 
         </section>
+
+        <CountdownTimer />
 
         <RiceCelebrationSection initialCount={riceTossCount} />
 
@@ -215,6 +221,12 @@ export default async function Home() {
           initialItems={gallery.items}
           initialCount={gallery.count}
         />
+
+        <footer className="py-10 text-center">
+          <p className="text-sm italic text-ink-soft/60">
+            Φτιαγμένο με αγάπη από την Ιωάννα και τον Παύλο
+          </p>
+        </footer>
       </div>
     </main>
   );

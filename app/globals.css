@@ -331,6 +331,88 @@ a {
   background: var(--launcher-surface);
 }
 
+@keyframes wiggle {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  15% {
+    transform: rotate(-2deg);
+  }
+  30% {
+    transform: rotate(2.5deg);
+  }
+  45% {
+    transform: rotate(-1.5deg);
+  }
+  60% {
+    transform: rotate(1deg);
+  }
+  75% {
+    transform: rotate(-0.5deg);
+  }
+}
+
+.wiggle {
+  animation: wiggle 0.8s ease-in-out both;
+}
+
+.wiggle-delay-1 {
+  animation-delay: 0.15s;
+}
+
+.wiggle-delay-2 {
+  animation-delay: 0.3s;
+}
+
+.wiggle-delay-3 {
+  animation-delay: 0.45s;
+}
+
+@keyframes wiggle-tap {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  15% {
+    transform: rotate(-2deg);
+  }
+  30% {
+    transform: rotate(2.5deg);
+  }
+  45% {
+    transform: rotate(-1.5deg);
+  }
+  60% {
+    transform: rotate(1deg);
+  }
+  75% {
+    transform: rotate(-0.5deg);
+  }
+}
+
+.wiggle-hover:hover {
+  animation: wiggle-tap 0.5s ease-in-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wiggle,
+  .wiggle-hover:hover {
+    animation: none;
+  }
+}
+
+@keyframes ceremony-pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+.ceremony-pulse {
+  animation: ceremony-pulse 2s ease-in-out infinite;
+}
+
 @keyframes wish-enter {
   from {
     opacity: 0;
@@ -348,7 +430,29 @@ a {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .ceremony-pulse,
   .wish-card-enter {
+    animation: none;
+  }
+}
+
+@keyframes dog-wiggle {
+  0%, 100% { transform: rotate(0deg) translateY(0); }
+  25% { transform: rotate(-3deg) translateY(-2px); }
+  75% { transform: rotate(3deg) translateY(-2px); }
+}
+
+.dog-wiggle {
+  animation: dog-wiggle 2.5s ease-in-out infinite;
+}
+
+.dog-wiggle-alt {
+  animation-duration: 3s;
+  animation-delay: 0.4s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dog-wiggle {
     animation: none;
   }
 }

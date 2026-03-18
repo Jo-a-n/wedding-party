@@ -13,6 +13,7 @@ export type GalleryItem = {
   width: number | null;
   height: number | null;
   guest_name: string;
+  view_count: number;
   created_at: string;
 };
 
@@ -47,6 +48,7 @@ export type Database = {
           width: number | null;
           height: number | null;
           guest_name: string;
+          view_count: number;
         }>;
         Relationships: [];
       };
@@ -58,7 +60,12 @@ export type Database = {
       };
     };
     Views: Record<string, never>;
-    Functions: Record<string, never>;
+    Functions: {
+      increment_view_count: {
+        Args: { item_id: number };
+        Returns: undefined;
+      };
+    };
     Enums: Record<string, never>;
     CompositeTypes: Record<string, never>;
   };

@@ -63,10 +63,10 @@ export function WishWall({ initialWishes }: { initialWishes: Wish[] }) {
     <section id="wishes" className="py-8">
       <div className="mb-6">
         <p className="text-xs font-semibold uppercase tracking-[0.35em] text-ink-soft">
-          Guest wishes
+          Ευχές καλεσμένων
         </p>
         <h2 className="mt-2 text-3xl font-semibold tracking-[-0.04em] text-foreground sm:text-4xl">
-          Wishes for the couple
+          Ευχές για το ζευγάρι
         </h2>
       </div>
 
@@ -76,7 +76,7 @@ export function WishWall({ initialWishes }: { initialWishes: Wish[] }) {
         </div>
       ) : (
         <div className="soft-chip mb-8 inline-flex rounded-full px-4 py-2 text-sm text-ink-soft">
-          The wish wall is now closed. Thank you for all the lovely messages!
+          Οι ευχές έκλεισαν. Ευχαριστούμε για τα υπέροχα μηνύματά σας!
         </div>
       )}
 
@@ -84,7 +84,7 @@ export function WishWall({ initialWishes }: { initialWishes: Wish[] }) {
         <div className="py-16 text-center">
           <p className="text-4xl">💌</p>
           <p className="mt-4 text-lg text-ink-soft">
-            Be the first to leave a wish for the couple!
+            Γίνε ο πρώτος που θα αφήσει μια ευχή για το ζευγάρι!
           </p>
         </div>
       ) : (
