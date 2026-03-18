@@ -11,7 +11,7 @@ export function WeddingDogs() {
         className="dog-wiggle h-48 sm:h-64 lg:h-80 w-auto drop-shadow-lg"
         loading="eager"
       />
-      <div className="flex flex-col items-center gap-2 pb-4">
+      <div className="flex flex-col items-center gap-2 self-center">
         <NameShip />
       </div>
       <img

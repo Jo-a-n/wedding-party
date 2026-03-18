@@ -41,7 +41,7 @@ export function NameShip() {
       onClick={cycle}
       className="soft-chip inline-flex cursor-pointer rounded-full px-4 py-2 text-sm text-ink-soft shadow-sm transition-transform duration-150 hover:scale-105 active:scale-95"
     >
-      💕 {NAME_SHIPS[index]}
+      💕 {NAME_SHIPS[index]} 💕
     </button>
   );
 }
