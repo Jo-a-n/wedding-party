@@ -1,6 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { useEffect, useRef, useState } from "react";
+import { createClient } from "@/lib/supabase/client";
+import type { RiceToss } from "@/lib/supabase/types";
 
 type Point = {
   x: number;
@@ -23,8 +25,6 @@ type Particle = {
 };
 
 const COLORS = ["#fffdfb", "#ffffff", "#f5d0e3", "#facdaa", "#d2fac3"];
-const STORAGE_KEY = "wedding-party-rice-count";
-const STORAGE_EVENT = "rice-count-updated";
 
 const clamp = (value: number, min: number, max: number) =>
   Math.min(Math.max(value, min), max);
@@ -35,43 +35,11 @@ const distance = (a: Point, b: Point) => {
   return Math.hypot(dx, dy);
 };
 
-const getStoredRiceCount = () => {
-  if (typeof window === "undefined") {
-    return 0;
-  }
-
-  const savedCount = window.localStorage.getItem(STORAGE_KEY);
-
-  if (!savedCount) {
-    return 0;
-  }
-
-  const parsedCount = Number.parseInt(savedCount, 10);
-
-  return Number.isFinite(parsedCount) && parsedCount >= 0 ? parsedCount : 0;
-};
-
-const subscribeToRiceCount = (callback: () => void) => {
-  if (typeof window === "undefined") {
-    return () => undefined;
-  }
-
-  const handleStorage = (event: StorageEvent) => {
-    if (event.key === STORAGE_KEY) {
-      callback();
-    }
-  };
-
-  window.addEventListener("storage", handleStorage);
-  window.addEventListener(STORAGE_EVENT, callback);
-
-  return () => {
-    window.removeEventListener("storage", handleStorage);
-    window.removeEventListener(STORAGE_EVENT, callback);
-  };
-};
-
-export function RiceCelebrationSection() {
+export function RiceCelebrationSection({
+  initialCount,
+}: {
+  initialCount: number;
+}) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const frameRef = useRef<number | null>(null);
   const particlesRef = useRef<Particle[]>([]);
@@ -80,11 +48,38 @@ export function RiceCelebrationSection() {
   const dragCurrentRef = useRef<Point | null>(null);
   const boundsRef = useRef({ width: 0, height: 0, dpr: 1 });
   const [isDragging, setIsDragging] = useState(false);
-  const riceCount = useSyncExternalStore(
-    subscribeToRiceCount,
-    getStoredRiceCount,
-    () => 0,
-  );
+  const [riceCount, setRiceCount] = useState(initialCount);
+  const seenTossIdsRef = useRef<Set<number>>(new Set());
+
+  useEffect(() => {
+    const supabase = createClient();
+
+    const channel = supabase
+      .channel("rice-tosses-realtime")
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "rice_tosses" },
+        (payload) => {
+          const raw = payload.new;
+
+          if (!raw || typeof raw.id !== "number") {
+            return;
+          }
+
+          if (seenTossIdsRef.current.has(raw.id)) {
+            return;
+          }
+
+          seenTossIdsRef.current.add(raw.id);
+          setRiceCount((prev) => prev + 1);
+        },
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, []);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -192,7 +187,7 @@ export function RiceCelebrationSection() {
     };
   }, []);
 
-  const createBurst = (start: Point, end: Point) => {
+  const createBurst = async (start: Point, end: Point) => {
     const { height } = boundsRef.current;
     const dragLength = clamp(distance(start, end), 24, 140);
     const angle = Math.atan2(start.y - end.y, start.x - end.x);
@@ -220,9 +215,27 @@ export function RiceCelebrationSection() {
     });
 
     particlesRef.current = [...particlesRef.current, ...newParticles];
-    const nextCount = riceCount + 1;
-    window.localStorage.setItem(STORAGE_KEY, String(nextCount));
-    window.dispatchEvent(new Event(STORAGE_EVENT));
+
+    const supabase = createClient();
+    const { data, error } = await supabase
+      .from("rice_tosses")
+      .insert({})
+      .select()
+      .single();
+
+    if (error) {
+      console.error("Rice toss insert error:", error);
+      return;
+    }
+
+    const toss = data as RiceToss;
+
+    if (seenTossIdsRef.current.has(toss.id)) {
+      return;
+    }
+
+    seenTossIdsRef.current.add(toss.id);
+    setRiceCount((prev) => prev + 1);
   };
 
   const getPoint = (
@@ -285,7 +298,7 @@ export function RiceCelebrationSection() {
               </div>
               <div>
                 <p className="text-xs font-semibold uppercase tracking-[0.25em] text-ink-soft">
-                  Total tosses (in this device)
+                  Total tosses from everyone
                 </p>
               </div>
             </div>

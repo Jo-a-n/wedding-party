@@ -62,6 +62,31 @@ create policy "Anyone can add to gallery"
 alter publication supabase_realtime add table public.gallery_items;
 
 -- =============================================================
+-- Rice tosses table
+-- =============================================================
+
+create table public.rice_tosses (
+  id         bigint generated always as identity primary key,
+  created_at timestamptz not null default now()
+);
+
+create index rice_tosses_created_at_desc on public.rice_tosses (created_at desc);
+
+alter table public.rice_tosses enable row level security;
+
+create policy "Anyone can view rice tosses"
+  on public.rice_tosses for select
+  to anon, authenticated
+  using (true);
+
+create policy "Anyone can add rice tosses"
+  on public.rice_tosses for insert
+  to anon, authenticated
+  with check (true);
+
+alter publication supabase_realtime add table public.rice_tosses;
+
+-- =============================================================
 -- Gallery Storage bucket
 -- =============================================================
 

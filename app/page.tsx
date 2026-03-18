@@ -49,10 +49,25 @@ async function getGalleryItems(): Promise<{
   }
 }
 
+async function getRiceTossCount(): Promise<number> {
+  try {
+    const supabase = await createClient();
+    const { count } = await supabase
+      .from("rice_tosses")
+      .select("*", { count: "exact", head: true });
+
+    return count ?? 0;
+  } catch (e) {
+    console.error("Failed to fetch rice toss count:", e);
+    return 0;
+  }
+}
+
 export default async function Home() {
-  const [wishes, gallery] = await Promise.all([
+  const [wishes, gallery, riceTossCount] = await Promise.all([
     getWishes(),
     getGalleryItems(),
+    getRiceTossCount(),
   ]);
 
   const palette = [
@@ -117,7 +132,7 @@ export default async function Home() {
 
         </section>
 
-        <RiceCelebrationSection />
+        <RiceCelebrationSection initialCount={riceTossCount} />
 
         <section
           id="palette"

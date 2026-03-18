@@ -16,6 +16,11 @@ export type GalleryItem = {
   created_at: string;
 };
 
+export type RiceToss = {
+  id: number;
+  created_at: string;
+};
+
 export type Database = {
   public: {
     Tables: {
@@ -43,6 +48,12 @@ export type Database = {
           height: number | null;
           guest_name: string;
         }>;
+        Relationships: [];
+      };
+      rice_tosses: {
+        Row: RiceToss;
+        Insert: Record<string, never>;
+        Update: Record<string, never>;
         Relationships: [];
       };
     };
