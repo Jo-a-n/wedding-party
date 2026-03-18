@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import type { RiceToss } from "@/lib/supabase/types";
-import { adminFetch } from "@/lib/admin";
+
 
 type Point = {
   x: number;
@@ -56,10 +56,8 @@ const distance = (a: Point, b: Point) => {
 
 export function RiceCelebrationSection({
   initialCount,
-  isAdmin,
 }: {
   initialCount: number;
-  isAdmin?: boolean;
 }) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const touchButtonRef = useRef<HTMLButtonElement | null>(null);
@@ -488,25 +486,7 @@ export function RiceCelebrationSection({
                     </p>
                   </div>
                 </div>
-                {isAdmin && (
-                  <button
-                    type="button"
-                    onClick={async () => {
-                      if (!confirm("Reset rice counter to 0?")) return;
-                      const res = await adminFetch("/api/admin/rice", {
-                        method: "DELETE",
-                      });
-                      if (res.ok) {
-                        riceCountRef.current = 0;
-                        setRiceCount(0);
-                        seenTossIdsRef.current.clear();
-                      }
-                    }}
-                    className="rounded-full bg-red-500/10 px-3 py-1.5 text-xs font-medium text-red-500 opacity-60 transition-opacity hover:opacity-100"
-                  >
-                    reset
-                  </button>
-                )}
+
               </div>
             </div>
 

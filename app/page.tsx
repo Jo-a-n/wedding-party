@@ -130,11 +130,12 @@ export default async function Home({
   const now = new Date();
   const ceremonyStart = new Date(settings.ceremony_start);
   const ceremonyEnd = new Date(settings.ceremony_end);
-  const verb = now < ceremonyStart
-    ? "θα παντρευτούν"
-    : now <= ceremonyEnd
-      ? "παντρεύονται"
-      : "παντρεύτηκαν";
+  const verb =
+    now < ceremonyStart
+      ? "θα παντρευτούν"
+      : now <= ceremonyEnd
+        ? "παντρεύονται"
+        : "παντρεύτηκαν";
 
   const palette = [
     { name: "Mint", hex: "#99FFDA", className: "bg-mint" },
@@ -145,7 +146,9 @@ export default async function Home({
   ];
 
   return (
-    <main className={`relative overflow-hidden ${isAdmin ? "ring-4 ring-inset ring-red-500/60" : ""}`}>
+    <main
+      className={`relative overflow-hidden ${isAdmin ? "ring-4 ring-inset ring-red-500/60" : ""}`}
+    >
       <div className="pastel-sheen absolute inset-0 opacity-80" />
       <FallingHeartsBackground />
       <div className="relative mx-auto flex min-h-screen w-full max-w-6xl flex-col px-4 py-8 sm:px-10 lg:px-12">
@@ -202,14 +205,13 @@ export default async function Home({
               </a>
             </div>
           </div>
-
         </section>
 
         {isAdmin && <AdminPanel settings={settings} />}
 
         <CountdownTimer settings={settings} />
 
-        <RiceCelebrationSection initialCount={riceTossCount} isAdmin={isAdmin} />
+        <RiceCelebrationSection initialCount={riceTossCount} />
 
         <section
           id="palette"
@@ -286,7 +288,11 @@ export default async function Home({
           </article>
         </section>
 
-        <WishWall initialWishes={wishes} isAdmin={isAdmin} deadline={settings.wish_deadline} />
+        <WishWall
+          initialWishes={wishes}
+          isAdmin={isAdmin}
+          deadline={settings.wish_deadline}
+        />
 
         <GallerySection
           initialItems={gallery.items}
@@ -297,7 +303,7 @@ export default async function Home({
 
         <footer className="py-10 text-center">
           <p className="text-sm italic text-ink-soft/60">
-            Φτιαγμένο με αγάπη από την Ιωάννα και τον Παύλο
+            Φτιαγμένο με 🫰 από την Ιωάννα και τον Παύλο
           </p>
         </footer>
       </div>
