@@ -12,8 +12,6 @@ const ACCENT_COLORS = [
   "bg-pistachio/30",
 ];
 
-const ROTATIONS = [-2, 1.5, -1, 2.5, -0.5, 1.8, -1.5];
-
 export function WishCard({
   wish,
   index,
@@ -29,7 +27,6 @@ export function WishCard({
 }) {
   const accent = ACCENT_COLORS[index % ACCENT_COLORS.length];
   const fontClass = `wish-font-${index % WISH_FONT_COUNT}`;
-  const rotation = ROTATIONS[index % ROTATIONS.length];
   const isHidden = wish.hidden;
 
   const handleToggle = async () => {
@@ -45,7 +42,6 @@ export function WishCard({
   return (
     <article
       className={`soft-card relative rounded-[1.5rem] p-5 ${fontClass} ${isNew ? "wish-card-enter" : ""} ${isHidden ? "opacity-40" : ""}`}
-      style={{ rotate: `${rotation}deg` }}
     >
       <div className={`${accent} -mx-5 -mt-5 mb-4 rounded-t-[1.5rem] px-5 py-3`}>
         <p className="text-sm font-semibold text-foreground">{wish.name}</p>

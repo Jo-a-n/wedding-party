@@ -131,7 +131,7 @@ export function WishWall({
         </div>
       ) : (
         <div
-          className="grid gap-6 overflow-x-hidden px-2 sm:grid-cols-2 lg:grid-cols-3"
+          className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
           aria-live="polite"
           aria-label="Guest wishes"
         >
