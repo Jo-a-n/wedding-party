@@ -4,6 +4,7 @@ import { ThemeToggle } from "./components/theme-toggle";
 import { WishWall } from "./components/wish-wall";
 import { GallerySection } from "./components/gallery-section";
 import { CountdownTimer } from "./components/countdown-timer";
+import { WeddingDogs } from "./components/wedding-dogs";
 import { createClient } from "@/lib/supabase/server";
 import type { Wish, GalleryItem } from "@/lib/supabase/types";
 
@@ -114,6 +115,8 @@ export default async function Home() {
                 φωτογραφίες!
               </p>
             </div>
+
+            <WeddingDogs />
 
             <div className="flex flex-wrap gap-4">
               <a

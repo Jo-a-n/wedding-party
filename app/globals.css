@@ -436,6 +436,27 @@ a {
   }
 }
 
+@keyframes dog-wiggle {
+  0%, 100% { transform: rotate(0deg) translateY(0); }
+  25% { transform: rotate(-3deg) translateY(-2px); }
+  75% { transform: rotate(3deg) translateY(-2px); }
+}
+
+.dog-wiggle {
+  animation: dog-wiggle 2.5s ease-in-out infinite;
+}
+
+.dog-wiggle-alt {
+  animation-duration: 3s;
+  animation-delay: 0.4s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dog-wiggle {
+    animation: none;
+  }
+}
+
 /* Gallery masonry layout */
 .gallery-masonry {
   display: flex;
