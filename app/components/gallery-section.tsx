@@ -57,6 +57,30 @@ export function GallerySection({
   const [lightboxIndex, setLightboxIndex] = useState(-1);
   const [loadingMore, setLoadingMore] = useState(false);
 
+  const incrementViewCount = useCallback(
+    (index: number) => {
+      const item = items[index];
+      if (item) {
+        setItems((prev) =>
+          prev.map((it, i) =>
+            i === index ? { ...it, view_count: it.view_count + 1 } : it,
+          ),
+        );
+        const supabase = createClient();
+        supabase.rpc("increment_view_count", { item_id: item.id });
+      }
+    },
+    [items],
+  );
+
+  const handleItemClick = useCallback(
+    (index: number) => {
+      setLightboxIndex(index);
+      incrementViewCount(index);
+    },
+    [incrementViewCount],
+  );
+
   // Re-check deadline every minute
   useEffect(() => {
     if (!open) return;
@@ -90,6 +114,21 @@ export function GallerySection({
             return [newItem, ...prev];
           });
           setNewIds((prev) => new Set(prev).add(newItem.id));
+        },
+      )
+      .on(
+        "postgres_changes",
+        { event: "UPDATE", schema: "public", table: "gallery_items" },
+        (payload) => {
+          const updated = payload.new as unknown as GalleryItem;
+          if (typeof updated.id !== "number") return;
+          setItems((prev) =>
+            prev.map((item) =>
+              item.id === updated.id
+                ? { ...item, view_count: updated.view_count }
+                : item,
+            ),
+          );
         },
       )
       .subscribe();
@@ -183,7 +222,7 @@ export function GallerySection({
         totalCount={totalCount}
         loading={loadingMore}
         onLoadMore={handleLoadMore}
-        onItemClick={(index) => setLightboxIndex(index)}
+        onItemClick={handleItemClick}
       />
 
       <Lightbox
@@ -192,6 +231,14 @@ export function GallerySection({
         index={lightboxIndex}
         close={() => setLightboxIndex(-1)}
         slides={slides}
+        on={{
+          view: ({ index }) => {
+            if (index !== lightboxIndex) {
+              incrementViewCount(index);
+              setLightboxIndex(index);
+            }
+          },
+        }}
         carousel={{ finite: false }}
         controller={{ closeOnBackdropClick: true }}
         styles={{

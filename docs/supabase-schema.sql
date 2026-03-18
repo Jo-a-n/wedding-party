@@ -42,6 +42,7 @@ create table public.gallery_items (
   width       int,
   height      int,
   guest_name  text default '' check (char_length(guest_name) <= 100),
+  view_count  int not null default 0,
   created_at  timestamptz not null default now()
 );
 
@@ -60,6 +61,21 @@ create policy "Anyone can add to gallery"
   with check (true);
 
 alter publication supabase_realtime add table public.gallery_items;
+
+-- View count column (defaults to 0 for existing rows)
+alter table public.gallery_items
+  add column view_count int not null default 0;
+
+-- RPC function to atomically increment view count
+create or replace function public.increment_view_count(item_id bigint)
+returns void
+language sql
+security definer
+as $$
+  update public.gallery_items
+  set view_count = view_count + 1
+  where id = item_id;
+$$;
 
 -- =============================================================
 -- Rice tosses table
