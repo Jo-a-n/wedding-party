@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { adminFetch } from "@/lib/admin";
 import type { SiteSettings } from "../page";
 
@@ -23,13 +24,12 @@ const LABELS: Record<keyof SiteSettings, string> = {
 };
 
 export function AdminPanel({ settings }: { settings: SiteSettings }) {
+  const router = useRouter();
   const [values, setValues] = useState<SiteSettings>(settings);
   const [saving, setSaving] = useState(false);
-  const [saved, setSaved] = useState(false);
 
   const handleSave = async () => {
     setSaving(true);
-    setSaved(false);
     const payload: Record<string, string> = {};
     for (const key of Object.keys(values) as (keyof SiteSettings)[]) {
       payload[key] = values[key];
@@ -41,8 +41,7 @@ export function AdminPanel({ settings }: { settings: SiteSettings }) {
     });
     setSaving(false);
     if (res.ok) {
-      setSaved(true);
-      setTimeout(() => setSaved(false), 2000);
+      router.refresh();
     }
   };
 
@@ -81,11 +80,6 @@ export function AdminPanel({ settings }: { settings: SiteSettings }) {
           >
             {saving ? "Saving..." : "Save datetimes"}
           </button>
-          {saved && (
-            <span className="text-xs font-medium text-pistachio">
-              Saved! Reload page to apply.
-            </span>
-          )}
         </div>
       </div>
     </section>

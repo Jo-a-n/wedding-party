@@ -1,7 +1,7 @@
 ---
 title: Admin changes don't refresh the live site
 type: fix
-status: active
+status: completed
 date: 2026-03-19
 ---
 
@@ -21,10 +21,10 @@ Call `router.refresh()` from Next.js `useRouter` after every successful admin mu
 
 ## Acceptance Criteria
 
-- [ ] After saving datetimes in admin panel, page reflects new values without manual reload
-- [ ] After hiding/unhiding a wish, the wish wall updates
-- [ ] After hiding/unhiding a gallery item, the gallery updates
-- [ ] Remove "Reload page to apply." message from admin panel
+- [x] After saving datetimes in admin panel, page reflects new values without manual reload
+- [x] After hiding/unhiding a wish, the wish wall updates (already worked via optimistic local state)
+- [x] After hiding/unhiding a gallery item, the gallery updates (already worked via optimistic local state)
+- [x] Remove "Reload page to apply." message from admin panel
 
 ## Files to Change
 
