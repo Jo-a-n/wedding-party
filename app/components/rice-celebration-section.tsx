@@ -292,7 +292,7 @@ export function RiceCelebrationSection({
     const counterParticle: TextParticle = {
       kind: "counter",
       id: nextParticleIdRef.current++,
-      text: nextCount.toLocaleString("el-GR"),
+      text: `Ρυζιά Νο ${nextCount.toLocaleString("el-GR")}`,
       fontSize: 15,
       x: start.x,
       y: originY,
