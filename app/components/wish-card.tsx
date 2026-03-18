@@ -12,6 +12,24 @@ const ACCENT_COLORS = [
   "bg-pistachio/30",
 ];
 
+function relativeTime(dateString: string): string {
+  const now = Date.now();
+  const then = new Date(dateString).getTime();
+  const diffSeconds = Math.floor((now - then) / 1000);
+
+  if (diffSeconds < 60) return "just now";
+  if (diffSeconds < 3600) {
+    const mins = Math.floor(diffSeconds / 60);
+    return `${mins}m ago`;
+  }
+  if (diffSeconds < 86400) {
+    const hours = Math.floor(diffSeconds / 3600);
+    return `${hours}h ago`;
+  }
+  const days = Math.floor(diffSeconds / 86400);
+  return `${days}d ago`;
+}
+
 export function WishCard({
   wish,
   index,
@@ -49,6 +67,7 @@ export function WishCard({
       <p className="text-lg leading-relaxed text-foreground/90">
         {wish.message}
       </p>
+      <p className="mt-3 text-xs text-ink-soft">{relativeTime(wish.created_at)}</p>
       {isAdmin && (
         <button
           type="button"
