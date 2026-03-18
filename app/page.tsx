@@ -3,6 +3,7 @@ import { RiceCelebrationSection } from "./components/rice-celebration-section";
 import { ThemeToggle } from "./components/theme-toggle";
 import { WishWall } from "./components/wish-wall";
 import { GallerySection } from "./components/gallery-section";
+import { CountdownTimer } from "./components/countdown-timer";
 import { createClient } from "@/lib/supabase/server";
 import type { Wish, GalleryItem } from "@/lib/supabase/types";
 
@@ -131,6 +132,8 @@ export default async function Home() {
           </div>
 
         </section>
+
+        <CountdownTimer />
 
         <RiceCelebrationSection initialCount={riceTossCount} />
 

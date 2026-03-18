@@ -400,6 +400,19 @@ a {
   }
 }
 
+@keyframes ceremony-pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+.ceremony-pulse {
+  animation: ceremony-pulse 2s ease-in-out infinite;
+}
+
 @keyframes wish-enter {
   from {
     opacity: 0;
@@ -417,6 +430,7 @@ a {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .ceremony-pulse,
   .wish-card-enter {
     animation: none;
   }
