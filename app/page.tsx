@@ -172,15 +172,18 @@ export default async function Home({
 
         <section className="grid flex-1 items-center gap-8 py-10 lg:py-16">
           <div className="space-y-8 text-center">
-            <div className="wiggle soft-chip inline-flex rounded-full px-4 py-2 text-sm text-ink-soft shadow-sm">
-              Σάββατο, 21 Μαρτίου 2026
+            <div className="wiggle font-playpen inline-flex items-center gap-3">
+              <span className="inline-flex h-[42px] w-[40px] items-center justify-center bg-[url('/date-blob.svg')] bg-contain bg-center bg-no-repeat">
+                <span className="text-[16px] font-[800] tracking-[0.02em] text-dark">21</span>
+              </span>
+              <span className="text-[14px] font-[500] tracking-[0.02em] text-jyellow">Μαρτίου 2026</span>
             </div>
 
             <div className="space-y-5">
-              <h1 className="font-gb-mama-beba wiggle wiggle-delay-1 wiggle-hover text-5xl text-pink sm:text-6xl lg:text-7xl">
+              <h1 className="font-gb-mama-beba wiggle wiggle-delay-1 wiggle-hover text-5xl text-jneutral sm:text-6xl lg:text-7xl">
                 Η Ντανιέλα κι ο Κωνσταντίνος {verb}!
               </h1>
-              <p className="font-playpen mx-auto max-w-2xl text-lg leading-8 text-neutral sm:text-xl">
+              <p className="font-playpen mx-auto max-w-2xl text-lg leading-8 text-jneutral sm:text-xl">
                 Η Ντανιέλα κι ο Κωνσταντίνος {verb} — οι σκύλοι ακόμα
                 αποφασίζουν αν εγκρίνουν. Ρίξτε ρύζι, αφήστε ευχές, βγάλτε
                 φωτογραφίες!
