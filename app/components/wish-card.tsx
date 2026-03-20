@@ -5,11 +5,11 @@ import { adminFetch } from "@/lib/admin";
 import { WISH_FONT_COUNT } from "@/app/fonts";
 
 const ACCENT_COLORS = [
-  "bg-mint/30",
-  "bg-periwinkle/30",
-  "bg-blush/30",
-  "bg-apricot/30",
-  "bg-pistachio/30",
+  "bg-pink/30",
+  "bg-purple/30",
+  "bg-blue/30",
+  "bg-yellow/30",
+  "bg-green/30",
 ];
 
 function relativeTime(dateString: string): string {
@@ -74,7 +74,7 @@ export function WishCard({
           onClick={handleToggle}
           className={`absolute top-2 right-2 rounded-full px-2 py-0.5 text-xs font-medium transition-opacity hover:opacity-100 ${
             isHidden
-              ? "bg-pistachio/20 text-foreground opacity-80"
+              ? "bg-green/20 text-foreground opacity-80"
               : "bg-red-500/10 text-red-500 opacity-60"
           }`}
           title={isHidden ? "Show wish" : "Hide wish"}

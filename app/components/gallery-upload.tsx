@@ -344,12 +344,12 @@ export function GalleryUpload({
                 </span>
               )}
               {upload.status === "uploading" && (
-                <span className="shrink-0 text-xs text-periwinkle">
+                <span className="shrink-0 text-xs text-purple">
                   Ανεβαίνει...
                 </span>
               )}
               {upload.status === "done" && (
-                <span className="shrink-0 text-xs text-pistachio">
+                <span className="shrink-0 text-xs text-green">
                   Έτοιμο
                 </span>
               )}

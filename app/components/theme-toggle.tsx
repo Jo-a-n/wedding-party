@@ -39,7 +39,7 @@ export function ThemeToggle() {
     <button
       type="button"
       onClick={toggleTheme}
-      className="soft-chip rounded-full px-4 py-2 text-sm font-medium text-ink-soft transition-colors duration-200 hover:bg-blush/60"
+      className="soft-chip rounded-full px-4 py-2 text-sm font-medium text-ink-soft transition-colors duration-200 hover:bg-pink/60"
       aria-label={mounted ? `Switch to ${theme === "dark" ? "light" : "dark"} theme` : "Toggle theme"}
       aria-pressed={theme === "dark"}
     >

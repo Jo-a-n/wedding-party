@@ -1,6 +1,6 @@
 import { FallingHeartsBackground } from "./components/falling-hearts-background";
 import { RiceCelebrationSection } from "./components/rice-celebration-section";
-import { ThemeToggle } from "./components/theme-toggle";
+// import { ThemeToggle } from "./components/theme-toggle";
 import { WishWall } from "./components/wish-wall";
 import { GallerySection } from "./components/gallery-section";
 import { CountdownTimer } from "./components/countdown-timer";
@@ -138,50 +138,49 @@ export default async function Home({
         : "παντρεύτηκαν";
 
   const palette = [
-    { name: "Mint", hex: "#99FFDA", className: "bg-mint" },
-    { name: "Periwinkle", hex: "#A1A2DF", className: "bg-periwinkle" },
-    { name: "Blush", hex: "#F5D0E3", className: "bg-blush" },
-    { name: "Apricot", hex: "#FACDAA", className: "bg-apricot" },
-    { name: "Pistachio", hex: "#D2FAC3", className: "bg-pistachio" },
+    { name: "Pink", hex: "#E789FA", className: "bg-pink" },
+    { name: "Purple", hex: "#9946F7", className: "bg-purple" },
+    { name: "Blue", hex: "#1DD0F0", className: "bg-blue" },
+    { name: "Yellow", hex: "#FFD412", className: "bg-yellow" },
+    { name: "Green", hex: "#1EF79A", className: "bg-green" },
+    { name: "Neutral", hex: "#F2EAD5", className: "bg-neutral" },
+    { name: "Black", hex: "#000000", className: "bg-dark" },
   ];
 
   return (
     <main
       className={`relative overflow-hidden ${isAdmin ? "ring-4 ring-inset ring-red-500/60" : ""}`}
     >
-      <div className="pastel-sheen absolute inset-0 opacity-80" />
       <FallingHeartsBackground />
       <div className="relative mx-auto flex min-h-screen w-full max-w-6xl flex-col px-4 py-8 sm:px-10 lg:px-12">
-        <header className="flex items-center justify-between py-4">
-          <div>
-            <p className="font-arima text-xs font-semibold uppercase tracking-[0.35em] text-ink-soft">
-              Ντανιέλα & Κωνσταντίνος
-            </p>
-            <p className="font-arima mt-2 text-sm text-ink-soft">
-              Σάββατο 21 Μαρτίου 2026
-            </p>
-          </div>
-          <div className="flex items-center gap-3">
+        <header className="flex flex-col items-center py-4">
+          <p className="font-arima text-[14px] font-[300] text-jneutral">
+            Κωνσταντίνος & Αντωνία-Ντανιέλα
+          </p>
+          <p className="font-arima text-[14px] font-[300] text-jneutral">
+            Σάββατο, 21 Μαρτίου 2026
+          </p>
+          <div className="mt-3 flex items-center gap-3">
             {isAdmin && (
               <span className="rounded-full bg-red-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-red-500">
                 Admin
               </span>
             )}
-            <ThemeToggle />
+            {/* <ThemeToggle /> */}
           </div>
         </header>
 
         <section className="grid flex-1 items-center gap-8 py-10 lg:py-16">
-          <div className="space-y-8">
+          <div className="space-y-8 text-center">
             <div className="wiggle soft-chip inline-flex rounded-full px-4 py-2 text-sm text-ink-soft shadow-sm">
-              Σάββατο 21 Μαρτίου 2026
+              Σάββατο, 21 Μαρτίου 2026
             </div>
 
             <div className="space-y-5">
-              <h1 className="font-gb-mama-beba wiggle wiggle-delay-1 wiggle-hover text-5xl tracking-[-0.05em] text-foreground sm:text-6xl lg:text-7xl">
+              <h1 className="font-gb-mama-beba wiggle wiggle-delay-1 wiggle-hover text-5xl text-pink sm:text-6xl lg:text-7xl">
                 Η Ντανιέλα κι ο Κωνσταντίνος {verb}!
               </h1>
-              <p className="font-playpen max-w-2xl text-lg leading-8 text-ink-soft sm:text-xl">
+              <p className="font-playpen mx-auto max-w-2xl text-lg leading-8 text-neutral sm:text-xl">
                 Η Ντανιέλα κι ο Κωνσταντίνος {verb} — οι σκύλοι ακόμα
                 αποφασίζουν αν εγκρίνουν. Ρίξτε ρύζι, αφήστε ευχές, βγάλτε
                 φωτογραφίες!
@@ -190,7 +189,7 @@ export default async function Home({
 
             <WeddingDogs />
 
-            <div className="flex flex-wrap gap-4">
+            <div className="flex flex-wrap justify-center gap-4">
               <a
                 className="wiggle wiggle-delay-2 wiggle-hover hero-accent-button rounded-full px-6 py-3 text-sm font-semibold transition-transform duration-200 hover:-translate-y-0.5"
                 href="#wishes"
