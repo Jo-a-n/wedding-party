@@ -44,7 +44,7 @@ export function CountdownTimer({ settings }: { settings: SiteSettings }) {
     const diff = formatDiff(ceremonyStart.getTime() - now);
     return (
       <section className="py-6">
-        <div className="soft-card rounded-[2rem] px-5 py-6 text-center sm:px-8 sm:py-8">
+        <div className="font-gb-mama-beba soft-card rounded-[2rem] px-5 py-6 text-center sm:px-8 sm:py-8">
           <p className="text-xs font-semibold uppercase tracking-[0.35em] text-ink-soft">
             Αντίστροφη μέτρηση
           </p>
@@ -78,7 +78,7 @@ export function CountdownTimer({ settings }: { settings: SiteSettings }) {
     const messageIndex = Math.floor((now / 4000) % IN_PROGRESS_MESSAGES.length);
     return (
       <section className="py-6">
-        <div className="soft-card rounded-[2rem] px-5 py-8 text-center sm:px-8 sm:py-10">
+        <div className="font-gb-mama-beba soft-card rounded-[2rem] px-5 py-8 text-center sm:px-8 sm:py-10">
           <p className="ceremony-pulse text-2xl font-semibold text-foreground sm:text-3xl">
             {IN_PROGRESS_MESSAGES[messageIndex]}
           </p>
@@ -91,7 +91,7 @@ export function CountdownTimer({ settings }: { settings: SiteSettings }) {
   const diff = formatDiff(now - ceremonyEnd.getTime());
   return (
     <section className="py-6">
-      <div className="soft-card rounded-[2rem] px-5 py-6 text-center sm:px-8 sm:py-8">
+      <div className="font-gb-mama-beba soft-card rounded-[2rem] px-5 py-6 text-center sm:px-8 sm:py-8">
         <p className="text-xs font-semibold uppercase tracking-[0.35em] text-ink-soft">
           Παντρεμένοι εδώ και
         </p>

@@ -429,14 +429,15 @@ a {
   animation: wish-enter 0.4s ease-out;
 }
 
-/* Wish handwriting fonts */
-.wish-font-0 { font-family: var(--font-wish-0), var(--font-sans-stack); }
-.wish-font-1 { font-family: var(--font-wish-1), var(--font-sans-stack); }
-.wish-font-2 { font-family: var(--font-wish-2), var(--font-sans-stack); }
-.wish-font-3 { font-family: var(--font-wish-3), var(--font-sans-stack); }
-.wish-font-4 { font-family: var(--font-wish-4), var(--font-sans-stack); }
-.wish-font-5 { font-family: var(--font-wish-5), var(--font-sans-stack); }
-.wish-font-6 { font-family: var(--font-wish-6), var(--font-sans-stack); }
+/* Custom fonts */
+.font-arima { font-family: var(--font-arima), var(--font-sans-stack); }
+.font-gb-mama-beba { font-family: var(--font-gb-mama-beba), var(--font-sans-stack); }
+.font-playpen { font-family: var(--font-playpen), var(--font-sans-stack); }
+
+/* Wish handwriting fonts — rotated across mynerve, gnyrwn, mansalva */
+.wish-font-0 { font-family: var(--font-mynerve), var(--font-sans-stack); }
+.wish-font-1 { font-family: var(--font-gnyrwn), var(--font-sans-stack); }
+.wish-font-2 { font-family: var(--font-mansalva), var(--font-sans-stack); }
 
 @media (prefers-reduced-motion: reduce) {
   .ceremony-pulse,

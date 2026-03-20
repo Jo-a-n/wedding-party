@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { wishFonts } from "./fonts";
+import { allFonts } from "./fonts";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description: "Ο γάμος της Ντανιέλας και του Κωνσταντίνου. Σάββατο 21 Μαρτίου 2026. Ευχές, φωτογραφίες και ρύζι!",
 };
 
-const wishFontVariables = wishFonts.map((f) => f.variable).join(" ");
+const fontVariables = allFonts.map((f) => f.variable).join(" ");
 
 export default function RootLayout({
   children,
@@ -15,7 +15,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="el" className={wishFontVariables} suppressHydrationWarning>
+    <html lang="el" className={fontVariables} suppressHydrationWarning>
       <head>
         <script
           dangerouslySetInnerHTML={{

@@ -62,7 +62,7 @@ export function WishCard({
       className={`soft-card relative rounded-[1.5rem] p-5 ${fontClass} ${isNew ? "wish-card-enter" : ""} ${isHidden ? "opacity-40" : ""}`}
     >
       <div className={`${accent} -mx-5 -mt-5 mb-4 rounded-t-[1.5rem] px-5 py-3`}>
-        <p className="text-sm font-semibold text-foreground">{wish.name}</p>
+        <p className="font-playpen text-sm font-semibold text-foreground">{wish.name}</p>
       </div>
       <p className="text-lg leading-relaxed text-foreground/90">
         {wish.message}

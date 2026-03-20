@@ -1,17 +1,14 @@
 # Todo
 
-- [ ] test on mobile
+- [ ] domain
 - [ ] test the timings of countdown
 - [ ] test the admin view
 - [ ] test whole site flow
-- [ ] env var gia to supabase admin
-- [ ] domain
+- [ ] envvar gia to supabase admin
 - [ ] qr code _on_ and _for_ the site
 
-- [ ] maybe use the wish cards without actual cards, as if they are just handwritten on the page. maybe also use different fonts for each.
-- [ ] something about fonts
-- [ ] oso petane rizi, na gemizzei to background tou size me rizi lol
-- [ ] Fun extras — Greek TV gifs? Other ideas to liven it up
+- [ ] put fonts
+- [ ] big file => google photos
 
 - [x] Ship the names
 - [x] views counter on photos and videos? they count when in full view, and they are shown on the thumbain view

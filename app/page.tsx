@@ -154,10 +154,10 @@ export default async function Home({
       <div className="relative mx-auto flex min-h-screen w-full max-w-6xl flex-col px-4 py-8 sm:px-10 lg:px-12">
         <header className="flex items-center justify-between py-4">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.35em] text-ink-soft">
+            <p className="font-arima text-xs font-semibold uppercase tracking-[0.35em] text-ink-soft">
               Ντανιέλα & Κωνσταντίνος
             </p>
-            <p className="mt-2 text-sm text-ink-soft">
+            <p className="font-arima mt-2 text-sm text-ink-soft">
               Σάββατο 21 Μαρτίου 2026
             </p>
           </div>
@@ -178,10 +178,10 @@ export default async function Home({
             </div>
 
             <div className="space-y-5">
-              <h1 className="wiggle wiggle-delay-1 wiggle-hover text-5xl font-semibold tracking-[-0.05em] text-foreground sm:text-6xl lg:text-7xl">
+              <h1 className="font-gb-mama-beba wiggle wiggle-delay-1 wiggle-hover text-5xl tracking-[-0.05em] text-foreground sm:text-6xl lg:text-7xl">
                 Η Ντανιέλα κι ο Κωνσταντίνος {verb}!
               </h1>
-              <p className="max-w-2xl text-lg leading-8 text-ink-soft sm:text-xl">
+              <p className="font-playpen max-w-2xl text-lg leading-8 text-ink-soft sm:text-xl">
                 Η Ντανιέλα κι ο Κωνσταντίνος {verb} — οι σκύλοι ακόμα
                 αποφασίζουν αν εγκρίνουν. Ρίξτε ρύζι, αφήστε ευχές, βγάλτε
                 φωτογραφίες!

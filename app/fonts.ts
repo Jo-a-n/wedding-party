@@ -1,69 +1,42 @@
-import {
-  Caveat,
-  Patrick_Hand,
-  Shadows_Into_Light,
-  Kalam,
-  Indie_Flower,
-  Architects_Daughter,
-  Handlee,
-} from "next/font/google";
+import { Arima } from "next/font/google";
+import localFont from "next/font/local";
 
-const caveat = Caveat({
-  subsets: ["latin"],
-  variable: "--font-wish-0",
+export const arima = Arima({
+  subsets: ["latin", "greek"],
+  variable: "--font-arima",
   display: "swap",
 });
 
-const patrickHand = Patrick_Hand({
-  weight: "400",
-  subsets: ["latin"],
-  variable: "--font-wish-1",
+export const gbMamaBeba = localFont({
+  src: "./fonts/GBMamaBeba.ttf",
+  variable: "--font-gb-mama-beba",
   display: "swap",
 });
 
-const shadowsIntoLight = Shadows_Into_Light({
-  weight: "400",
-  subsets: ["latin"],
-  variable: "--font-wish-2",
+export const gnyrwn = localFont({
+  src: "./fonts/gnyrwn979.otf",
+  variable: "--font-gnyrwn",
   display: "swap",
 });
 
-const kalam = Kalam({
-  weight: "400",
-  subsets: ["latin"],
-  variable: "--font-wish-3",
+export const playpenSans = localFont({
+  src: "./fonts/PlaypenSans-VariableFont_wght.ttf",
+  variable: "--font-playpen",
   display: "swap",
 });
 
-const indieFlower = Indie_Flower({
-  weight: "400",
-  subsets: ["latin"],
-  variable: "--font-wish-4",
+export const mynerve = localFont({
+  src: "./fonts/Mynerve-Regular.ttf",
+  variable: "--font-mynerve",
   display: "swap",
 });
 
-const architectsDaughter = Architects_Daughter({
-  weight: "400",
-  subsets: ["latin"],
-  variable: "--font-wish-5",
+export const mansalva = localFont({
+  src: "./fonts/Mansalva-Regular.ttf",
+  variable: "--font-mansalva",
   display: "swap",
 });
 
-const handlee = Handlee({
-  weight: "400",
-  subsets: ["latin"],
-  variable: "--font-wish-6",
-  display: "swap",
-});
+export const allFonts = [arima, gbMamaBeba, gnyrwn, playpenSans, mynerve, mansalva];
 
-export const wishFonts = [
-  caveat,
-  patrickHand,
-  shadowsIntoLight,
-  kalam,
-  indieFlower,
-  architectsDaughter,
-  handlee,
-];
-
-export const WISH_FONT_COUNT = wishFonts.length;
+export const WISH_FONT_COUNT = 3;
