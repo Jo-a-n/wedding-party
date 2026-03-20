@@ -180,7 +180,7 @@ export default async function Home({
             </div>
 
             <div className="space-y-5">
-              <h1 className="font-gb-mama-beba wiggle wiggle-delay-1 wiggle-hover text-5xl text-jneutral sm:text-6xl lg:text-7xl">
+              <h1 className="font-gb-mama-beba wiggle wiggle-delay-1 wiggle-hover text-[40px] font-[400] text-jneutral">
                 Η Ντανιέλα κι ο Κωνσταντίνος {verb}!
               </h1>
               <p className="font-playpen mx-auto max-w-2xl text-lg leading-8 text-jneutral sm:text-xl">

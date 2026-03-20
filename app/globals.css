@@ -164,7 +164,7 @@ a {
 }
 
 ::selection {
-  background: color-mix(in srgb, var(--periwinkle) 45%, white);
+  background: color-mix(in srgb, var(--jpurple) 45%, white);
 }
 
 .pastel-panel {
@@ -195,7 +195,7 @@ a {
 
 .heart-bg {
   pointer-events: none;
-  position: absolute;
+  position: fixed;
   inset: 0;
   overflow: hidden;
   z-index: 0;
@@ -235,7 +235,7 @@ a {
   display: block;
   font-size: var(--heart-size);
   line-height: 1;
-  color: color-mix(in srgb, var(--blush) 84%, white 16%);
+  color: color-mix(in srgb, var(--jpink) 84%, white 16%);
   opacity: 0.72;
   text-shadow:
     0 0 12px rgba(245, 208, 227, 0.38),
@@ -295,7 +295,7 @@ a {
   }
 
   :root:not([data-theme]) .heart-bg__heart {
-    color: color-mix(in srgb, var(--blush) 72%, white 18%);
+    color: color-mix(in srgb, var(--jpink) 72%, white 18%);
     opacity: 0.48;
     text-shadow:
       0 0 10px rgba(245, 208, 227, 0.24),
@@ -323,7 +323,7 @@ a {
 }
 
 :root[data-theme="dark"] .heart-bg__heart {
-  color: color-mix(in srgb, var(--blush) 72%, white 18%);
+  color: color-mix(in srgb, var(--jpink) 72%, white 18%);
   opacity: 0.48;
   text-shadow:
     0 0 10px rgba(245, 208, 227, 0.24),

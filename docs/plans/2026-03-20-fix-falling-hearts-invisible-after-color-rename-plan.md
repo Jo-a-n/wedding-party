@@ -33,8 +33,8 @@ The "not on mobile" report is the same underlying issue — hearts are invisible
 
 ## Acceptance Criteria
 
-- [ ] Replace `var(--blush)` with `var(--jpink)` on lines 238, 298, 326 of `app/globals.css`
-- [ ] Replace `var(--periwinkle)` with `var(--jpurple)` on line 167 of `app/globals.css`
+- [x] Replace `var(--blush)` with `var(--jpink)` on lines 238, 298, 326 of `app/globals.css`
+- [x] Replace `var(--periwinkle)` with `var(--jpurple)` on line 167 of `app/globals.css`
 - [ ] Hearts visibly fall on desktop (dark theme)
 - [ ] Hearts visibly fall on mobile viewport
 - [ ] Text selection highlight is visible site-wide
