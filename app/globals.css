@@ -118,6 +118,7 @@
 
 @theme inline {
   --color-jpink: var(--jpink);
+
   --color-jpurple: var(--jpurple);
   --color-jblue: var(--jblue);
   --color-jyellow: var(--jyellow);
