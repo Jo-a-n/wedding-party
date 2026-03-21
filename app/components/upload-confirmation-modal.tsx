@@ -12,11 +12,15 @@ type ConfirmationFile = {
 export function UploadConfirmationModal({
   files,
   overLimitCount,
+  oversizedFiles = [],
+  albumUrl,
   onConfirm,
   onCancel,
 }: {
   files: File[];
   overLimitCount: number;
+  oversizedFiles?: File[];
+  albumUrl?: string;
   onConfirm: (files: File[]) => void;
   onCancel: () => void;
 }) {
@@ -188,10 +192,48 @@ export function UploadConfirmationModal({
             </p>
           )}
 
+          {oversizedFiles.length > 0 && (
+            <div className="mb-4 rounded-xl bg-amber-500/10 border border-amber-500/20 p-4 text-[13px] text-amber-700 dark:text-amber-300">
+              <p className="font-[500]">
+                {oversizedFiles.length === 1
+                  ? "Ένα αρχείο είναι πολύ μεγάλο για ανέβασμα εδώ:"
+                  : `${oversizedFiles.length} αρχεία είναι πολύ μεγάλα για ανέβασμα εδώ:`}
+              </p>
+              <ul className="mt-1.5 list-disc pl-4 space-y-0.5">
+                {oversizedFiles.map((f) => (
+                  <li key={f.name}>
+                    {f.name} ({Math.round(f.size / (1024 * 1024))} MB)
+                  </li>
+                ))}
+              </ul>
+              {albumUrl ? (
+                <p className="mt-2.5">
+                  Ανεβάστε τα στο{" "}
+                  <a
+                    href={albumUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline font-[500] hover:text-amber-900 dark:hover:text-amber-100"
+                  >
+                    Google Photos album
+                  </a>{" "}
+                  μας.
+                </p>
+              ) : (
+                <p className="mt-2.5">
+                  Ο σύνδεσμος για ανέβασμα μεγάλων αρχείων θα είναι διαθέσιμος
+                  σύντομα.
+                </p>
+              )}
+            </div>
+          )}
+
           {count === 0 ? (
-            <p className="py-8 text-center text-sm text-ink-soft">
-              No files selected.
-            </p>
+            oversizedFiles.length === 0 ? (
+              <p className="py-8 text-center text-sm text-ink-soft">
+                No files selected.
+              </p>
+            ) : null
           ) : (
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
               {items.map((item, index) => (

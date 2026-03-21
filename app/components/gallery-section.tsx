@@ -42,11 +42,13 @@ export function GallerySection({
   initialCount,
   isAdmin,
   deadline,
+  largeUploadAlbumUrl,
 }: {
   initialItems: GalleryItem[];
   initialCount: number;
   isAdmin?: boolean;
   deadline: string;
+  largeUploadAlbumUrl?: string;
 }) {
   const [items, setItems] = useState<GalleryItem[]>(initialItems);
   const [totalCount, setTotalCount] = useState(initialCount);
@@ -246,7 +248,7 @@ export function GallerySection({
 
       {open || isAdmin ? (
         <div className="mb-8">
-          <GalleryUpload onUploadComplete={handleUploadComplete} />
+          <GalleryUpload onUploadComplete={handleUploadComplete} largeUploadAlbumUrl={largeUploadAlbumUrl} />
         </div>
       ) : (
         <div className="soft-chip mb-8 inline-flex rounded-full px-4 py-2 text-sm text-ink-soft">
