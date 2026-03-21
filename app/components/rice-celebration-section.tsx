@@ -477,7 +477,7 @@ export function RiceCelebrationSection({
                 src="/rice-counter-confetti.svg"
                 alt=""
                 aria-hidden="true"
-                className="pointer-events-none h-[109px] w-[158px]"
+                className="pointer-events-none h-[109px] w-[158px] scale-110 z-50"
               />
               {/* Green pill counter on top */}
               <div className="absolute flex items-center justify-center rounded-[24px] bg-jgreen px-6 py-3">
