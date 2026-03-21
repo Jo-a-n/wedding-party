@@ -237,11 +237,11 @@ export function GallerySection({
 
   return (
     <section id="gallery" className="py-8">
-      <div className="mb-6">
-        <p className="text-xs font-semibold uppercase tracking-[0.35em] text-ink-soft">
+      <div className="mb-6 text-center">
+        <p className="font-playpen text-[15px] font-[300] text-jneutral opacity-90">
           Άλμπουμ φωτογραφιών
         </p>
-        <h2 className="mt-2 text-3xl font-semibold tracking-[-0.04em] text-jneutral sm:text-4xl">
+        <h2 className="font-arima mt-2 text-[30px] font-normal text-jneutral">
           Κοινές στιγμές
         </h2>
       </div>

@@ -287,39 +287,37 @@ export function GalleryUpload({
   };
 
   return (
-    <div className="soft-card-strong rounded-[1.5rem] p-5">
-      <p className="mb-4 text-xs font-semibold uppercase tracking-[0.3em] text-ink-soft">
+    <div className="flex flex-col gap-[14px] overflow-clip rounded-[24px] border border-[#262626] bg-[#171717] p-[20px]">
+      <p className="font-arima text-[15px] font-normal uppercase text-jneutral opacity-90">
         Μοιράσου μια φωτογραφία ή βίντεο
       </p>
 
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-end">
-        <input
-          type="text"
-          placeholder="Το όνομά σου (προαιρετικά)"
-          value={guestName}
-          onChange={(e) => setGuestName(e.target.value)}
-          maxLength={100}
-          className="rounded-xl border border-border-soft bg-transparent px-4 py-2.5 text-sm text-jneutral placeholder:text-ink-soft/60 focus:outline-none focus:ring-2 focus:ring-periwinkle/40 sm:flex-1"
-          aria-label="Your name"
-        />
-        <button
-          type="button"
-          disabled={isUploading}
-          onClick={() => fileInputRef.current?.click()}
-          className="hero-accent-button rounded-full px-6 py-2.5 text-sm font-semibold transition-transform duration-200 hover:-translate-y-0.5 disabled:opacity-50 disabled:hover:translate-y-0"
-        >
-          {isUploading ? "Ανεβαίνει..." : "Επιλογή αρχείων"}
-        </button>
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept="image/*,video/*"
-          multiple
-          onChange={(e) => handleFileSelection(e.target.files)}
-          className="hidden"
-          aria-label="Επιλογή φωτογραφιών ή βίντεο"
-        />
-      </div>
+      <input
+        type="text"
+        placeholder="Το όνομά σου (προαιρετικά)"
+        value={guestName}
+        onChange={(e) => setGuestName(e.target.value)}
+        maxLength={100}
+        className="font-arima w-full rounded-[16px] border border-[#262626] bg-[#171717] px-[20px] py-[16px] text-[14px] text-jneutral placeholder:text-jneutral/60 focus:outline-none focus:ring-2 focus:ring-jpurple/40"
+        aria-label="Your name"
+      />
+      <button
+        type="button"
+        disabled={isUploading}
+        onClick={() => fileInputRef.current?.click()}
+        className="font-gb-mama-beba w-full rounded-[24px] bg-jpurple px-[16px] py-[8px] text-[17px] text-jneutral transition-transform duration-200 hover:-translate-y-0.5 disabled:opacity-50 disabled:hover:translate-y-0"
+      >
+        {isUploading ? "Ανεβαίνει..." : "Επιλογή αρχείων"}
+      </button>
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/*,video/*"
+        multiple
+        onChange={(e) => handleFileSelection(e.target.files)}
+        className="hidden"
+        aria-label="Επιλογή φωτογραφιών ή βίντεο"
+      />
 
       {validationErrors.length > 0 && (
         <div className="mt-3 space-y-1">
@@ -343,35 +341,35 @@ export function GalleryUpload({
       )}
 
       {uploads.length > 0 && (
-        <div className="mt-4 space-y-2">
+        <div className="space-y-2">
           {uploads.map((upload, i) => (
             <div
               key={i}
-              className="flex items-center gap-3 rounded-xl border border-border-soft px-3 py-2 text-sm"
+              className="font-arima flex items-center gap-3 rounded-[16px] border border-[#262626] bg-[#171717] px-[20px] py-[12px] text-[14px]"
             >
               <span className="min-w-0 flex-1 truncate text-jneutral/80">
                 {upload.fileName}
               </span>
               {upload.status === "compressing" && (
-                <span className="shrink-0 text-xs text-ink-soft">
+                <span className="shrink-0 text-[13px] text-jneutral/60">
                   {upload.progress > 0
                     ? `Μετατροπή... ${upload.progress}%`
                     : "Επεξεργασία..."}
                 </span>
               )}
               {upload.status === "uploading" && (
-                <span className="shrink-0 text-xs text-purple">
+                <span className="shrink-0 text-[13px] text-jpurple">
                   Ανεβαίνει...
                 </span>
               )}
               {upload.status === "done" && (
-                <span className="shrink-0 text-xs text-green">
+                <span className="shrink-0 text-[13px] text-jgreen">
                   Έτοιμο
                 </span>
               )}
               {upload.status === "error" && (
                 <span
-                  className="shrink-0 text-xs text-red-500"
+                  className="shrink-0 text-[13px] text-red-500"
                   role="alert"
                 >
                   {upload.error}
