@@ -187,7 +187,7 @@ export default async function Home({
               </p>
             </div>
 
-            <WeddingDogs />
+            <CountdownTimer settings={settings} />
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8">
               <a
@@ -217,12 +217,12 @@ export default async function Home({
                 </span>
               </a>
             </div>
+
+            <WeddingDogs />
           </div>
         </section>
 
         {isAdmin && <AdminPanel settings={settings} />}
-
-        <CountdownTimer settings={settings} />
 
         <RiceCelebrationSection initialCount={riceTossCount} />
 
