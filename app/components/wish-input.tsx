@@ -99,9 +99,9 @@ export function WishInput({
     <form
       ref={formRef}
       onSubmit={handleSubmit}
-      className="soft-card-strong rounded-[1.5rem] p-5"
+      className="flex flex-col gap-[14px] overflow-clip rounded-[24px] border border-[#262626] bg-[#171717] p-[20px]"
     >
-      <p className="mb-4 text-xs font-semibold uppercase tracking-[0.3em] text-ink-soft">
+      <p className="font-arima text-[15px] font-normal uppercase text-jneutral opacity-90">
         Άφησε μια ευχή
       </p>
 
@@ -112,37 +112,36 @@ export function WishInput({
         maxLength={500}
         rows={3}
         required
-        className="w-full resize-none rounded-xl border border-border-soft bg-transparent px-4 py-3 text-sm text-jneutral placeholder:text-ink-soft/60 focus:outline-none focus:ring-2 focus:ring-periwinkle/40"
+        className="font-arima w-full resize-none rounded-[16px] border border-[#262626] bg-[#171717] px-[20px] py-[16px] text-[14px] text-jneutral placeholder:text-jneutral/60 focus:outline-none focus:ring-2 focus:ring-jpurple/40"
         aria-label="Η ευχή σου για το ζευγάρι"
       />
 
-      <div className="mt-3 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-        <input
-          type="text"
-          placeholder="Το όνομά σου"
-          value={draft.name}
-          onChange={(e) => setDraft((d) => ({ ...d, name: e.target.value }))}
-          maxLength={100}
-          required
-          className="rounded-xl border border-border-soft bg-transparent px-4 py-2.5 text-sm text-jneutral placeholder:text-ink-soft/60 focus:outline-none focus:ring-2 focus:ring-periwinkle/40 sm:flex-1"
-          aria-label="Your name"
-        />
-        <button
-          type="submit"
-          disabled={submitting}
-          className="hero-accent-button rounded-full px-6 py-2.5 text-sm font-semibold transition-transform duration-200 hover:-translate-y-0.5 disabled:opacity-50 disabled:hover:translate-y-0"
-        >
-          {submitting ? "Στέλνεται..." : "Στείλε ευχή"}
-        </button>
-      </div>
+      <input
+        type="text"
+        placeholder="Το όνομά σου"
+        value={draft.name}
+        onChange={(e) => setDraft((d) => ({ ...d, name: e.target.value }))}
+        maxLength={100}
+        required
+        className="font-arima w-full rounded-[16px] border border-[#262626] bg-[#171717] px-[20px] py-[16px] text-[14px] text-jneutral placeholder:text-jneutral/60 focus:outline-none focus:ring-2 focus:ring-jpurple/40"
+        aria-label="Your name"
+      />
+
+      <button
+        type="submit"
+        disabled={submitting}
+        className="font-gb-mama-beba w-full rounded-[24px] bg-jpurple px-[16px] py-[8px] text-[17px] text-jneutral transition-transform duration-200 hover:-translate-y-0.5 disabled:opacity-50 disabled:hover:translate-y-0"
+      >
+        {submitting ? "Στέλνεται..." : "Στείλε ευχή"}
+      </button>
 
       {error && (
-        <p className="mt-3 text-sm text-red-500" role="alert">
+        <p className="mt-1 text-sm text-red-500" role="alert">
           {error}
         </p>
       )}
 
-      <p className="mt-2 text-right text-xs text-ink-soft/60">
+      <p className="font-arima text-right text-[14px] text-jneutral/60">
         {draft.message.length}/500
       </p>
     </form>
