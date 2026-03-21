@@ -140,16 +140,6 @@ export default async function Home({
         ? "παντρεύονται"
         : "παντρεύτηκαν";
 
-  // const palette = [
-  //   { name: "Pink", hex: "#E789FA", className: "bg-pink" },
-  //   { name: "Purple", hex: "#9946F7", className: "bg-purple" },
-  //   { name: "Blue", hex: "#1DD0F0", className: "bg-blue" },
-  //   { name: "Yellow", hex: "#FFD412", className: "bg-yellow" },
-  //   { name: "Green", hex: "#1EF79A", className: "bg-green" },
-  //   { name: "Neutral", hex: "#F2EAD5", className: "bg-neutral" },
-  //   { name: "Black", hex: "#000000", className: "bg-dark" },
-  // ];
-
   return (
     <main
       className={`relative overflow-hidden ${isAdmin ? "ring-4 ring-inset ring-red-500/60" : ""}`}
@@ -262,39 +252,6 @@ export default async function Home({
               </article>
             ))}
           </div>
-        </section>
-
-        <section
-          id="system"
-          className="grid gap-4 py-8 text-sm leading-7 text-ink-soft lg:grid-cols-3"
-        >
-          <article className="soft-card rounded-[1.75rem] p-6">
-            <p className="text-xs font-semibold uppercase tracking-[0.3em]">
-              Foundations
-            </p>
-            <p className="mt-3">
-              Global CSS now owns the palette, surface colors, text tones,
-              borders, and soft shadows.
-            </p>
-          </article>
-          <article className="soft-card rounded-[1.75rem] p-6">
-            <p className="text-xs font-semibold uppercase tracking-[0.3em]">
-              Components
-            </p>
-            <p className="mt-3">
-              Buttons, panels, and color cards use semantic utilities instead of
-              ad hoc grayscale classes.
-            </p>
-          </article>
-          <article className="soft-card rounded-[1.75rem] p-6">
-            <p className="text-xs font-semibold uppercase tracking-[0.3em]">
-              Direction
-            </p>
-            <p className="mt-3">
-              The project now has a clear visual base for invitation pages,
-              schedules, RSVPs, and guest details.
-            </p>
-          </article>
         </section> */}
 
         <WishWall

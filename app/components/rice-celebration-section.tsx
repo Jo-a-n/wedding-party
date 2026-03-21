@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import type { RiceToss } from "@/lib/supabase/types";
 
-
 type Point = {
   x: number;
   y: number;
@@ -456,45 +455,28 @@ export function RiceCelebrationSection({
       />
 
       <section id="rice" className="relative z-10 py-8">
-        <div className="overflow-hidden">
-          <div className="grid gap-0 lg:grid-cols-[0.9fr_1.1fr]">
-            <div className="py-8 sm:px-8 sm:py-10">
-              <p className="text-xs font-semibold uppercase tracking-[0.35em] text-ink-soft">
-                Ώρα για ρύζι!
-              </p>
-              <h2 className="mt-3 text-4xl font-semibold tracking-[-0.05em] text-jneutral sm:text-5xl">
-                Ρίξε ρύζι, ο γάμος να μη τρίζει!
-              </h2>
+        <div className="py-8 sm:px-8 sm:py-10">
+          <p className="text-xs font-semibold uppercase tracking-[0.35em] text-ink-soft">
+            Ώρα για ρύζι!
+          </p>
+          <h2 className="mt-3 text-4xl font-semibold tracking-[-0.05em] text-jneutral sm:text-5xl">
+            Ρίξε ρύζι, ο γάμος να μη τρίζει!
+          </h2>
 
-              <p className="mt-4 max-w-xl text-base leading-7 text-ink-soft sm:text-lg">
-                Σύρε και πέτα ρύζι! Κανονικά θα σκούπιζε ο γαμπρός, αλλά εδώ
-                είμαστε online.
-              </p>
+          <p className="mt-4 max-w-xl text-base leading-7 text-ink-soft sm:text-lg">
+            Σύρε και πέτα ρύζι! Κανονικά θα σκούπιζε ο γαμπρός, αλλά εδώ είμαστε
+            online.
+          </p>
 
-              <div className="mt-8 flex items-center gap-3">
-                <div className="soft-card inline-flex flex-row items-center gap-3 rounded-[1.5rem] px-4 py-3 shadow-sm">
-                  <div className="hero-accent-button flex h-11 w-11 items-center justify-center rounded-full text-lg font-semibold">
-                    {riceCount.toLocaleString("el-GR")}
-                  </div>
-                  <div>
-                    <p className="text-xs font-semibold uppercase tracking-[0.25em] text-ink-soft">
-                      Ρυζιές κάουντερ
-                    </p>
-                  </div>
-                </div>
-
+          <div className="mt-8 flex items-center gap-3">
+            <div className="soft-card inline-flex flex-row items-center gap-3 rounded-[1.5rem] px-4 py-3 shadow-sm">
+              <div className="hero-accent-button flex h-11 w-11 items-center justify-center rounded-full text-lg font-semibold">
+                {riceCount.toLocaleString("el-GR")}
               </div>
-            </div>
-
-            <div className="spotlight-stage flex items-center justify-center">
-              <div className="launcher-surface rice-launcher relative flex min-h-[240px] w-full items-center justify-center overflow-hidden rounded-[2rem] border border-white/20 px-6 py-10 sm:min-h-[280px]">
-                {/* <div className="soft-card pointer-events-none rounded-[1.5rem] px-5 py-4 text-sm text-jneutral/75 shadow-sm sm:px-6">
-                  {isDragging
-                    ? "Πέτα το! 🎉"
-                    : isTouchDevice
-                      ? "Πάτα το κουμπί για να ρίξεις ρύζι στους νεόνυμφους!"
-                      : "Σύρε οπουδήποτε στη σελίδα για να ρίξεις ρύζι!"}
-                </div> */}
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.25em] text-ink-soft">
+                  Ρυζιές κάουντερ
+                </p>
               </div>
             </div>
           </div>
