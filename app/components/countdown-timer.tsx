@@ -27,8 +27,14 @@ const IN_PROGRESS_MESSAGES = [
 export function CountdownTimer({ settings }: { settings: SiteSettings }) {
   const [now, setNow] = useState(() => Date.now());
 
-  const ceremonyStart = useMemo(() => new Date(settings.ceremony_start), [settings.ceremony_start]);
-  const ceremonyEnd = useMemo(() => new Date(settings.ceremony_end), [settings.ceremony_end]);
+  const ceremonyStart = useMemo(
+    () => new Date(settings.ceremony_start),
+    [settings.ceremony_start],
+  );
+  const ceremonyEnd = useMemo(
+    () => new Date(settings.ceremony_end),
+    [settings.ceremony_end],
+  );
 
   useEffect(() => {
     const id = setInterval(() => setNow(Date.now()), 1000);
@@ -36,38 +42,36 @@ export function CountdownTimer({ settings }: { settings: SiteSettings }) {
   }, []);
 
   const state: TimerState =
-    now < ceremonyStart.getTime() ? "countdown" :
-    now < ceremonyEnd.getTime() ? "in-progress" :
-    "married";
+    now < ceremonyStart.getTime()
+      ? "countdown"
+      : now < ceremonyEnd.getTime()
+        ? "in-progress"
+        : "married";
 
   if (state === "countdown") {
     const diff = formatDiff(ceremonyStart.getTime() - now);
     return (
       <section className="py-6">
-        <div className="font-gb-mama-beba soft-card rounded-[2rem] px-5 py-6 text-center sm:px-8 sm:py-8">
-          <p className="text-xs font-semibold uppercase tracking-[0.35em] text-ink-soft">
-            Αντίστροφη μέτρηση
+        <div className="font-gb-mama-beba px-5 py-6 text-center sm:px-8 sm:py-8">
+          <p className="relative mx-auto mb-6 inline-block text-[28px] text-jneutral sm:text-[28px]">
+            Αντίστροφη{" "}
+            <span className="relative text-jgreen">
+              Μέτρηση
+              <img
+                src="/clock.svg"
+                alt=""
+                className="absolute -top-[39px] -right-[33px] h-[76px] w-[76px] sm:-top-[45px] sm:-right-[37px] sm:h-[90px] sm:w-[90px]"
+              />
+            </span>
           </p>
-          <div className="mt-4 flex items-center justify-center gap-3 sm:gap-5">
-            <TimeUnit
-              value={diff.days}
-              label={pluralize(diff.days, "μέρα", "μέρες")}
-            />
+          <div className="flex items-start justify-center gap-3 sm:gap-5">
+            <TimeUnit value={diff.days} label="μέρες" />
             <Separator />
-            <TimeUnit
-              value={diff.hours}
-              label={pluralize(diff.hours, "ώρα", "ώρες")}
-            />
+            <TimeUnit value={diff.hours} label="ώρες" />
             <Separator />
-            <TimeUnit
-              value={diff.minutes}
-              label={pluralize(diff.minutes, "λεπτό", "λεπτά")}
-            />
+            <TimeUnit value={diff.minutes} label="λεπτά" />
             <Separator />
-            <TimeUnit
-              value={diff.seconds}
-              label={pluralize(diff.seconds, "δευτερόλεπτο", "δευτερόλεπτα")}
-            />
+            <TimeUnit value={diff.seconds} label="δ/λεπτά" />
           </div>
         </div>
       </section>
@@ -128,10 +132,10 @@ export function CountdownTimer({ settings }: { settings: SiteSettings }) {
 function TimeUnit({ value, label }: { value: number; label: string }) {
   return (
     <div className="flex flex-col items-center">
-      <span className="text-3xl font-bold tabular-nums text-foreground sm:text-5xl">
+      <span className="text-[42px] font-bold tabular-nums text-foreground sm:text-[64px]">
         {String(value).padStart(2, "0")}
       </span>
-      <span className="mt-1 text-[0.65rem] uppercase tracking-wider text-ink-soft sm:text-xs">
+      <span className="mt-1 text-[11px] uppercase tracking-[0.12em] text-ink-soft sm:text-[14px]">
         {label}
       </span>
     </div>
@@ -141,7 +145,7 @@ function TimeUnit({ value, label }: { value: number; label: string }) {
 function Separator() {
   return (
     <span
-      className="text-2xl font-light text-ink-soft/40 sm:text-4xl"
+      className="text-[32px] font-bold text-foreground sm:text-[50px]"
       aria-hidden
     >
       :
