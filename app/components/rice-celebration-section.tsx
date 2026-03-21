@@ -464,7 +464,7 @@ export function RiceCelebrationSection({
             Ρίξε ρύζι, ο γάμος να μη τρίζει!
           </h2>
 
-          <p className="font-playpen font-[300] text-[15px] text-jneutral/90 text-center w-[282px]">
+          <p className="font-playpen font-[200] text-[15px] text-jneutral/90 text-center w-[282px]">
             Σύρε και πέτα ρύζι! Κανονικά θα σκούπιζε ο γαμπρός, αλλά εδώ είμαστε
             online.
           </p>
@@ -495,20 +495,22 @@ export function RiceCelebrationSection({
       </section>
 
       {isTouchDevice ? (
-        <div className="group fixed bottom-5 right-5 z-30 sm:bottom-8 sm:right-8">
+        <div className="fixed bottom-5 right-5 z-30 sm:bottom-8 sm:right-8">
           <button
+            key={`btn-${tossKey}`}
             ref={touchButtonRef}
             type="button"
             onClick={handleTouchToss}
-            className="relative rounded-full bg-[#1ef79a] px-4 py-2.5 font-gb-mama-beba text-[17px] text-black shadow-[0_18px_35px_rgba(0,0,0,0.16)] transition-transform duration-100 active:scale-95"
+            className="relative rounded-full bg-[#1ef79a] px-4 py-2.5 font-gb-mama-beba text-[17px] text-black shadow-[0_18px_35px_rgba(0,0,0,0.16)] animate-[toss-pop_120ms_ease-out]"
           >
             Ρίξε ρύζι!
           </button>
           <img
+            key={`svg-${tossKey}`}
             src="/rice-confetti.svg"
             alt=""
             aria-hidden="true"
-            className="pointer-events-none absolute -left-[32px] -top-[28px] z-10 h-[90px] w-[120px] transition-transform duration-150 group-active:scale-[0.8]"
+            className="pointer-events-none absolute -left-[32px] -top-[28px] z-10 h-[90px] w-[120px] animate-[toss-pop-deep_150ms_ease-out]"
           />
         </div>
       ) : null}

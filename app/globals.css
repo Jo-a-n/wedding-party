@@ -1,5 +1,22 @@
 @import "tailwindcss";
 
+button {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+@keyframes toss-pop {
+  0% { transform: scale(1); }
+  40% { transform: scale(0.95); }
+  100% { transform: scale(1); }
+}
+
+@keyframes toss-pop-deep {
+  0% { transform: scale(1); }
+  40% { transform: scale(0.8); }
+  100% { transform: scale(1); }
+}
+
 :root {
   --jpink: #e789fa;
   --jpurple: #9946f7;

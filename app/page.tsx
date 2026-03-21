@@ -148,10 +148,10 @@ export default async function Home({
       <FallingHeartsBackground />
       <div className="relative mx-auto flex min-h-screen w-full max-w-6xl flex-col px-4 py-8 sm:px-10 lg:px-12">
         <header className="flex flex-col items-center py-4">
-          <p className="font-arima text-[14px] font-[300] text-jneutral">
+          <p className="font-arima text-[16px] font-[200] text-jneutral">
             Κωνσταντίνος & Αντωνία-Ντανιέλα
           </p>
-          <p className="font-arima text-[14px] font-[300] text-jneutral">
+          <p className="font-arima text-[16px] font-[200] text-jneutral">
             Σάββατο, 21 Μαρτίου 2026
           </p>
           <div className="mt-3 flex items-center gap-3">
@@ -181,7 +181,7 @@ export default async function Home({
               <h1 className="font-gb-mama-beba wiggle wiggle-delay-1 wiggle-hover text-[40px] font-[400] text-jneutral">
                 Η Ντανιέλα κι ο Κωνσταντίνος {verb}!
               </h1>
-              <p className="font-playpen mx-auto max-w-2xl px-12 text-[15px] font-[300] text-jneutral opacity-90">
+              <p className="font-playpen mx-auto max-w-2xl px-12 text-[15px] font-[200] text-jneutral opacity-90">
                 Η Ντανιέλα κι ο Κωνσταντίνος {verb}! Οι σκύλοι ακόμα αποφασίζουν
                 αν εγκρίνουν. Ρίξτε ρύζι, αφήστε ευχές, βγάλτε φωτογραφίες!
               </p>
