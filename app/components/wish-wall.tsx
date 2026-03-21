@@ -43,8 +43,14 @@ export function WishWall({
           if (!raw || typeof raw.id !== "number" || typeof raw.name !== "string") return;
           const newWish = raw as unknown as Wish;
           setWishes((prev) => {
-            // Deduplicate against optimistic adds
             if (prev.some((w) => w.id === newWish.id)) return prev;
+            // Replace temp optimistic wish (negative ID) with real one
+            const tempMatch = prev.find(
+              (w) => w.id < 0 && w.name === newWish.name && w.message === newWish.message,
+            );
+            if (tempMatch) {
+              return prev.map((w) => (w.id === tempMatch.id ? newWish : w));
+            }
             return [newWish, ...prev];
           });
           setNewIds((prev) => new Set(prev).add(newWish.id));
@@ -95,6 +101,10 @@ export function WishWall({
     setNewIds((prev) => new Set(prev).add(wish.id));
   }, []);
 
+  const handleOptimisticRemove = useCallback((tempId: number) => {
+    setWishes((prev) => prev.filter((w) => w.id !== tempId));
+  }, []);
+
   const handleToggleHidden = useCallback((id: number, hidden: boolean) => {
     setWishes((prev) =>
       prev.map((w) => (w.id === id ? { ...w, hidden } : w)),
@@ -114,7 +124,7 @@ export function WishWall({
 
       {open || isAdmin ? (
         <div className="mb-8">
-          <WishInput onOptimisticAdd={handleOptimisticAdd} />
+          <WishInput onOptimisticAdd={handleOptimisticAdd} onOptimisticRemove={handleOptimisticRemove} />
         </div>
       ) : (
         <div className="soft-chip mb-8 inline-flex rounded-full px-4 py-2 text-sm text-ink-soft">

@@ -16,6 +16,8 @@ import {
   isMov,
   convertHeicToJpeg,
   transcodeMovToMp4,
+  createFFmpegInstance,
+  terminateFFmpeg,
 } from "@/lib/media-utils";
 import { UploadConfirmationModal } from "./upload-confirmation-modal";
 
@@ -68,7 +70,7 @@ export function GalleryUpload({
     );
   };
 
-  const processFile = async (file: File, index: number) => {
+  const processFile = async (file: File, index: number, sharedFFmpeg?: Awaited<ReturnType<typeof createFFmpegInstance>>) => {
     const mediaType = classifyFile(file);
     if (!mediaType) {
       updateUpload(index, {
@@ -121,7 +123,7 @@ export function GalleryUpload({
         try {
           fileToUpload = await transcodeMovToMp4(file, (progress) => {
             updateUpload(index, { status: "compressing", progress });
-          });
+          }, sharedFFmpeg);
         } catch {
           updateUpload(index, {
             status: "error",
@@ -267,8 +269,23 @@ export function GalleryUpload({
     setUploads(newUploads);
     setIsUploading(true);
 
+    // Create a shared FFmpeg instance if any MOV files need transcoding
+    const hasMovFiles = confirmedFiles.some((f) => isMov(f));
+    let sharedFFmpeg: Awaited<ReturnType<typeof createFFmpegInstance>> | undefined;
+    if (hasMovFiles) {
+      try {
+        sharedFFmpeg = await createFFmpegInstance();
+      } catch {
+        // Fall back to per-file instances
+      }
+    }
+
     for (let i = 0; i < confirmedFiles.length; i++) {
-      await processFile(confirmedFiles[i], i);
+      await processFile(confirmedFiles[i], i, sharedFFmpeg);
+    }
+
+    if (sharedFFmpeg) {
+      terminateFFmpeg(sharedFFmpeg);
     }
 
     setIsUploading(false);

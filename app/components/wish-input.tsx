@@ -13,8 +13,10 @@ type Draft = {
 
 export function WishInput({
   onOptimisticAdd,
+  onOptimisticRemove,
 }: {
   onOptimisticAdd: (wish: Wish) => void;
+  onOptimisticRemove?: (tempId: number) => void;
 }) {
   const [draft, setDraft] = useState<Draft>({ name: "", message: "" });
   const [hydrated, setHydrated] = useState(false);
@@ -72,23 +74,30 @@ export function WishInput({
 
     setSubmitting(true);
 
+    // Show the wish immediately with a temporary negative ID
+    const tempId = -Date.now();
+    const optimisticWish: Wish = {
+      id: tempId,
+      name,
+      message,
+      hidden: false,
+      created_at: new Date().toISOString(),
+    };
+    onOptimisticAdd(optimisticWish);
+    clearDraft();
+    formRef.current?.querySelector("textarea")?.focus();
+
     try {
       const supabase = createClient();
-      const { data, error: insertError } = await supabase
+      const { error: insertError } = await supabase
         .from("wishes")
-        .insert({ name, message })
-        .select()
-        .single();
+        .insert({ name, message });
 
       if (insertError) throw insertError;
-
-      if (data) {
-        onOptimisticAdd(data as unknown as Wish);
-      }
-
-      clearDraft();
-      formRef.current?.querySelector("textarea")?.focus();
+      // The realtime subscription will add the real wish and deduplicate
     } catch {
+      // Remove the optimistic wish on failure
+      onOptimisticRemove?.(tempId);
       setError("Κάτι πήγε στραβά. Δοκίμασε ξανά.");
     } finally {
       setSubmitting(false);

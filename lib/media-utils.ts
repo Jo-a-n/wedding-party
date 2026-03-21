@@ -118,22 +118,44 @@ export function canBrowserPlayVideo(file: File): Promise<boolean> {
   );
 }
 
+type FFmpegInstance = {
+  on: (event: string, callback: (data: { progress: number }) => void) => void;
+  off: (event: string, callback: (data: { progress: number }) => void) => void;
+  load: () => Promise<void>;
+  writeFile: (name: string, data: Uint8Array) => Promise<void>;
+  exec: (args: string[]) => Promise<number>;
+  readFile: (name: string) => Promise<Uint8Array>;
+  terminate: () => void;
+};
+
+export async function createFFmpegInstance(): Promise<FFmpegInstance> {
+  const { FFmpeg } = await import("@ffmpeg/ffmpeg");
+  const ffmpeg = new FFmpeg();
+  await ffmpeg.load();
+  return ffmpeg as unknown as FFmpegInstance;
+}
+
+export function terminateFFmpeg(instance: FFmpegInstance) {
+  instance.terminate();
+}
+
 export async function transcodeMovToMp4(
   file: File,
   onProgress?: (progress: number) => void,
+  sharedInstance?: FFmpegInstance,
 ): Promise<File> {
-  const { FFmpeg } = await import("@ffmpeg/ffmpeg");
   const { fetchFile } = await import("@ffmpeg/util");
 
-  const ffmpeg = new FFmpeg();
+  const ffmpeg = sharedInstance ?? (await createFFmpegInstance());
+  const progressHandler = onProgress
+    ? ({ progress }: { progress: number }) => onProgress(Math.round(progress * 100))
+    : null;
+
   try {
-    if (onProgress) {
-      ffmpeg.on("progress", ({ progress }) =>
-        onProgress(Math.round(progress * 100)),
-      );
+    if (progressHandler) {
+      ffmpeg.on("progress", progressHandler);
     }
 
-    await ffmpeg.load();
     await ffmpeg.writeFile("input.mov", await fetchFile(file));
     await ffmpeg.exec([
       "-i",
@@ -159,7 +181,12 @@ export async function transcodeMovToMp4(
       type: "video/mp4",
     });
   } finally {
-    ffmpeg.terminate();
+    if (progressHandler) {
+      ffmpeg.off("progress", progressHandler);
+    }
+    if (!sharedInstance) {
+      ffmpeg.terminate();
+    }
   }
 }
 
