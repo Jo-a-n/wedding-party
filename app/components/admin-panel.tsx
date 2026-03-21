@@ -27,6 +27,10 @@ const TEXT_LABELS: Record<string, string> = {
   large_upload_album_url: "Large upload album URL",
 };
 
+const TOGGLE_LABELS: Record<string, string> = {
+  show_google_album_link: "Show Google album link",
+};
+
 export function AdminPanel({ settings }: { settings: SiteSettings }) {
   const router = useRouter();
   const [values, setValues] = useState<SiteSettings>(settings);
@@ -93,6 +97,31 @@ export function AdminPanel({ settings }: { settings: SiteSettings }) {
                 }
                 className="mt-1 block w-full rounded-xl border border-border-soft bg-transparent px-3 py-2 text-sm text-jneutral placeholder:text-ink-soft/40 focus:outline-none focus:ring-2 focus:ring-red-500/30"
               />
+            </label>
+          ))}
+        </div>
+        <div className="mt-3 grid gap-3">
+          {(Object.keys(TOGGLE_LABELS) as (keyof SiteSettings)[]).map((key) => (
+            <label key={key} className="flex items-center gap-3 cursor-pointer">
+              <button
+                type="button"
+                role="switch"
+                aria-checked={values[key] === "true"}
+                onClick={() =>
+                  setValues((v) => ({
+                    ...v,
+                    [key]: v[key] === "true" ? "false" : "true",
+                  }))
+                }
+                className={`relative inline-flex h-6 w-11 shrink-0 rounded-full border-2 border-transparent transition-colors ${values[key] === "true" ? "bg-red-500/80" : "bg-border-soft"}`}
+              >
+                <span
+                  className={`pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow transition-transform ${values[key] === "true" ? "translate-x-5" : "translate-x-0"}`}
+                />
+              </button>
+              <span className="text-xs font-medium text-ink-soft">
+                {TOGGLE_LABELS[key]}
+              </span>
             </label>
           ))}
         </div>

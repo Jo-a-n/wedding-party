@@ -151,7 +151,7 @@ function GalleryTile({
   );
 }
 
-const PAGE_SIZE = 50;
+const PAGE_SIZE = 200;
 
 export function GalleryGrid({
   items,

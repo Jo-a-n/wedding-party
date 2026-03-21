@@ -43,12 +43,14 @@ export function GallerySection({
   isAdmin,
   deadline,
   largeUploadAlbumUrl,
+  showGoogleAlbumLink,
 }: {
   initialItems: GalleryItem[];
   initialCount: number;
   isAdmin?: boolean;
   deadline: string;
   largeUploadAlbumUrl?: string;
+  showGoogleAlbumLink?: boolean;
 }) {
   const [items, setItems] = useState<GalleryItem[]>(initialItems);
   const [totalCount, setTotalCount] = useState(initialCount);
@@ -247,6 +249,16 @@ export function GallerySection({
         <h2 className="font-arima mt-2 text-[30px] font-normal text-jneutral">
           Κοινές στιγμές
         </h2>
+        {showGoogleAlbumLink && largeUploadAlbumUrl && (
+          <a
+            href={largeUploadAlbumUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-playpen mt-3 inline-flex items-center gap-1.5 text-[14px] font-[300] text-jneutral/70 underline decoration-jneutral/30 underline-offset-2 transition-colors hover:text-jneutral hover:decoration-jneutral/50"
+          >
+            Δείτε το Google Photos άλμπουμ →
+          </a>
+        )}
       </div>
 
       {open || isAdmin ? (

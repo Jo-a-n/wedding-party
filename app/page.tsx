@@ -19,6 +19,7 @@ export type SiteSettings = {
   wish_deadline: string;
   gallery_deadline: string;
   large_upload_album_url: string;
+  show_google_album_link: string;
 };
 
 const DEFAULT_SETTINGS: SiteSettings = {
@@ -27,6 +28,7 @@ const DEFAULT_SETTINGS: SiteSettings = {
   wish_deadline: "2026-03-22T11:00:00+03:00",
   gallery_deadline: "2026-03-22T11:00:00+03:00",
   large_upload_album_url: "",
+  show_google_album_link: "false",
 };
 
 async function getSiteSettings(): Promise<SiteSettings> {
@@ -85,7 +87,7 @@ async function getGalleryItems(isAdmin: boolean): Promise<{
       .from("gallery_items")
       .select("*")
       .order("created_at", { ascending: false })
-      .limit(50);
+      .limit(200);
     if (!isAdmin) {
       query = query.eq("hidden", false);
     }
@@ -306,6 +308,7 @@ export default async function Home({
           isAdmin={isAdmin}
           deadline={settings.gallery_deadline}
           largeUploadAlbumUrl={settings.large_upload_album_url}
+          showGoogleAlbumLink={settings.show_google_album_link === "true"}
         />
 
         <footer className="py-10 text-center">
