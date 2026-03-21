@@ -17,6 +17,7 @@ export type SiteSettings = {
   ceremony_end: string;
   wish_deadline: string;
   gallery_deadline: string;
+  large_upload_album_url: string;
 };
 
 const DEFAULT_SETTINGS: SiteSettings = {
@@ -24,6 +25,7 @@ const DEFAULT_SETTINGS: SiteSettings = {
   ceremony_end: "2026-03-21T20:00:00+02:00",
   wish_deadline: "2026-03-22T11:00:00+03:00",
   gallery_deadline: "2026-03-22T11:00:00+03:00",
+  large_upload_album_url: "",
 };
 
 async function getSiteSettings(): Promise<SiteSettings> {
@@ -187,10 +189,9 @@ export default async function Home({
               <h1 className="font-gb-mama-beba wiggle wiggle-delay-1 wiggle-hover text-[40px] font-[400] text-jneutral">
                 Η Ντανιέλα κι ο Κωνσταντίνος {verb}!
               </h1>
-              <p className="font-playpen max-w-2xl px-12 text-[15px] font-[300] text-jneutral opacity-90">
-                Η Ντανιέλα κι ο Κωνσταντίνος {verb} — οι σκύλοι ακόμα
-                αποφασίζουν αν εγκρίνουν. Ρίξτε ρύζι, αφήστε ευχές, βγάλτε
-                φωτογραφίες!
+              <p className="font-playpen mx-auto max-w-2xl px-12 text-[15px] font-[300] text-jneutral opacity-90">
+                Η Ντανιέλα κι ο Κωνσταντίνος {verb}! Οι σκύλοι ακόμα αποφασίζουν
+                αν εγκρίνουν. Ρίξτε ρύζι, αφήστε ευχές, βγάλτε φωτογραφίες!
               </p>
             </div>
 
@@ -305,6 +306,7 @@ export default async function Home({
           initialCount={gallery.count}
           isAdmin={isAdmin}
           deadline={settings.gallery_deadline}
+          largeUploadAlbumUrl={settings.large_upload_album_url}
         />
 
         <footer className="py-10 text-center">

@@ -285,6 +285,7 @@ export function RiceCelebrationSection({
     );
 
     const nextCount = (riceCountRef.current += 1);
+    setRiceCount(nextCount);
     const originY = clamp(start.y, 32, height - 28);
 
     const counterParticle: TextParticle = {
@@ -345,17 +346,12 @@ export function RiceCelebrationSection({
     if (error) {
       console.error("Rice toss insert error:", error);
       riceCountRef.current -= 1;
+      setRiceCount(riceCountRef.current);
       return;
     }
 
     const toss = data as RiceToss;
-
-    if (seenTossIdsRef.current.has(toss.id)) {
-      return;
-    }
-
     seenTossIdsRef.current.add(toss.id);
-    setRiceCount((prev) => prev + 1);
   };
 
   const getPoint = (clientX: number, clientY: number) => {
@@ -492,13 +488,13 @@ export function RiceCelebrationSection({
 
             <div className="spotlight-stage flex items-center justify-center">
               <div className="launcher-surface rice-launcher relative flex min-h-[240px] w-full items-center justify-center overflow-hidden rounded-[2rem] border border-white/20 px-6 py-10 sm:min-h-[280px]">
-                <div className="soft-card pointer-events-none rounded-[1.5rem] px-5 py-4 text-sm text-jneutral/75 shadow-sm sm:px-6">
+                {/* <div className="soft-card pointer-events-none rounded-[1.5rem] px-5 py-4 text-sm text-jneutral/75 shadow-sm sm:px-6">
                   {isDragging
                     ? "Πέτα το! 🎉"
                     : isTouchDevice
                       ? "Πάτα το κουμπί για να ρίξεις ρύζι στους νεόνυμφους!"
                       : "Σύρε οπουδήποτε στη σελίδα για να ρίξεις ρύζι!"}
-                </div>
+                </div> */}
               </div>
             </div>
           </div>

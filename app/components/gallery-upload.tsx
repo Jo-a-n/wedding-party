@@ -21,6 +21,7 @@ import { UploadConfirmationModal } from "./upload-confirmation-modal";
 
 const DRAFT_NAME_KEY = "wedding-party-wish-draft";
 const MAX_FILES_PER_BATCH = 10;
+const LARGE_FILE_REDIRECT_BYTES = 100 * 1024 * 1024; // 100MB
 
 type UploadProgress = {
   fileName: string;
@@ -31,8 +32,10 @@ type UploadProgress = {
 
 export function GalleryUpload({
   onUploadComplete,
+  largeUploadAlbumUrl,
 }: {
   onUploadComplete: (item: GalleryItem) => void;
+  largeUploadAlbumUrl?: string;
 }) {
   const [guestName, setGuestName] = useState("");
   const [uploads, setUploads] = useState<UploadProgress[]>([]);
@@ -40,6 +43,7 @@ export function GalleryUpload({
   const [pendingFiles, setPendingFiles] = useState<File[] | null>(null);
   const [overLimitCount, setOverLimitCount] = useState(0);
   const [validationErrors, setValidationErrors] = useState<string[]>([]);
+  const [oversizedFiles, setOversizedFiles] = useState<File[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Pre-populate guest name from wish draft
@@ -212,9 +216,16 @@ export function GalleryUpload({
     const allFiles = Array.from(files);
     const errors: string[] = [];
     const validFiles: File[] = [];
+    const tooLargeForUpload: File[] = [];
 
     // Validate before showing confirmation
     for (const file of allFiles.slice(0, MAX_FILES_PER_BATCH)) {
+      // Pre-check: files >= 100MB go to Google Drive redirect
+      if (file.size >= LARGE_FILE_REDIRECT_BYTES) {
+        tooLargeForUpload.push(file);
+        continue;
+      }
+
       const mediaType = classifyFile(file);
       if (!mediaType) {
         errors.push(`${file.name}: Unsupported file type`);
@@ -229,9 +240,10 @@ export function GalleryUpload({
     }
 
     setValidationErrors(errors);
+    setOversizedFiles(tooLargeForUpload);
     setOverLimitCount(Math.max(0, allFiles.length - MAX_FILES_PER_BATCH));
 
-    if (validFiles.length > 0) {
+    if (validFiles.length > 0 || tooLargeForUpload.length > 0) {
       setPendingFiles(validFiles);
     }
 
@@ -241,6 +253,7 @@ export function GalleryUpload({
   const handleConfirmUpload = async (confirmedFiles: File[]) => {
     setPendingFiles(null);
     setValidationErrors([]);
+    setOversizedFiles([]);
     setOverLimitCount(0);
 
     if (confirmedFiles.length === 0) return;
@@ -269,6 +282,7 @@ export function GalleryUpload({
   const handleCancelUpload = () => {
     setPendingFiles(null);
     setValidationErrors([]);
+    setOversizedFiles([]);
     setOverLimitCount(0);
   };
 
@@ -321,6 +335,8 @@ export function GalleryUpload({
         <UploadConfirmationModal
           files={pendingFiles}
           overLimitCount={overLimitCount}
+          oversizedFiles={oversizedFiles}
+          albumUrl={largeUploadAlbumUrl}
           onConfirm={handleConfirmUpload}
           onCancel={handleCancelUpload}
         />

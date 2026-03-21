@@ -16,11 +16,15 @@ function fromLocalDatetime(local: string): string {
   return new Date(local).toISOString();
 }
 
-const LABELS: Record<keyof SiteSettings, string> = {
+const DATETIME_LABELS: Record<string, string> = {
   ceremony_start: "Ceremony start",
   ceremony_end: "Ceremony end",
   wish_deadline: "Wishes close",
   gallery_deadline: "Gallery closes",
+};
+
+const TEXT_LABELS: Record<string, string> = {
+  large_upload_album_url: "Large upload album URL",
 };
 
 export function AdminPanel({ settings }: { settings: SiteSettings }) {
@@ -52,10 +56,10 @@ export function AdminPanel({ settings }: { settings: SiteSettings }) {
           Admin — Datetimes
         </p>
         <div className="grid gap-3 sm:grid-cols-2">
-          {(Object.keys(LABELS) as (keyof SiteSettings)[]).map((key) => (
+          {(Object.keys(DATETIME_LABELS) as (keyof SiteSettings)[]).map((key) => (
             <label key={key} className="block">
               <span className="text-xs font-medium text-ink-soft">
-                {LABELS[key]}
+                {DATETIME_LABELS[key]}
               </span>
               <input
                 type="datetime-local"
@@ -67,6 +71,27 @@ export function AdminPanel({ settings }: { settings: SiteSettings }) {
                   }))
                 }
                 className="mt-1 block w-full rounded-xl border border-border-soft bg-transparent px-3 py-2 text-sm text-jneutral focus:outline-none focus:ring-2 focus:ring-red-500/30"
+              />
+            </label>
+          ))}
+        </div>
+        <div className="mt-3 grid gap-3">
+          {(Object.keys(TEXT_LABELS) as (keyof SiteSettings)[]).map((key) => (
+            <label key={key} className="block">
+              <span className="text-xs font-medium text-ink-soft">
+                {TEXT_LABELS[key]}
+              </span>
+              <input
+                type="url"
+                value={values[key]}
+                placeholder="https://photos.google.com/..."
+                onChange={(e) =>
+                  setValues((v) => ({
+                    ...v,
+                    [key]: e.target.value,
+                  }))
+                }
+                className="mt-1 block w-full rounded-xl border border-border-soft bg-transparent px-3 py-2 text-sm text-jneutral placeholder:text-ink-soft/40 focus:outline-none focus:ring-2 focus:ring-red-500/30"
               />
             </label>
           ))}
