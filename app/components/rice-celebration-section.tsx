@@ -455,43 +455,59 @@ export function RiceCelebrationSection({
       />
 
       <section id="rice" className="relative z-10 py-8">
-        <div className="py-8 sm:px-8 sm:py-10">
-          <p className="text-xs font-semibold uppercase tracking-[0.35em] text-ink-soft">
-            Ώρα για ρύζι!
-          </p>
-          <h2 className="mt-3 text-4xl font-semibold tracking-[-0.05em] text-jneutral sm:text-5xl">
+        <div className="flex flex-col items-center gap-5 py-6">
+          <h2 className="font-[var(--font-gb-mama-beba)] text-[36px] text-jneutral text-center">
             Ρίξε ρύζι, ο γάμος να μη τρίζει!
           </h2>
 
-          <p className="mt-4 max-w-xl text-base leading-7 text-ink-soft sm:text-lg">
+          <p className="text-[15px] text-jneutral/90 text-center w-[282px]" style={{ fontFamily: "var(--font-playpen)", fontWeight: 300 }}>
             Σύρε και πέτα ρύζι! Κανονικά θα σκούπιζε ο γαμπρός, αλλά εδώ είμαστε
             online.
           </p>
 
-          <div className="mt-8 flex items-center gap-3">
-            <div className="soft-card inline-flex flex-row items-center gap-3 rounded-[1.5rem] px-4 py-3 shadow-sm">
-              <div className="hero-accent-button flex h-11 w-11 items-center justify-center rounded-full text-lg font-semibold">
-                {riceCount.toLocaleString("el-GR")}
+          <div className="flex flex-col items-center gap-3.5">
+            {/* Counter with decorative particles */}
+            <div className="relative h-[89px] w-[156px]">
+              {/* Green pill counter */}
+              <div className="absolute left-[38px] top-[28.5px] flex items-center justify-center rounded-3xl bg-green px-3.5 py-2">
+                <span className="font-[var(--font-gb-mama-beba)] text-[36px] text-dark">
+                  {riceCount.toLocaleString("el-GR")}
+                </span>
               </div>
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.25em] text-ink-soft">
-                  Ρυζιές κάουντερ
-                </p>
-              </div>
+              {/* Decorative rice particles */}
+              <span className="pointer-events-none absolute left-[108px] top-[3px] rotate-2 font-[var(--font-gb-mama-beba)] text-[30px] text-pink" aria-hidden="true">/</span>
+              <span className="pointer-events-none absolute left-[71px] top-[12px] font-[var(--font-gb-mama-beba)] text-[40px] text-green" aria-hidden="true">&lsquo;</span>
+              <span className="pointer-events-none absolute left-[44px] top-[12px] rotate-[-36deg] font-[var(--font-gb-mama-beba)] text-[40px] text-jneutral" aria-hidden="true">&lsquo;</span>
+              <span className="pointer-events-none absolute left-[7px] top-[46px] rotate-[20deg] font-[var(--font-gb-mama-beba)] text-[40px] text-purple" aria-hidden="true">&lsquo;</span>
+              <span className="pointer-events-none absolute left-0 top-[34px] rotate-[8deg] font-[var(--font-gb-mama-beba)] text-[40px] text-jneutral" aria-hidden="true">&lsquo;</span>
+              <span className="pointer-events-none absolute left-[7px] top-0 rotate-[-36deg] font-[var(--font-gb-mama-beba)] text-[40px] text-blue" aria-hidden="true">/</span>
             </div>
+            {/* Counter label */}
+            <p className="font-[var(--font-gb-mama-beba)] text-[22px] text-jneutral">
+              ΡΥΖΙΕΣ ΚΑΟΥΝΤΕΡ
+            </p>
           </div>
         </div>
       </section>
 
       {isTouchDevice ? (
-        <button
-          ref={touchButtonRef}
-          type="button"
-          onClick={handleTouchToss}
-          className="hero-accent-button fixed bottom-5 right-5 z-30 inline-flex items-center rounded-full px-5 py-3 text-sm font-semibold shadow-[0_18px_35px_rgba(0,0,0,0.16)] transition-transform duration-200 active:scale-95 sm:bottom-8 sm:right-8"
-        >
-          Ρίξε ρύζι!
-        </button>
+        <div className="fixed bottom-5 right-5 z-30 sm:bottom-8 sm:right-8">
+          <button
+            ref={touchButtonRef}
+            type="button"
+            onClick={handleTouchToss}
+            className="relative rounded-full bg-[#1ef79a] px-4 py-2.5 font-[var(--font-gb-mama-beba)] text-[17px] text-black shadow-[0_18px_35px_rgba(0,0,0,0.16)] transition-transform duration-200 active:scale-95"
+          >
+            ρίξε ρύζι!
+          </button>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/rice-confetti.svg"
+            alt=""
+            aria-hidden="true"
+            className="pointer-events-none absolute -left-[32px] -top-[20px] z-10 h-[90px] w-[120px]"
+          />
+        </div>
       ) : null}
     </>
   );
