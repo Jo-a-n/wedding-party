@@ -5,6 +5,7 @@ import { WishWall } from "./components/wish-wall";
 import { GallerySection } from "./components/gallery-section";
 import { CountdownTimer } from "./components/countdown-timer";
 import { AdminPanel } from "./components/admin-panel";
+import { AdminFavicon } from "./components/admin-favicon";
 import { WeddingDogs } from "./components/wedding-dogs";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/admin";
@@ -153,6 +154,7 @@ export default async function Home({
     <main
       className={`relative overflow-hidden ${isAdmin ? "ring-4 ring-inset ring-red-500/60" : ""}`}
     >
+      {isAdmin && <AdminFavicon />}
       <FallingHeartsBackground />
       <div className="relative mx-auto flex min-h-screen w-full max-w-6xl flex-col px-4 py-8 sm:px-10 lg:px-12">
         <header className="flex flex-col items-center py-4">
