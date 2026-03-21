@@ -311,6 +311,16 @@ export default async function Home({
           showGoogleAlbumLink={settings.show_google_album_link === "true"}
         />
 
+        <section className="py-10 text-center">
+          <p className="font-arima mx-auto max-w-2xl px-6 text-[14px] font-[300] leading-relaxed text-jneutral opacity-90">
+            Το έτος ήταν 2026...
+            <br />
+            Το ζευγάρι αποφάσισε ότι δεν του ταίριαζαν οι μεγάλες τελετές και κλέφτηκε σε μιά σεμνή, μαζεμένη τελετή υπογραφών στο Δημαρχείο της Ηλιούπολης.
+            <br />
+            Όμως δεν άντεξε... Το wedding party έπρεπε να γίνει. Φίλοι, γνωστοί και συνεργάτες μαζεύτηκαν να βγούνε για μπύρες, σε μία βραδιά που θα έμενε αξέχαστη! Οι φίλοι τους ευχήθηκαν τα καλύτερα και τους έδωσαν την αγάπη τους ❤ και πολλές καλές αναμνήσεις.
+          </p>
+        </section>
+
         <footer className="py-10 text-center">
           <p className="text-sm italic text-ink-soft/60">
             Φτιαγμένο με <span className="not-italic text-lg">❤️🌈🦄🐘</span>

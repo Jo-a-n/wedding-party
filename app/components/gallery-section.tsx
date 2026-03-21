@@ -58,6 +58,8 @@ export function GallerySection({
   const [open, setOpen] = useState(() => Date.now() < new Date(deadline).getTime());
   const [lightboxIndex, setLightboxIndex] = useState(-1);
   const [loadingMore, setLoadingMore] = useState(false);
+  const [albumUrl, setAlbumUrl] = useState(largeUploadAlbumUrl ?? "");
+  const [showAlbumLink, setShowAlbumLink] = useState(showGoogleAlbumLink ?? false);
 
   const incrementViewCount = useCallback(
     async (index: number) => {
@@ -172,8 +174,37 @@ export function GallerySection({
       )
       .subscribe();
 
+    const settingsChannel = supabase
+      .channel("settings-realtime")
+      .on(
+        "postgres_changes",
+        { event: "UPDATE", schema: "public", table: "site_settings" },
+        (payload) => {
+          const row = payload.new as { key: string; value: string };
+          if (row.key === "show_google_album_link") {
+            setShowAlbumLink(row.value === "true");
+          } else if (row.key === "large_upload_album_url") {
+            setAlbumUrl(row.value);
+          }
+        },
+      )
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "site_settings" },
+        (payload) => {
+          const row = payload.new as { key: string; value: string };
+          if (row.key === "show_google_album_link") {
+            setShowAlbumLink(row.value === "true");
+          } else if (row.key === "large_upload_album_url") {
+            setAlbumUrl(row.value);
+          }
+        },
+      )
+      .subscribe();
+
     return () => {
       supabase.removeChannel(channel);
+      supabase.removeChannel(settingsChannel);
     };
   }, []);
 
@@ -249,12 +280,12 @@ export function GallerySection({
         <h2 className="font-arima mt-2 text-[30px] font-normal text-jneutral">
           Κοινές στιγμές
         </h2>
-        {showGoogleAlbumLink && largeUploadAlbumUrl && (
+        {showAlbumLink && albumUrl && (
           <a
-            href={largeUploadAlbumUrl}
+            href={albumUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="font-playpen mt-3 inline-flex items-center gap-1.5 text-[14px] font-[300] text-jneutral/70 underline decoration-jneutral/30 underline-offset-2 transition-colors hover:text-jneutral hover:decoration-jneutral/50"
+            className="font-gb-mama-beba mt-4 inline-flex items-center gap-1.5 rounded-[24px] bg-jpurple px-5 py-2 text-[17px] text-jneutral transition-transform duration-200 hover:-translate-y-0.5"
           >
             Δείτε το Google Photos άλμπουμ →
           </a>
