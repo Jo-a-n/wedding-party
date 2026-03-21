@@ -125,11 +125,19 @@ export function CountdownTimer({ settings }: { settings: SiteSettings }) {
   const diff = formatDiff(now - ceremonyEnd.getTime());
   return (
     <section className="py-6">
-      <div className="font-gb-mama-beba soft-card rounded-[2rem] px-5 py-6 text-center sm:px-8 sm:py-8">
-        <p className="text-xs font-semibold uppercase tracking-[0.35em] text-ink-soft">
-          Παντρεμένοι εδώ και
+      <div className="font-gb-mama-beba px-5 py-6 text-center sm:px-8 sm:py-8">
+        <p className="relative mx-auto mb-6 inline-block text-[28px] text-jneutral sm:text-[28px]">
+          Παντρεμένοι εδώ{" "}
+          <span className="relative text-jgreen">
+            και
+            <img
+              src="/clock.svg"
+              alt=""
+              className="absolute -top-[39px] -right-[43px] h-[76px] w-[76px] sm:-top-[45px] sm:-right-[47px] sm:h-[90px] sm:w-[90px]"
+            />
+          </span>
         </p>
-        <div className="mt-4 flex items-center justify-center gap-3 sm:gap-5">
+        <div className="flex items-start justify-center gap-3 sm:gap-5">
           {diff.days > 0 && (
             <>
               <TimeUnit
@@ -151,7 +159,7 @@ export function CountdownTimer({ settings }: { settings: SiteSettings }) {
           <Separator />
           <TimeUnit
             value={diff.seconds}
-            label={pluralize(diff.seconds, "δευτερόλεπτο", "δευτερόλεπτα")}
+            label={pluralize(diff.seconds, "δ/λεπτο", "δ/λεπτα")}
           />
         </div>
       </div>
@@ -165,7 +173,7 @@ function TimeUnit({ value, label }: { value: number; label: string }) {
       <span className="text-[46px] font-bold tabular-nums text-jneutral sm:text-[64px]">
         {String(value).padStart(2, "0")}
       </span>
-      <span className="mt-1 text-[15px] font-[400] uppercase  text-jneutral sm:text-[15px]">
+      <span className="mt-1 text-[15px] font-[400] uppercase text-jneutral opacity-70 sm:text-[15px]">
         {label}
       </span>
     </div>
