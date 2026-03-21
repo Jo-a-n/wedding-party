@@ -71,6 +71,8 @@ export function RiceCelebrationSection({
   const [riceCount, setRiceCount] = useState(initialCount);
   const riceCountRef = useRef(initialCount);
   const seenTossIdsRef = useRef<Set<number>>(new Set());
+  const lastTossTimeRef = useRef(0);
+  const TOSS_COOLDOWN_MS = 300;
 
   useEffect(() => {
     const supabase = createClient();
@@ -244,6 +246,10 @@ export function RiceCelebrationSection({
     end: Point,
     mode: TossMode = "drag",
   ) => {
+    const now = Date.now();
+    if (now - lastTossTimeRef.current < TOSS_COOLDOWN_MS) return;
+    lastTossTimeRef.current = now;
+
     const { height } = boundsRef.current;
     const dragLength = clamp(distance(start, end), 24, 140);
     const angle =
