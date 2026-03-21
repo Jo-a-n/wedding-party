@@ -25,7 +25,7 @@ const IN_PROGRESS_MESSAGES = [
 ];
 
 export function CountdownTimer({ settings }: { settings: SiteSettings }) {
-  const [now, setNow] = useState(() => Date.now());
+  const [now, setNow] = useState<number | null>(null);
 
   const ceremonyStart = useMemo(
     () => new Date(settings.ceremony_start),
@@ -37,9 +37,39 @@ export function CountdownTimer({ settings }: { settings: SiteSettings }) {
   );
 
   useEffect(() => {
+    setNow(Date.now());
     const id = setInterval(() => setNow(Date.now()), 1000);
     return () => clearInterval(id);
   }, []);
+
+  if (now === null) {
+    return (
+      <section className="py-6">
+        <div className="font-gb-mama-beba px-5 py-6 text-center sm:px-8 sm:py-8">
+          <p className="relative mx-auto mb-6 inline-block text-[28px] text-jneutral sm:text-[28px]">
+            Αντίστροφη{" "}
+            <span className="relative text-jgreen">
+              Μέτρηση
+              <img
+                src="/clock.svg"
+                alt=""
+                className="absolute -top-[39px] -right-[33px] h-[76px] w-[76px] sm:-top-[45px] sm:-right-[37px] sm:h-[90px] sm:w-[90px]"
+              />
+            </span>
+          </p>
+          <div className="flex items-start justify-center gap-3 sm:gap-5">
+            <TimeUnit value={0} label="μέρες" />
+            <Separator />
+            <TimeUnit value={0} label="ώρες" />
+            <Separator />
+            <TimeUnit value={0} label="λεπτά" />
+            <Separator />
+            <TimeUnit value={0} label="δ/λεπτά" />
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   const state: TimerState =
     now < ceremonyStart.getTime()
