@@ -135,7 +135,7 @@ export function UploadConfirmationModal({
       <button
         type="button"
         onClick={handleCancel}
-        className="rounded-full border border-border-soft px-5 py-2 text-sm font-medium text-foreground/80 transition-colors hover:bg-foreground/5"
+        className="rounded-full border border-border-soft px-5 py-2 text-sm font-medium text-jneutral/80 transition-colors hover:bg-foreground/5"
       >
         Cancel
       </button>

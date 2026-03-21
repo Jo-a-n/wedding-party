@@ -83,7 +83,7 @@ export function CountdownTimer({ settings }: { settings: SiteSettings }) {
     return (
       <section className="py-6">
         <div className="font-gb-mama-beba soft-card rounded-[2rem] px-5 py-8 text-center sm:px-8 sm:py-10">
-          <p className="ceremony-pulse text-2xl font-semibold text-foreground sm:text-3xl">
+          <p className="ceremony-pulse text-2xl font-semibold text-jneutral sm:text-3xl">
             {IN_PROGRESS_MESSAGES[messageIndex]}
           </p>
         </div>
@@ -132,10 +132,10 @@ export function CountdownTimer({ settings }: { settings: SiteSettings }) {
 function TimeUnit({ value, label }: { value: number; label: string }) {
   return (
     <div className="flex flex-col items-center">
-      <span className="text-[42px] font-bold tabular-nums text-foreground sm:text-[64px]">
+      <span className="text-[46px] font-bold tabular-nums text-jneutral sm:text-[64px]">
         {String(value).padStart(2, "0")}
       </span>
-      <span className="mt-1 text-[11px] uppercase tracking-[0.12em] text-ink-soft sm:text-[14px]">
+      <span className="mt-1 text-[15px] font-[400] uppercase  text-jneutral sm:text-[15px]">
         {label}
       </span>
     </div>
@@ -145,7 +145,7 @@ function TimeUnit({ value, label }: { value: number; label: string }) {
 function Separator() {
   return (
     <span
-      className="text-[32px] font-bold text-foreground sm:text-[50px]"
+      className="mt-[10px] text-[32px] font-bold text-jneutral opacity-30 sm:mt-[14px] sm:text-[50px]"
       aria-hidden
     >
       :

@@ -107,7 +107,7 @@ export function WishWall({
         <p className="text-xs font-semibold uppercase tracking-[0.35em] text-ink-soft">
           Ευχές καλεσμένων
         </p>
-        <h2 className="mt-2 text-3xl font-semibold tracking-[-0.04em] text-foreground sm:text-4xl">
+        <h2 className="mt-2 text-3xl font-semibold tracking-[-0.04em] text-jneutral sm:text-4xl">
           Ευχές για το ζευγάρι
         </h2>
       </div>

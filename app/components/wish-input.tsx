@@ -112,7 +112,7 @@ export function WishInput({
         maxLength={500}
         rows={3}
         required
-        className="w-full resize-none rounded-xl border border-border-soft bg-transparent px-4 py-3 text-sm text-foreground placeholder:text-ink-soft/60 focus:outline-none focus:ring-2 focus:ring-periwinkle/40"
+        className="w-full resize-none rounded-xl border border-border-soft bg-transparent px-4 py-3 text-sm text-jneutral placeholder:text-ink-soft/60 focus:outline-none focus:ring-2 focus:ring-periwinkle/40"
         aria-label="Η ευχή σου για το ζευγάρι"
       />
 
@@ -124,7 +124,7 @@ export function WishInput({
           onChange={(e) => setDraft((d) => ({ ...d, name: e.target.value }))}
           maxLength={100}
           required
-          className="rounded-xl border border-border-soft bg-transparent px-4 py-2.5 text-sm text-foreground placeholder:text-ink-soft/60 focus:outline-none focus:ring-2 focus:ring-periwinkle/40 sm:flex-1"
+          className="rounded-xl border border-border-soft bg-transparent px-4 py-2.5 text-sm text-jneutral placeholder:text-ink-soft/60 focus:outline-none focus:ring-2 focus:ring-periwinkle/40 sm:flex-1"
           aria-label="Your name"
         />
         <button

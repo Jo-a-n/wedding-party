@@ -466,7 +466,7 @@ export function RiceCelebrationSection({
               <p className="text-xs font-semibold uppercase tracking-[0.35em] text-ink-soft">
                 Ώρα για ρύζι!
               </p>
-              <h2 className="mt-3 text-4xl font-semibold tracking-[-0.05em] text-foreground sm:text-5xl">
+              <h2 className="mt-3 text-4xl font-semibold tracking-[-0.05em] text-jneutral sm:text-5xl">
                 Ρίξε ρύζι, ο γάμος να μη τρίζει!
               </h2>
 
@@ -492,7 +492,7 @@ export function RiceCelebrationSection({
 
             <div className="spotlight-stage flex items-center justify-center">
               <div className="launcher-surface rice-launcher relative flex min-h-[240px] w-full items-center justify-center overflow-hidden rounded-[2rem] border border-white/20 px-6 py-10 sm:min-h-[280px]">
-                <div className="soft-card pointer-events-none rounded-[1.5rem] px-5 py-4 text-sm text-foreground/75 shadow-sm sm:px-6">
+                <div className="soft-card pointer-events-none rounded-[1.5rem] px-5 py-4 text-sm text-jneutral/75 shadow-sm sm:px-6">
                   {isDragging
                     ? "Πέτα το! 🎉"
                     : isTouchDevice

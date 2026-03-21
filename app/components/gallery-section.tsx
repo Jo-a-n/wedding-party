@@ -239,7 +239,7 @@ export function GallerySection({
         <p className="text-xs font-semibold uppercase tracking-[0.35em] text-ink-soft">
           Άλμπουμ φωτογραφιών
         </p>
-        <h2 className="mt-2 text-3xl font-semibold tracking-[-0.04em] text-foreground sm:text-4xl">
+        <h2 className="mt-2 text-3xl font-semibold tracking-[-0.04em] text-jneutral sm:text-4xl">
           Κοινές στιγμές
         </h2>
       </div>

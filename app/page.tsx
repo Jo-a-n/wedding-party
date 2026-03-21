@@ -187,7 +187,7 @@ export default async function Home({
               <h1 className="font-gb-mama-beba wiggle wiggle-delay-1 wiggle-hover text-[40px] font-[400] text-jneutral">
                 Η Ντανιέλα κι ο Κωνσταντίνος {verb}!
               </h1>
-              <p className="font-playpen max-w-2xl px-12 text-[15px] font-[300] text-jneutral">
+              <p className="font-playpen max-w-2xl px-12 text-[15px] font-[300] text-jneutral opacity-90">
                 Η Ντανιέλα κι ο Κωνσταντίνος {verb} — οι σκύλοι ακόμα
                 αποφασίζουν αν εγκρίνουν. Ρίξτε ρύζι, αφήστε ευχές, βγάλτε
                 φωτογραφίες!
@@ -228,7 +228,7 @@ export default async function Home({
               <p className="text-xs font-semibold uppercase tracking-[0.35em] text-ink-soft">
                 Color palette
               </p>
-              <h2 className="mt-2 text-3xl font-semibold tracking-[-0.04em] text-foreground">
+              <h2 className="mt-2 text-3xl font-semibold tracking-[-0.04em] text-jneutral">
                 Pastel tokens ready for reuse
               </h2>
             </div>
@@ -250,7 +250,7 @@ export default async function Home({
                 />
                 <div className="mt-4 flex items-center justify-between gap-4">
                   <div>
-                    <h3 className="text-lg font-semibold text-foreground">
+                    <h3 className="text-lg font-semibold text-jneutral">
                       {color.name}
                     </h3>
                     <p className="text-sm text-ink-soft">{color.hex}</p>

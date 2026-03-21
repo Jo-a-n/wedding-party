@@ -62,9 +62,9 @@ export function WishCard({
       className={`soft-card relative rounded-[1.5rem] p-5 ${fontClass} ${isNew ? "wish-card-enter" : ""} ${isHidden ? "opacity-40" : ""}`}
     >
       <div className={`${accent} -mx-5 -mt-5 mb-4 rounded-t-[1.5rem] px-5 py-3`}>
-        <p className="font-playpen text-sm font-semibold text-foreground">{wish.name}</p>
+        <p className="font-playpen text-sm font-semibold text-jneutral">{wish.name}</p>
       </div>
-      <p className="text-lg leading-relaxed text-foreground/90">
+      <p className="text-lg leading-relaxed text-jneutral/90">
         {wish.message}
       </p>
       <p className="mt-3 font-sans text-xs text-ink-soft">{relativeTime(wish.created_at)}</p>
@@ -74,7 +74,7 @@ export function WishCard({
           onClick={handleToggle}
           className={`absolute top-2 right-2 rounded-full px-2 py-0.5 text-xs font-medium transition-opacity hover:opacity-100 ${
             isHidden
-              ? "bg-green/20 text-foreground opacity-80"
+              ? "bg-green/20 text-jneutral opacity-80"
               : "bg-red-500/10 text-red-500 opacity-60"
           }`}
           title={isHidden ? "Show wish" : "Hide wish"}

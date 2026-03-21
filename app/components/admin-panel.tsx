@@ -66,7 +66,7 @@ export function AdminPanel({ settings }: { settings: SiteSettings }) {
                     [key]: fromLocalDatetime(e.target.value),
                   }))
                 }
-                className="mt-1 block w-full rounded-xl border border-border-soft bg-transparent px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-red-500/30"
+                className="mt-1 block w-full rounded-xl border border-border-soft bg-transparent px-3 py-2 text-sm text-jneutral focus:outline-none focus:ring-2 focus:ring-red-500/30"
               />
             </label>
           ))}
