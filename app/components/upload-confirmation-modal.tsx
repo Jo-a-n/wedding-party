@@ -122,13 +122,10 @@ export function UploadConfirmationModal({
 
   const handleConfirm = () => {
     const remaining = items.map((item) => item.file);
-    // Revoke URLs before closing
-    items.forEach((item) => URL.revokeObjectURL(item.objectUrl));
     onConfirm(remaining);
   };
 
   const handleCancel = () => {
-    items.forEach((item) => URL.revokeObjectURL(item.objectUrl));
     onCancel();
   };
 
