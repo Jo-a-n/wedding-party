@@ -42,7 +42,7 @@ type Particle = RiceParticle | TextParticle;
 
 type TossMode = "drag" | "touch-button";
 
-const COLORS = ["#fffdfb", "#ffffff", "#f5d0e3", "#facdaa", "#d2fac3"];
+const COLORS = ["#e789fa", "#1ef79a", "#f2ead5", "#9946f7", "#1dd0f0"];
 
 const clamp = (value: number, min: number, max: number) =>
   Math.min(Math.max(value, min), max);
@@ -480,8 +480,8 @@ export function RiceCelebrationSection({
                 className="pointer-events-none h-[109px] w-[158px]"
               />
               {/* Green pill counter on top */}
-              <div className="absolute flex items-center justify-center rounded-3xl bg-green px-3.5 py-2">
-                <span className="font-gb-mama-beba text-[36px] text-dark">
+              <div className="absolute flex items-center justify-center rounded-[24px] bg-green px-6 py-3">
+                <span className="font-gb-mama-beba text-[36px] leading-none text-dark">
                   {riceCount.toLocaleString("el-GR")}
                 </span>
               </div>
