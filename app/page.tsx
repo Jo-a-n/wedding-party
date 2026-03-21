@@ -191,7 +191,7 @@ export default async function Home({
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <a
-                className="wiggle wiggle-delay-2 wiggle-hover relative flex items-center justify-center px-4 py-2 transition-transform duration-200 hover:-translate-y-0.5"
+                className="wiggle wiggle-delay-2 wiggle-hover relative flex items-center justify-center px-4 py-2 transition-transform duration-150 hover:scale-105 active:scale-95"
                 href="#wishes"
               >
                 <img
@@ -204,7 +204,7 @@ export default async function Home({
                 </span>
               </a>
               <a
-                className="wiggle wiggle-delay-3 wiggle-hover relative flex items-center justify-center px-4 py-2 transition-transform duration-200 hover:-translate-y-0.5"
+                className="wiggle wiggle-delay-3 wiggle-hover relative flex items-center justify-center px-4 py-2 transition-transform duration-150 hover:scale-105 active:scale-95"
                 href="#gallery"
               >
                 <img
