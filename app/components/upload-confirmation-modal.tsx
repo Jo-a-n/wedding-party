@@ -277,12 +277,25 @@ export function UploadConfirmationModal({
                             const fallback = document.createElement("div");
                             fallback.className =
                               "flex h-full flex-col items-center justify-center gap-1.5 p-2";
-                            fallback.innerHTML = `
-                              <svg class="h-8 w-8 text-jneutral/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0 0 22.5 18.75V5.25A2.25 2.25 0 0 0 20.25 3H3.75A2.25 2.25 0 0 0 1.5 5.25v13.5A2.25 2.25 0 0 0 3.75 21Z" />
-                              </svg>
-                              <span class="font-arima max-w-full truncate text-[11px] text-jneutral/60">${item.file.name}</span>
-                            `;
+
+                            const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+                            svg.setAttribute("class", "h-8 w-8 text-jneutral/40");
+                            svg.setAttribute("fill", "none");
+                            svg.setAttribute("viewBox", "0 0 24 24");
+                            svg.setAttribute("stroke", "currentColor");
+                            svg.setAttribute("stroke-width", "1.5");
+                            const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                            path.setAttribute("stroke-linecap", "round");
+                            path.setAttribute("stroke-linejoin", "round");
+                            path.setAttribute("d", "m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0 0 22.5 18.75V5.25A2.25 2.25 0 0 0 20.25 3H3.75A2.25 2.25 0 0 0 1.5 5.25v13.5A2.25 2.25 0 0 0 3.75 21Z");
+                            svg.appendChild(path);
+
+                            const span = document.createElement("span");
+                            span.className = "font-arima max-w-full truncate text-[11px] text-jneutral/60";
+                            span.textContent = item.file.name;
+
+                            fallback.appendChild(svg);
+                            fallback.appendChild(span);
                             parent.appendChild(fallback);
                           }
                         }}
