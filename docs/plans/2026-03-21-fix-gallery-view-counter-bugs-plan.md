@@ -1,7 +1,7 @@
 ---
 title: Fix gallery view counter visibility and double-counting
 type: fix
-status: active
+status: completed
 date: 2026-03-21
 ---
 
@@ -53,7 +53,7 @@ Note: removing the `index !== lightboxIndex` guard is safe because the Lightbox 
 
 ## Acceptance Criteria
 
-- [ ] Eye icon + view count visible on all gallery tiles, including those with 0 views
-- [ ] Opening a photo increments view_count by exactly 1 (not 2)
-- [ ] Swiping between photos in lightbox increments each by 1
-- [ ] Realtime updates propagate view counts across all connected clients
+- [x] Eye icon + view count visible on all gallery tiles, including those with 0 views
+- [x] Opening a photo increments view_count by exactly 1 (not 2)
+- [x] Swiping between photos in lightbox increments each by 1
+- [x] Realtime updates propagate view counts across all connected clients

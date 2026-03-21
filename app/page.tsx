@@ -189,18 +189,32 @@ export default async function Home({
 
             <WeddingDogs />
 
-            <div className="flex flex-wrap justify-center gap-4">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <a
-                className="wiggle wiggle-delay-2 wiggle-hover hero-accent-button rounded-full px-6 py-3 text-sm font-semibold transition-transform duration-200 hover:-translate-y-0.5"
+                className="wiggle wiggle-delay-2 wiggle-hover relative flex items-center justify-center px-4 py-2 transition-transform duration-200 hover:-translate-y-0.5"
                 href="#wishes"
               >
-                Άσε μια ευχή
+                <img
+                  src="/btn-wish.svg"
+                  alt=""
+                  className="absolute inset-0 h-full w-full"
+                />
+                <span className="font-playpen relative text-[17px] font-[500] text-jneutral">
+                  Άσε μια ευχή
+                </span>
               </a>
               <a
-                className="wiggle wiggle-delay-3 wiggle-hover hero-accent-button rounded-full px-6 py-3 text-sm font-semibold transition-transform duration-200 hover:-translate-y-0.5"
+                className="wiggle wiggle-delay-3 wiggle-hover relative flex items-center justify-center px-4 py-2 transition-transform duration-200 hover:-translate-y-0.5"
                 href="#gallery"
               >
-                Φωτογραφίες
+                <img
+                  src="/btn-gallery.svg"
+                  alt=""
+                  className="absolute inset-0 h-full w-full"
+                />
+                <span className="font-playpen relative text-[17px] font-[500] text-jneutral">
+                  Φωτογραφίες
+                </span>
               </a>
             </div>
           </div>
