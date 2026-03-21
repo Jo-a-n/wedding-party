@@ -58,7 +58,7 @@ export function GallerySection({
   const [loadingMore, setLoadingMore] = useState(false);
 
   const incrementViewCount = useCallback(
-    (index: number) => {
+    async (index: number) => {
       const item = items[index];
       if (item) {
         setItems((prev) =>
@@ -67,7 +67,10 @@ export function GallerySection({
           ),
         );
         const supabase = createClient();
-        supabase.rpc("increment_view_count", { item_id: item.id });
+        const { error } = await supabase.rpc("increment_view_count", { item_id: item.id });
+        if (error) {
+          console.error("Failed to increment view count:", error);
+        }
       }
     },
     [items],
@@ -76,7 +79,7 @@ export function GallerySection({
   const handleItemClick = useCallback(
     (index: number) => {
       setLightboxIndex(index);
-      incrementViewCount(index);
+      void incrementViewCount(index);
     },
     [incrementViewCount],
   );
@@ -276,7 +279,7 @@ export function GallerySection({
         on={{
           view: ({ index }) => {
             if (index !== lightboxIndex) {
-              incrementViewCount(index);
+              void incrementViewCount(index);
               setLightboxIndex(index);
             }
           },
