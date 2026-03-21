@@ -104,7 +104,7 @@ export function WishWall({
   return (
     <section id="wishes" className="py-8">
       <div className="mb-6 text-center">
-        <p className="font-playpen text-[15px] font-[300] text-jneutral opacity-90">
+        <p className="font-playpen text-[15px] font-[200] text-jneutral opacity-90">
           Ευχές καλεσμένων
         </p>
         <h2 className="font-arima mt-2 text-[30px] font-[400] text-jneutral">

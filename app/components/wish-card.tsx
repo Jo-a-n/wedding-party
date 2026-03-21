@@ -38,7 +38,7 @@ export function WishCard({
         {wish.message}
       </p>
       <div className="flex items-center justify-end pr-[16px]">
-        <p className="font-playpen text-[15px] font-[300] text-jneutral opacity-90">
+        <p className="font-playpen text-[15px] font-[200] text-jneutral opacity-90">
           {wish.name}
         </p>
       </div>
