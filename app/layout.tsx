@@ -17,6 +17,7 @@ export default function RootLayout({
   return (
     <html lang="el" data-theme="dark" className={fontVariables} suppressHydrationWarning>
       <head>
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💍</text></svg>" />
         <script
           dangerouslySetInnerHTML={{
             __html: `(function(){try{var theme=localStorage.getItem("wedding-party-theme");if(theme==="light"||theme==="dark"){document.documentElement.dataset.theme=theme;}}catch(e){}})();`,
