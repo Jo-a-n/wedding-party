@@ -15,7 +15,7 @@ export function WeddingDogs() {
         <img
           src="/heart.svg"
           alt=""
-          className="w-[152px] sm:w-[200px] lg:w-[240px] h-auto scale-[1.1]"
+          className="w-[152px] sm:w-[200px] lg:w-[240px] h-auto scale-[1.25]"
         />
         <div className="absolute inset-0 flex items-center justify-center">
           <NameShip />

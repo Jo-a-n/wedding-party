@@ -34,10 +34,8 @@ export function WishCard({
     <article
       className={`relative pl-[12px] pt-[8px] ${fontClass} ${isNew ? "wish-card-enter" : ""} ${isHidden ? "opacity-40" : ""}`}
     >
-      <p className="text-[20px] leading-normal text-jneutral">
-        {wish.message}
-      </p>
-      <div className="flex items-center justify-end pr-[16px]">
+      <p className="text-[20px] leading-[125%] text-jneutral">{wish.message}</p>
+      <div className="flex items-center justify-end pr-[16px] ">
         <p className="font-playpen text-[15px] font-[200] text-jneutral opacity-90">
           {wish.name}
         </p>
