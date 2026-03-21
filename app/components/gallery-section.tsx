@@ -227,11 +227,16 @@ export function GallerySection({
     setLoadingMore(true);
     try {
       const supabase = createClient();
-      const { data, error } = await supabase
+      let query = supabase
         .from("gallery_items")
         .select("*")
-        .order("created_at", { ascending: false })
-        .range(items.length, items.length + PAGE_SIZE - 1);
+        .order("created_at", { ascending: false });
+
+      if (!isAdmin) {
+        query = query.eq("hidden", false);
+      }
+
+      const { data, error } = await query.range(items.length, items.length + PAGE_SIZE - 1);
 
       if (!error && data) {
         setItems((prev) => [
@@ -244,7 +249,7 @@ export function GallerySection({
     } finally {
       setLoadingMore(false);
     }
-  }, [items.length]);
+  }, [items.length, isAdmin]);
 
   // Build lightbox slides
   const slides = items.map((item) => {
