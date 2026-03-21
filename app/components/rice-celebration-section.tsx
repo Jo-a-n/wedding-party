@@ -426,12 +426,16 @@ export function RiceCelebrationSection({
     };
   }, [isTouchDevice]);
 
+  const [tossKey, setTossKey] = useState(0);
+
   const handleTouchToss = () => {
     const button = touchButtonRef.current;
 
     if (!button) {
       return;
     }
+
+    setTossKey((k) => k + 1);
 
     const rect = button.getBoundingClientRect();
     const start = {
@@ -456,7 +460,7 @@ export function RiceCelebrationSection({
 
       <section id="rice" className="relative z-10 py-8">
         <div className="flex flex-col items-center gap-5 py-6">
-          <h2 className="font-gb-mama-beba text-[36px] text-jneutral text-center">
+          <h2 className="font-gb-mama-beba text-[36px] text-jneutral text-center px-8">
             Ρίξε ρύζι, ο γάμος να μη τρίζει!
           </h2>
 
@@ -466,51 +470,21 @@ export function RiceCelebrationSection({
           </p>
 
           <div className="flex flex-col items-center gap-3.5">
-            {/* Counter with decorative particles */}
-            <div className="relative h-[89px] w-[156px]">
-              {/* Green pill counter */}
-              <div className="absolute left-[38px] top-[28.5px] flex items-center justify-center rounded-3xl bg-green px-3.5 py-2">
+            {/* Counter with decorative confetti SVG */}
+            <div className="relative flex items-center justify-center">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/rice-counter-confetti.svg"
+                alt=""
+                aria-hidden="true"
+                className="pointer-events-none h-[109px] w-[158px]"
+              />
+              {/* Green pill counter on top */}
+              <div className="absolute flex items-center justify-center rounded-3xl bg-green px-3.5 py-2">
                 <span className="font-gb-mama-beba text-[36px] text-dark">
                   {riceCount.toLocaleString("el-GR")}
                 </span>
               </div>
-              {/* Decorative rice particles */}
-              <span
-                className="pointer-events-none absolute left-[108px] top-[3px] rotate-2 font-gb-mama-beba text-[30px] text-pink"
-                aria-hidden="true"
-              >
-                /
-              </span>
-              <span
-                className="pointer-events-none absolute left-[71px] top-[12px] font-gb-mama-beba text-[40px] text-green"
-                aria-hidden="true"
-              >
-                &lsquo;
-              </span>
-              <span
-                className="pointer-events-none absolute left-[44px] top-[12px] rotate-[-36deg] font-gb-mama-beba text-[40px] text-jneutral"
-                aria-hidden="true"
-              >
-                &lsquo;
-              </span>
-              <span
-                className="pointer-events-none absolute left-[7px] top-[46px] rotate-[20deg] font-gb-mama-beba text-[40px] text-purple"
-                aria-hidden="true"
-              >
-                &lsquo;
-              </span>
-              <span
-                className="pointer-events-none absolute left-0 top-[34px] rotate-[8deg] font-gb-mama-beba text-[40px] text-jneutral"
-                aria-hidden="true"
-              >
-                &lsquo;
-              </span>
-              <span
-                className="pointer-events-none absolute left-[7px] top-0 rotate-[-36deg] font-gb-mama-beba text-[40px] text-blue"
-                aria-hidden="true"
-              >
-                /
-              </span>
             </div>
             {/* Counter label */}
             <p className="font-gb-mama-beba text-[22px] text-jneutral">
@@ -526,7 +500,7 @@ export function RiceCelebrationSection({
             ref={touchButtonRef}
             type="button"
             onClick={handleTouchToss}
-            className="relative rounded-full bg-[#1ef79a] px-4 py-2.5 font-gb-mama-beba text-[17px] text-black shadow-[0_18px_35px_rgba(0,0,0,0.16)] transition-transform duration-200 active:scale-95"
+            className="relative rounded-full bg-[#1ef79a] px-4 py-2.5 font-gb-mama-beba text-[17px] text-black shadow-[0_18px_35px_rgba(0,0,0,0.16)] transition-transform duration-100 active:scale-95"
           >
             Ρίξε ρύζι!
           </button>
@@ -534,7 +508,7 @@ export function RiceCelebrationSection({
             src="/rice-confetti.svg"
             alt=""
             aria-hidden="true"
-            className="pointer-events-none absolute -left-[32px] -top-[28px] z-10 h-[90px] w-[120px] transition-transform duration-300 group-active:scale-110"
+            className="pointer-events-none absolute -left-[32px] -top-[28px] z-10 h-[90px] w-[120px] transition-transform duration-150 group-active:scale-[0.8]"
           />
         </div>
       ) : null}
