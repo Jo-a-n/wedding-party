@@ -189,7 +189,7 @@ export default async function Home({
 
             <CountdownTimer settings={settings} />
 
-            <div className="w-full overflow-hidden">
+            <div className="-mx-4 sm:-mx-10 lg:-mx-12 overflow-hidden">
               <div className="flex justify-center">
                 <img
                   src="/zeugos.svg"
