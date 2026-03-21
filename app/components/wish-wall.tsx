@@ -27,7 +27,7 @@ export function WishWall({
       if (Date.now() >= deadlineMs) setOpen(false);
     }, 60_000);
     return () => clearInterval(interval);
-  }, [open]);
+  }, [open, deadline]);
 
   // Realtime subscription
   useEffect(() => {
