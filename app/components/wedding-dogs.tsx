@@ -11,8 +11,15 @@ export function WeddingDogs() {
         className="dog-wiggle h-48 sm:h-64 lg:h-80 w-auto drop-shadow-lg"
         loading="eager"
       />
-      <div className="flex flex-col items-center gap-2 self-center">
-        <NameShip />
+      <div className="relative self-center flex items-center justify-center">
+        <img
+          src="/heart.svg"
+          alt=""
+          className="w-[152px] sm:w-[200px] lg:w-[240px] h-auto scale-[1.1]"
+        />
+        <div className="absolute inset-0 flex items-center justify-center">
+          <NameShip />
+        </div>
       </div>
       <img
         src="/dogs/casper.png"

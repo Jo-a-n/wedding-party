@@ -1,7 +1,7 @@
 ---
 title: "feat: Add heart SVG behind NameShip button"
 type: feat
-status: active
+status: completed
 date: 2026-03-21
 ---
 
@@ -11,12 +11,12 @@ Add the decorative heart SVG shape behind the NameShip button in the dogs sectio
 
 ## Acceptance Criteria
 
-- [ ] Heart SVG (`HEART.svg`) is copied to `public/heart.svg`
-- [ ] Heart SVG is rendered behind the NameShip button text in the dogs section
-- [ ] NameShip button is restyled: text-only, no background, no `soft-chip` class, no border/shadow — just the name text + 💕 emojis sitting on top of the heart
-- [ ] Heart + button are layered using relative/absolute positioning so the text is centered on the heart
-- [ ] Responsive sizing works across mobile/tablet/desktop
-- [ ] Clicking the heart/text area still cycles the name
+- [x] Heart SVG (`HEART.svg`) is copied to `public/heart.svg`
+- [x] Heart SVG is rendered behind the NameShip button text in the dogs section
+- [x] NameShip button is restyled: text-only, no background, no `soft-chip` class, no border/shadow — just the name text + 💕 emojis sitting on top of the heart
+- [x] Heart + button are layered using relative/absolute positioning so the text is centered on the heart
+- [x] Responsive sizing works across mobile/tablet/desktop
+- [x] Clicking the heart/text area still cycles the name
 
 ## Context
 
