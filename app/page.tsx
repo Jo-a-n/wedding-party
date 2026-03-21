@@ -284,7 +284,7 @@ export default async function Home({
           <img
             src="/kasper.svg"
             alt=""
-            className="w-[200px] sm:w-[280px] lg:w-[364px] h-auto scale-180 mb-[20px]"
+            className="w-[200px] sm:w-[280px] lg:w-[364px] h-auto scale-150 mb-[20px]"
           />
         </div>
 
@@ -298,7 +298,7 @@ export default async function Home({
           <img
             src="/leo.svg"
             alt=""
-            className="w-[200px] sm:w-[280px] lg:w-[364px] h-auto scale-180 mr-[40px] mb-[40px] mt-[60px] -z-20"
+            className="w-[200px] sm:w-[280px] lg:w-[364px] h-auto scale-150 mr-[40px] mb-[40px] mt-[60px] -z-20"
           />
         </div>
 
