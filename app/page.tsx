@@ -278,11 +278,27 @@ export default async function Home({
           </div>
         </section> */}
 
+        <div className="flex justify-start">
+          <img
+            src="/kasper.svg"
+            alt=""
+            className="w-[200px] sm:w-[280px] lg:w-[364px] h-auto"
+          />
+        </div>
+
         <WishWall
           initialWishes={wishes}
           isAdmin={isAdmin}
           deadline={settings.wish_deadline}
         />
+
+        <div className="flex justify-end">
+          <img
+            src="/leo.svg"
+            alt=""
+            className="w-[200px] sm:w-[280px] lg:w-[364px] h-auto"
+          />
+        </div>
 
         <GallerySection
           initialItems={gallery.items}

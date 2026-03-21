@@ -193,7 +193,7 @@ export function UploadConfirmationModal({
           )}
 
           {oversizedFiles.length > 0 && (
-            <div className="font-arima mb-4 rounded-[16px] border border-amber-500/20 bg-amber-500/10 p-4 text-[13px] text-amber-300">
+            <div className="font-arima mb-4 rounded-[16px] border border-amber-500/20 bg-amber-500/10 p-4 text-[13px] text-jneutral">
               <p className="font-[500]">
                 {oversizedFiles.length === 1
                   ? "Ένα αρχείο είναι πολύ μεγάλο για ανέβασμα εδώ:"
@@ -212,14 +212,14 @@ export function UploadConfirmationModal({
                     href={albumUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="font-gb-mama-beba inline-flex items-center gap-2 rounded-[24px] bg-jpurple px-4 py-2.5 text-[17px] text-jneutral transition-all hover:brightness-110"
+                    className="font-gb-mama-beba inline-flex items-center gap-2 rounded-[24px] bg-jpurple px-4 py-2.5 text-[17px] text-white transition-all hover:brightness-110"
                   >
                     <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
                     </svg>
                     Ανεβάστε τα στο Google Photos album μας
                   </a>
-                  <p className="mt-1.5 text-[11px] text-jpurple/70 underline break-all">
+                  <p className="mt-1.5 text-[16px] text-jpurple/70 underline break-all">
                     {albumUrl}
                   </p>
                 </div>
@@ -303,10 +303,6 @@ export function UploadConfirmationModal({
           )}
         </div>
 
-        {/* Bottom action bar */}
-        <div className="shrink-0 border-t border-[#262626] p-4 sm:p-5">
-          {actionBar}
-        </div>
       </div>
     </div>
   );
