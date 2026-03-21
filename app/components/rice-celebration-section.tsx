@@ -460,7 +460,10 @@ export function RiceCelebrationSection({
             Ρίξε ρύζι, ο γάμος να μη τρίζει!
           </h2>
 
-          <p className="text-[15px] text-jneutral/90 text-center w-[282px]" style={{ fontFamily: "var(--font-playpen)", fontWeight: 300 }}>
+          <p
+            className="text-[15px] text-jneutral/90 text-center w-[282px]"
+            style={{ fontFamily: "var(--font-playpen)", fontWeight: 300 }}
+          >
             Σύρε και πέτα ρύζι! Κανονικά θα σκούπιζε ο γαμπρός, αλλά εδώ είμαστε
             online.
           </p>
@@ -475,12 +478,42 @@ export function RiceCelebrationSection({
                 </span>
               </div>
               {/* Decorative rice particles */}
-              <span className="pointer-events-none absolute left-[108px] top-[3px] rotate-2 font-[var(--font-gb-mama-beba)] text-[30px] text-pink" aria-hidden="true">/</span>
-              <span className="pointer-events-none absolute left-[71px] top-[12px] font-[var(--font-gb-mama-beba)] text-[40px] text-green" aria-hidden="true">&lsquo;</span>
-              <span className="pointer-events-none absolute left-[44px] top-[12px] rotate-[-36deg] font-[var(--font-gb-mama-beba)] text-[40px] text-jneutral" aria-hidden="true">&lsquo;</span>
-              <span className="pointer-events-none absolute left-[7px] top-[46px] rotate-[20deg] font-[var(--font-gb-mama-beba)] text-[40px] text-purple" aria-hidden="true">&lsquo;</span>
-              <span className="pointer-events-none absolute left-0 top-[34px] rotate-[8deg] font-[var(--font-gb-mama-beba)] text-[40px] text-jneutral" aria-hidden="true">&lsquo;</span>
-              <span className="pointer-events-none absolute left-[7px] top-0 rotate-[-36deg] font-[var(--font-gb-mama-beba)] text-[40px] text-blue" aria-hidden="true">/</span>
+              <span
+                className="pointer-events-none absolute left-[108px] top-[3px] rotate-2 font-[var(--font-gb-mama-beba)] text-[30px] text-pink"
+                aria-hidden="true"
+              >
+                /
+              </span>
+              <span
+                className="pointer-events-none absolute left-[71px] top-[12px] font-[var(--font-gb-mama-beba)] text-[40px] text-green"
+                aria-hidden="true"
+              >
+                &lsquo;
+              </span>
+              <span
+                className="pointer-events-none absolute left-[44px] top-[12px] rotate-[-36deg] font-[var(--font-gb-mama-beba)] text-[40px] text-jneutral"
+                aria-hidden="true"
+              >
+                &lsquo;
+              </span>
+              <span
+                className="pointer-events-none absolute left-[7px] top-[46px] rotate-[20deg] font-[var(--font-gb-mama-beba)] text-[40px] text-purple"
+                aria-hidden="true"
+              >
+                &lsquo;
+              </span>
+              <span
+                className="pointer-events-none absolute left-0 top-[34px] rotate-[8deg] font-[var(--font-gb-mama-beba)] text-[40px] text-jneutral"
+                aria-hidden="true"
+              >
+                &lsquo;
+              </span>
+              <span
+                className="pointer-events-none absolute left-[7px] top-0 rotate-[-36deg] font-[var(--font-gb-mama-beba)] text-[40px] text-blue"
+                aria-hidden="true"
+              >
+                /
+              </span>
             </div>
             {/* Counter label */}
             <p className="font-[var(--font-gb-mama-beba)] text-[22px] text-jneutral">
@@ -496,16 +529,15 @@ export function RiceCelebrationSection({
             ref={touchButtonRef}
             type="button"
             onClick={handleTouchToss}
-            className="relative rounded-full bg-[#1ef79a] px-4 py-2.5 font-[var(--font-gb-mama-beba)] text-[17px] text-black shadow-[0_18px_35px_rgba(0,0,0,0.16)] transition-transform duration-200 active:scale-95"
+            className="relative rounded-full bg-[#1ef79a] px-4 py-2.5 font-gb-mama-beba text-[17px] text-black shadow-[0_18px_35px_rgba(0,0,0,0.16)] transition-transform duration-200 active:scale-95"
           >
-            ρίξε ρύζι!
+            Ρίξε ρύζι!
           </button>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/rice-confetti.svg"
             alt=""
             aria-hidden="true"
-            className="pointer-events-none absolute -left-[32px] -top-[20px] z-10 h-[90px] w-[120px]"
+            className="pointer-events-none absolute -left-[32px] -top-[28px] z-10 h-[90px] w-[120px]"
           />
         </div>
       ) : null}
