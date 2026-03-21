@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import Lightbox from "yet-another-react-lightbox";
 import Video from "yet-another-react-lightbox/plugins/video";
 import "yet-another-react-lightbox/styles.css";
@@ -60,10 +60,12 @@ export function GallerySection({
   const [loadingMore, setLoadingMore] = useState(false);
   const [albumUrl, setAlbumUrl] = useState(largeUploadAlbumUrl ?? "");
   const [showAlbumLink, setShowAlbumLink] = useState(showGoogleAlbumLink ?? false);
+  const itemsRef = useRef(items);
+  itemsRef.current = items;
 
   const incrementViewCount = useCallback(
     async (index: number) => {
-      const item = items[index];
+      const item = itemsRef.current[index];
       if (item) {
         setItems((prev) =>
           prev.map((it, i) =>
@@ -77,7 +79,7 @@ export function GallerySection({
         }
       }
     },
-    [items],
+    [],
   );
 
   const handleItemClick = useCallback(
