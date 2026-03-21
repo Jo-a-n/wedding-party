@@ -137,15 +137,15 @@ export default async function Home({
         ? "παντρεύονται"
         : "παντρεύτηκαν";
 
-  const palette = [
-    { name: "Pink", hex: "#E789FA", className: "bg-pink" },
-    { name: "Purple", hex: "#9946F7", className: "bg-purple" },
-    { name: "Blue", hex: "#1DD0F0", className: "bg-blue" },
-    { name: "Yellow", hex: "#FFD412", className: "bg-yellow" },
-    { name: "Green", hex: "#1EF79A", className: "bg-green" },
-    { name: "Neutral", hex: "#F2EAD5", className: "bg-neutral" },
-    { name: "Black", hex: "#000000", className: "bg-dark" },
-  ];
+  // const palette = [
+  //   { name: "Pink", hex: "#E789FA", className: "bg-pink" },
+  //   { name: "Purple", hex: "#9946F7", className: "bg-purple" },
+  //   { name: "Blue", hex: "#1DD0F0", className: "bg-blue" },
+  //   { name: "Yellow", hex: "#FFD412", className: "bg-yellow" },
+  //   { name: "Green", hex: "#1EF79A", className: "bg-green" },
+  //   { name: "Neutral", hex: "#F2EAD5", className: "bg-neutral" },
+  //   { name: "Black", hex: "#000000", className: "bg-dark" },
+  // ];
 
   return (
     <main
@@ -219,7 +219,7 @@ export default async function Home({
 
         <RiceCelebrationSection initialCount={riceTossCount} />
 
-        <section
+        {/* <section
           id="palette"
           className="pastel-panel rounded-[2rem] px-5 py-6 sm:px-8 sm:py-8"
         >
@@ -292,7 +292,7 @@ export default async function Home({
               schedules, RSVPs, and guest details.
             </p>
           </article>
-        </section>
+        </section> */}
 
         <WishWall
           initialWishes={wishes}
