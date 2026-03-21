@@ -557,6 +557,13 @@ a {
   background-clip: padding-box;
 }
 
+@media (max-width: 500px) {
+  .gallery-masonry,
+  .gallery-masonry-column {
+    gap: 8px;
+  }
+}
+
 body {
   margin: 0;
 }
