@@ -189,15 +189,7 @@ export default async function Home({
 
             <CountdownTimer settings={settings} />
 
-            <div className="-mx-4 sm:-mx-10 lg:-mx-12 overflow-hidden">
-              <div className="flex justify-center">
-                <img
-                  src="/zeugos.svg"
-                  alt=""
-                  className="w-[175%] sm:w-full max-w-[1920px] h-auto shrink-0"
-                />
-              </div>
-            </div>
+            <WeddingDogs />
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8">
               <a
@@ -228,7 +220,15 @@ export default async function Home({
               </a>
             </div>
 
-            <WeddingDogs />
+            <div className="-mx-4 sm:-mx-10 lg:-mx-12 overflow-hidden">
+              <div className="flex justify-center">
+                <img
+                  src="/zeugos.svg"
+                  alt=""
+                  className="w-[185%] sm:w-full max-w-[1920px] h-auto shrink-0"
+                />
+              </div>
+            </div>
           </div>
         </section>
 
