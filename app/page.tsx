@@ -189,6 +189,16 @@ export default async function Home({
 
             <CountdownTimer settings={settings} />
 
+            <div className="w-full overflow-hidden">
+              <div className="flex justify-center">
+                <img
+                  src="/zeugos.svg"
+                  alt=""
+                  className="w-[175%] sm:w-full max-w-[1920px] h-auto shrink-0"
+                />
+              </div>
+            </div>
+
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8">
               <a
                 className="wiggle wiggle-delay-2 wiggle-hover relative flex items-center justify-center px-12 py-3 transition-transform duration-150 hover:scale-105 active:scale-95"
